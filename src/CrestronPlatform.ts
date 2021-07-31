@@ -3,7 +3,7 @@ import { EventEmitter } from 'events';
 
 import { PLATFORM_NAME, PLUGIN_NAME } from './settings';
 import { CrestronConnection } from './CrestronConnection';
-import { DimLightBulb } from './DimLightBulb';
+import { DimLightbulb } from './DimLightbulb';
 
 /**
  * HomebridgePlatform
@@ -104,10 +104,10 @@ export class CrestronPlatform implements DynamicPlatformPlugin {
 	this.log.info("existing accessory type: " + device.type);
 
 	switch(device.type){
-	  case "DimLightBulb":
+	  case "DimLightbulb":
           {
 		this.log.info("create existing accessory: " + existingAccessory.displayName);
-		new DimLightBulb(this, existingAccessory, this.eventEmitter);
+		new DimLightbulb(this, existingAccessory, this.eventEmitter);
           }
         }
 	
@@ -132,7 +132,7 @@ export class CrestronPlatform implements DynamicPlatformPlugin {
           case "DimLightbulb":
 	    {
 	      this.log.info("create not existing accessory: " + accessory.displayName);
-              new DimLightBulb(this, accessory, this.eventEmitter);
+              new DimLightbulb(this, accessory, this.eventEmitter);
             }
         }
 

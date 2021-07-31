@@ -9,11 +9,11 @@ import { EventEmitter } from 'events';
  * An instance of this class is created for each accessory your platform registers
  * Each accessory may expose multiple services of different service types.
  */
-export class DimLightBulb {
+export class DimLightbulb {
   private service: Service;
   private id: number;
   private eventEmitter: EventEmitter;
-  private deviceType = "DimLightBulb";
+  private deviceType = "DimLightbulb";
   private eventMsg = "eventLightBrightness";
   private setMsg = "setLightBrightness";
   private getMsg = "getLightBrightness";
@@ -53,6 +53,9 @@ export class DimLightBulb {
 
     // each service must implement at-minimum the "required characteristics" for the given service type
     // see https://developers.homebridge.io/#/service/Lightbulb
+    this.service.getCharacteristic(this.platform.Characteristic.On)
+      .onSet(this.setOn.bind(this))
+      .onGet(this.getOn.bind(this));
 
     // register handlers for the Brightness Characteristic
     this.service.getCharacteristic(this.platform.Characteristic.Brightness)
@@ -72,6 +75,27 @@ export class DimLightBulb {
    * @example
    * this.service.updateCharacteristic(this.platform.Characteristic.On, true)
    */
+  async setOn(value: CharacteristicValue){
+    this.states.On = value as boolean;
+    if(this.states.On)
+    {
+	this.states.Brightness = 100;
+    }
+    else
+    {
+	this.states.Brightness = 0;
+    }
+
+    this.platform.log.info(`${this.id}: Set Characteristic On -> ${value}`);
+    this.platform.sendData(`${this.deviceType}:${this.id}:${this.setMsg}:${this.states.Brightness}:*`);
+  }
+
+  async getOn(): Promise<CharacteristicValue> {
+    const isOn = this.states.On;
+    this.platform.log.info(`${this.id}: Get Characteristic On -> ${isOn}`);
+    return isOn;
+  }
+
   async getBrightness(): Promise<CharacteristicValue> {
     const brightness = this.states.Brightness;
 
@@ -88,20 +112,18 @@ export class DimLightBulb {
    */
   async setBrightness(value: CharacteristicValue) {
     // implement your own code to set the brightness
-    this.states.Brightness = value as number;
-
-    this.platform.log.info(`${this.id}: Set Characteristic Brightness -> ${value}`);
-
-    this.platform.sendData(`${this.deviceType}:${this.id}:${this.setMsg}:${this.states.Brightness}:*`);
+    this.setBrightnessEvent(value as number);
   }
 
   setBrightnessEvent(value: number){
     let tmpValue = value;	
 
+    this.states.On = (tmpValue > 0)?true:false;
     this.states.Brightness = tmpValue;
-    this.platform.log.info(`${this.id}: Set Characteristic Brightness By Crestron Processor -> ${tmpValue}`);
+    this.platform.log.info(`${this.id}: Set Characteristic Brightness By Crestron Processor -> ${this.states.Brightness}`);
 
-    this.service.updateCharacteristic(this.platform.Characteristic.Brightness, tmpValue);
-
+    //this.platform.sendData(`${this.deviceType}:${this.id}:${this.setMsg}:${this.states.Brightness}:*`);
+    this.service.updateCharacteristic(this.platform.Characteristic.On, this.states.On)
+    this.service.updateCharacteristic(this.platform.Characteristic.Brightness, this.states.Brightness);
   }
 }
