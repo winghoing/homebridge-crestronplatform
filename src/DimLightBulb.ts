@@ -28,11 +28,12 @@ export class DimLightBulb {
   };
 
   constructor(
-    private readonly platform: CrestronPlatform,
-    private readonly accessory: PlatformAccessory,
+    private platform: CrestronPlatform,
+    private accessory: PlatformAccessory,
     eventEmitter: EventEmitter
   ) {
     this.id = accessory.context.device.id;
+    this.accessory = accessory;
     this.eventEmitter = eventEmitter;
     this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.getMsg}`, this.setBrightnessEvent.bind(this));
     this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.eventMsg}`, this.setBrightnessEvent.bind(this));
@@ -74,7 +75,7 @@ export class DimLightBulb {
   async getBrightness(): Promise<CharacteristicValue> {
     const brightness = this.states.Brightness;
 
-    this.platform.log.info('Get Characteristic Brightness -> ', brightness);
+    this.platform.log.info(`${this.id}: Get Characteristic Brightness -> ${brightness}`);
 
     this.platform.sendData(`${this.deviceType}:${this.id}:${this.getMsg}:*`);
 
@@ -89,17 +90,18 @@ export class DimLightBulb {
     // implement your own code to set the brightness
     this.states.Brightness = value as number;
 
-    this.platform.log.info('Set Characteristic Brightness -> ', value);
+    this.platform.log.info(`${this.id}: Set Characteristic Brightness -> ${value}`);
 
     this.platform.sendData(`${this.deviceType}:${this.id}:${this.setMsg}:${this.states.Brightness}:*`);
   }
 
   setBrightnessEvent(value: number){
-    this.states.Brightness = value;
+    let tmpValue = value;	
 
-    this.platform.log.info('Set Characteristic Brightness By Crestron Processor -> ', value);
+    this.states.Brightness = tmpValue;
+    this.platform.log.info(`${this.id}: Set Characteristic Brightness By Crestron Processor -> ${tmpValue}`);
 
-    this.service.updateCharacteristic(this.platform.Characteristic.Brightness, value);
+    this.service.updateCharacteristic(this.platform.Characteristic.Brightness, tmpValue);
 
   }
 }
