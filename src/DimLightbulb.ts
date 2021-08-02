@@ -86,20 +86,20 @@ export class DimLightbulb {
 	this.states.Brightness = 0;
     }
 
-    this.platform.log.info(`${this.id}: Set Characteristic On -> ${value}`);
+    this.platform.log.info(`${this.id}: Set Characteristic On By Homekit -> ${value}`);
     this.platform.sendData(`${this.deviceType}:${this.id}:${this.setMsg}:${this.states.Brightness}:*`);
   }
 
   async getOn(): Promise<CharacteristicValue> {
     const isOn = this.states.On;
-    this.platform.log.info(`${this.id}: Get Characteristic On -> ${isOn}`);
+    this.platform.log.info(`${this.id}: Get Characteristic On From Homekit -> ${isOn}`);
     return isOn;
   }
 
   async getBrightness(): Promise<CharacteristicValue> {
     const brightness = this.states.Brightness;
 
-    this.platform.log.info(`${this.id}: Get Characteristic Brightness -> ${brightness}`);
+    this.platform.log.info(`${this.id}: Get Characteristic Brightness From Homekit -> ${brightness}`);
 
     this.platform.sendData(`${this.deviceType}:${this.id}:${this.getMsg}:*`);
 
@@ -112,7 +112,13 @@ export class DimLightbulb {
    */
   async setBrightness(value: CharacteristicValue) {
     // implement your own code to set the brightness
-    this.setBrightnessEvent(value as number);
+    let tmpValue = value;
+    
+    this.states.On = (tmpValue > 0)?true:false;
+    this.states.Brightness = tmpValue;
+    this.platform.log.info(`${this.id}: Set Characteristic Brightness By Homekit -> ${this.states.Brightness}`);
+	  
+    this.platform.sendData(`${this.deviceType}:${this.id}:${this.setMsg}:${this.states.Brightness}:*`);
   }
 
   getBrightnessEvent(value: number){
