@@ -112,7 +112,7 @@ export class DimLightbulb {
    */
   async setBrightness(value: CharacteristicValue) {
     // implement your own code to set the brightness
-    let tmpValue = value;
+    let tmpValue = value as number;
     
     this.states.On = (tmpValue > 0)?true:false;
     this.states.Brightness = tmpValue;
