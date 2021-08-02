@@ -1,5 +1,5 @@
 {
-  "pluginAlias": "homebridge-crestronplugin",
+  "pluginAlias": "homebridge-crestronplatform",
   "pluginType": "platform",
   "singular": true,
   "schema": {

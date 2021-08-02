@@ -35,7 +35,7 @@ export class DimLightbulb {
     this.id = accessory.context.device.id;
     this.accessory = accessory;
     this.eventEmitter = eventEmitter;
-    this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.getMsg}`, this.setBrightnessEvent.bind(this));
+    this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.getMsg}`, this.getBrightnessEvent.bind(this));
     this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.eventMsg}`, this.setBrightnessEvent.bind(this));
     // set accessory information
     this.accessory.getService(this.platform.Service.AccessoryInformation)!
@@ -115,6 +115,17 @@ export class DimLightbulb {
     this.setBrightnessEvent(value as number);
   }
 
+  getBrightnessEvent(value: number){
+     let tmpValue = value;
+     
+     this.states.On = (tmpValue > 0)?true:false;
+     this.states.Brightness = tmpValue;
+     this.platform.log.info(`${this.id}: Retrieve Characteristic Brightness From Crestron Processor -> ${this.states.Brightness}`);
+     
+     this.service.updateCharacteristic(this.platform.Characteristic.On, this.states.On);
+     this.service.updateCharacteristic(this.platform.Characteristic.Brightness, this.states.Brightness);
+  }
+
   setBrightnessEvent(value: number){
     let tmpValue = value;	
 
@@ -122,8 +133,7 @@ export class DimLightbulb {
     this.states.Brightness = tmpValue;
     this.platform.log.info(`${this.id}: Set Characteristic Brightness By Crestron Processor -> ${this.states.Brightness}`);
 
-    //this.platform.sendData(`${this.deviceType}:${this.id}:${this.setMsg}:${this.states.Brightness}:*`);
-    this.service.updateCharacteristic(this.platform.Characteristic.On, this.states.On)
+    this.service.updateCharacteristic(this.platform.Characteristic.On, this.states.On);
     this.service.updateCharacteristic(this.platform.Characteristic.Brightness, this.states.Brightness);
   }
 }
