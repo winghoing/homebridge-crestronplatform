@@ -80,14 +80,15 @@ export class DimLightbulb {
     if(this.states.On == true && this.states.Brightness == 0)
     {
 	this.states.Brightness = 100;
+	this.platform.sendData(`${this.deviceType}:${this.id}:${this.setMsg}:${this.states.Brightness}:*`);
     }
     else if(this.states.On == false)
     {
 	this.states.Brightness = 0;
+	this.platform.sendData(`${this.deviceType}:${this.id}:${this.setMsg}:${this.states.Brightness}:*`);
     }
 
     this.platform.log.info(`${this.id}: Set Characteristic On By Homekit -> ${value}`);
-    this.platform.sendData(`${this.deviceType}:${this.id}:${this.setMsg}:${this.states.Brightness}:*`);
   }
 
   async getOn(): Promise<CharacteristicValue> {
