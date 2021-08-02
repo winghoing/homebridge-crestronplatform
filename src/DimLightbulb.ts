@@ -77,7 +77,7 @@ export class DimLightbulb {
    */
   async setOn(value: CharacteristicValue){
     this.states.On = value as boolean;
-    if(this.states.On)
+    if(this.states.On == true && this.states.Brightness > 0)
     {
 	this.states.Brightness = 100;
     }
