@@ -81,7 +81,7 @@ export class DimLightbulb {
     {
 	this.states.Brightness = 100;
     }
-    else
+    else if(this.states.On == false)
     {
 	this.states.Brightness = 0;
     }
