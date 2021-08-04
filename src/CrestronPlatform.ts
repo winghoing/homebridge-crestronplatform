@@ -86,7 +86,7 @@ export class CrestronPlatform implements DynamicPlatformPlugin {
       // generate a unique id for the accessory this should be generated from
       // something globally unique, but constant, for example, the device serial
       // number or MAC address
-      const uuid = this.api.hap.uuid.generate(device.id.toString());
+      const uuid = this.api.hap.uuid.generate(device.name.toString() + device.id.toString());
 
       // see if an accessory with the same uuid has already been registered and restored from
       // the cached devices we stored in the `configureAccessory` method above
@@ -98,6 +98,7 @@ export class CrestronPlatform implements DynamicPlatformPlugin {
 
         // if you need to update the accessory.context then you should run `api.updatePlatformAccessories`. eg.:
 	existingAccessory.context.device = device;
+	existingAccessory.displayName = device.name;
 	this.api.updatePlatformAccessories([existingAccessory]);
 
         // create the accessory handler for the restored accessory
@@ -106,13 +107,13 @@ export class CrestronPlatform implements DynamicPlatformPlugin {
 	switch(device.type){
 	  case "Lightbulb":
 	    {
-	       this.log.info("create existing accessory: " + existingAccessory.displayName);
+	       this.log.info("create existing lightbulb accessory: " + existingAccessory.displayName);
 	       new Lightbulb(this, existingAccessory, this.eventEmitter);
 	       break;
             }
 	  case "DimLightbulb":
             {
-	       this.log.info("create existing accessory: " + existingAccessory.displayName);
+	       this.log.info("create existing dimlightbulb accessory: " + existingAccessory.displayName);
                new DimLightbulb(this, existingAccessory, this.eventEmitter);
 	       break;
             }
@@ -138,13 +139,13 @@ export class CrestronPlatform implements DynamicPlatformPlugin {
 	switch (device.type) {
 	  case "Lightbulb":
 	    {
-	       this.log.info("create not existing accessory: " + accessory.displayName);
+	       this.log.info("create not existing lightbulb accessory: " + accessory.displayName);
 	       new Lightbulb(this, accessory, this.eventEmitter);
 	       break;
             }
           case "DimLightbulb":
 	    {
-	       this.log.info("create not existing accessory: " + accessory.displayName);
+	       this.log.info("create not existing dimlightbulb accessory: " + accessory.displayName);
                new DimLightbulb(this, accessory, this.eventEmitter);
 	       break;
             }
