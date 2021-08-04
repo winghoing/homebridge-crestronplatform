@@ -108,11 +108,13 @@ export class CrestronPlatform implements DynamicPlatformPlugin {
 	    {
 	       this.log.info("create existing accessory: " + existingAccessory.displayName);
 	       new Lightbulb(this, existingAccessory, this.eventEmitter);
+	       break;
             }
 	  case "DimLightbulb":
             {
 	       this.log.info("create existing accessory: " + existingAccessory.displayName);
                new DimLightbulb(this, existingAccessory, this.eventEmitter);
+	       break;
             }
         }
 	
@@ -138,11 +140,13 @@ export class CrestronPlatform implements DynamicPlatformPlugin {
 	    {
 	       this.log.info("create not existing accessory: " + accessory.displayName);
 	       new Lightbulb(this, accessory, this.eventEmitter);
+	       break;
             }
           case "DimLightbulb":
 	    {
 	       this.log.info("create not existing accessory: " + accessory.displayName);
                new DimLightbulb(this, accessory, this.eventEmitter);
+	       break;
             }
         }
 
