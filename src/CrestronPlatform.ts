@@ -3,6 +3,7 @@ import { EventEmitter } from 'events';
 
 import { PLATFORM_NAME, PLUGIN_NAME } from './settings';
 import { CrestronConnection } from './CrestronConnection';
+import { Lightbulb } from './Lightbulb';
 import { DimLightbulb } from './DimLightbulb';
 
 /**
@@ -78,7 +79,7 @@ export class CrestronPlatform implements DynamicPlatformPlugin {
     // A real plugin you would discover accessories from the local network, cloud services
     // or a user-defined array in the platform config.
     let configDevices = this.config["accessories"];
-    
+    this.log.info(`printing accessories: ${configDevices}`);
     // loop over the discovered devices and register each one if it has not already been registered
     for (let device of configDevices) {
 
@@ -102,13 +103,17 @@ export class CrestronPlatform implements DynamicPlatformPlugin {
         // create the accessory handler for the restored accessory
 	// this is imported from `platformAccessory.ts`
 	this.log.info("existing accessory type: " + device.type);
-
 	switch(device.type){
+	  case "Lightbulb":
+	    {
+	       this.log.info("create existing accessory: " + existingAccessory.displayName);
+	       new Lightbulb(this, existingAccessory, this.eventEmitter);
+            }
 	  case "DimLightbulb":
-          {
-		this.log.info("create existing accessory: " + existingAccessory.displayName);
-		new DimLightbulb(this, existingAccessory, this.eventEmitter);
-          }
+            {
+	       this.log.info("create existing accessory: " + existingAccessory.displayName);
+               new DimLightbulb(this, existingAccessory, this.eventEmitter);
+            }
         }
 	
         // it is possible to remove platform accessories at any time using `api.unregisterPlatformAccessories`, eg.:
@@ -128,11 +133,16 @@ export class CrestronPlatform implements DynamicPlatformPlugin {
 
         // create the accessory handler for the newly create accessory
         // this is imported from `platformAccessory.ts`
-        switch (device.type) {
+	switch (device.type) {
+	  case "Lightbulb":
+	    {
+	       this.log.info("create not existing accessory: " + accessory.displayName);
+	       new Lightbulb(this, accessory, this.eventEmitter);
+            }
           case "DimLightbulb":
 	    {
-	      this.log.info("create not existing accessory: " + accessory.displayName);
-              new DimLightbulb(this, accessory, this.eventEmitter);
+	       this.log.info("create not existing accessory: " + accessory.displayName);
+               new DimLightbulb(this, accessory, this.eventEmitter);
             }
         }
 
