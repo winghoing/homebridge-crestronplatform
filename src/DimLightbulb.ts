@@ -80,11 +80,13 @@ export class DimLightbulb {
     if(this.states.On == true && this.states.Brightness == 0)
     {
 	this.states.Brightness = 100;
+	this.service.updateCharacteristic(this.platform.Characteristic.Brightness, this.states.Brightness);
 	this.platform.sendData(`${this.deviceType}:${this.id}:${this.setMsg}:${this.states.Brightness}:*`);
     }
     else if(this.states.On == false)
     {
 	this.states.Brightness = 0;
+	this.service.updateCharacteristic(this.platform.Characteristic.Brightness, this.states.Brightness);
 	this.platform.sendData(`${this.deviceType}:${this.id}:${this.setMsg}:${this.states.Brightness}:*`);
     }
 
