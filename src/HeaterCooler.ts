@@ -108,29 +108,40 @@ export class HeaterCooler {
      * this.service.updateCharacteristic(this.platform.Characteristic.On, true)
      */
     async handleActiveGet(): Promise<CharacteristicValue> {
-        /*
-        const isOn = this.states.On;
-        this.platform.log.info(`${this.deviceType}:${this.id}: Get Characteristic On From Homekit -> ${isOn}`);
-        return isOn;
-        */
+        const isActive= this.states.Active;
+        this.platform.log.info(`${this.deviceType}:${this.id}: Get Characteristic Active From Homekit -> ${isActive}`);
+        return isActive;
     }
 
-    async handleCurrentTemperatureGet(): Promise<CharacteristicValue> {
-        /*
-        const brightness = this.states.Brightness;
-
-        this.platform.log.info(`${this.deviceType}:${this.id}: Get Characteristic Brightness From Homekit -> ${brightness}`);
-
-        this.platform.sendData(`${this.deviceType}:${this.id}:${this.getMsg}:*`);
-
-        return brightness;
-        */
+    async handleCurrentHeaterCoolerStateGet(): Promise<CharacteristicValue> {
+        const currentHeaterCoolerState = this.states.CurrentHeaterCoolerState;
+        this.platform.log.info(`${this.deviceType}:${this.id}: Get Characteristic CurrentHeaterCoolerState  From Homekit -> ${currentHeaterCoolerState}`);
+        return currentHeaterCoolerState;
     }
 
     async handleTargetHeaterCoolerStateGet(): Promise<CharacteristicValue> {
+        const targetHeaterCoolerState = this.states.TargetHeaterCoolerState;
+        this.platform.log.info(`${this.deviceType}:${this.id}: Get Characteristic TargetHeaterCoolerState  From Homekit -> ${targetHeaterCoolerState}`);
+        return targetHeaterCoolerState;
     }
     
     async handleCurrentTemperatureGet(): Promise<CharacteristicValue> {
+        const currentTemperature = this.states.CurrentTemperature;
+        this.platform.log.info(`${this.deviceType}:${this.id}: Get Characteristic CurrentTemperature From Homekit -> ${currentTemperature}`);
+        //this.platform.sendData(`${this.deviceType}:${this.id}:${this.getMsg}:*`);
+        return currentTemperature;
+    }
+    
+    async handleCoolingThresholdTemperatureGet(): Promise<CharacteristicValue> {
+        const targetTemperature = this.states.TargetTemperature;
+        this.platform.log.info(`${this.deviceType}:${this.id}: Get Characteristic CoolingThresholdTemperature From Homekit -> ${targetTemperature}`);
+        return targetTemperature;
+    }
+    
+    async handleHeatingThresholdTemperatureGet(): Promise<CharacteristicValue> {
+        const targetTemperature = this.states.TargetTemperature;
+        this.platform.log.info(`${this.deviceType}:${this.id}: Get Characteristic HeatingThresholdTemperature From Homekit -> ${targetTemperature}`);
+        return targetTemperature;
     }
 
     /**
@@ -138,6 +149,8 @@ export class HeaterCooler {
      * These are sent when the user changes the state of an accessory, for example, changing the Brightness
      */
     async handleActiveSet(value: CharacteristicValue) {
+        this.states.Active = value as number;
+        this.platform.log.info(`${this.deviceType}:${this.id}: Set Characteristic Active By Homekit -> ${value}`);
         /*
         this.states.On = value as boolean;
         if (this.states.On == true && this.states.Brightness == 0) {
@@ -154,26 +167,20 @@ export class HeaterCooler {
         this.platform.log.info(`${this.deviceType}:${this.id}: Set Characteristic On By Homekit -> ${value}`);
         */
     }
-
-    async handleCurrentHeaterCoolerStateSet(value: CharacteristicValue) {
-        // implement your own code to set the brightness
-        /*
-        let tmpValue = value as number;
-
-        if (this.states.Brightness != tmpValue) {
-            this.states.On = (tmpValue > 0) ? true : false;
-            this.states.Brightness = tmpValue;
-            this.platform.sendData(`${this.deviceType}:${this.id}:${this.setMsg}:${this.states.Brightness}:*`);
-            this.platform.log.info(`${this.deviceType}:${this.id}: Set Characteristic Brightness By Homekit -> ${this.states.Brightness}`);
-        }
-        */
-    }
     
     async handleTargetHeaterCoolerStateSet(value: CharacteristicValue) {
-        
+        this.states.TargetHeaterCoolerState = value as number;
+        this.platform.log.info(`${this.deviceType}:${this.id}: Set Characteristic TargetHeaterCoolerState By Homekit -> ${value}`);
     }
     
-    async handleCurrentTemperatureSet(value: CharacteristicValue) {
+    async handleCoolingThresholdTemperatureSet(value: CharacteristicValue) {
+        this.states.TargetTemperature = value as number;
+        this.platform.log.info(`${this.deviceType}:${this.id}: Set Characteristic CoolingThresholdTemperature By Homekit -> ${value}`);
+    }
+    
+    async handleHeatingThresholdTemperatureSet(value: CharacteristicValue) {
+        this.states.TargetTemperature = value as number;
+        this.platform.log.info(`${this.deviceType}:${this.id}: Set Characteristic HeatingThresholdTemperature By Homekit -> ${value}`);
     }
 
     getPowerStateEvent(value: number) {
