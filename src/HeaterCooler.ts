@@ -92,7 +92,7 @@ export class HeaterCooler {
             
         this.service.getCharacteristic(this.platform.Characteristic.HeatingThresholdTemperature)
             .onSet(this.handleHeatingThresholdTemperatureSet.bind(this))
-            .onGet(this.handleHeatingThresholdTemperatuerGet.bind(this));
+            .onGet(this.handleHeatingThresholdTemperatureGet.bind(this));
                    
     }
 
