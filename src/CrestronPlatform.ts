@@ -122,6 +122,7 @@ export class CrestronPlatform implements DynamicPlatformPlugin {
                         {
                             this.log.info(`this.config.minValue: ${this.config.minValue}`);
                             this.log.info(`this.config.maxValue: ${this.config.maxValue}`);
+                            this.log.info(`this.config.minStep: ${this.config.minStep}`);
                             this.log.info(`this.config.temperatureDisplayUnit: ${this.config.temperatureDisplayUnit}`);
                             this.log.info(`create existing heatercooler accessory: ${existingAccessory.displayName}`);
                             new HeaterCooler(this, existingAccessory, this.eventEmitter);
@@ -163,6 +164,7 @@ export class CrestronPlatform implements DynamicPlatformPlugin {
                         {
                             this.log.info(`this.config.minValue: ${this.config.minValue}`);
                             this.log.info(`this.config.maxValue: ${this.config.maxValue}`);
+                            this.log.info(`this.config.minStep: ${this.config.minStep}`);
                             this.log.info(`this.config.temperatureDisplayUnit: ${this.config.temperatureDisplayUnit}`);
                             this.log.info(`create not existing heatercooler accessory: ${accessory.displayName}`);
                             new HeaterCooler(this, accessory, this.eventEmitter);
