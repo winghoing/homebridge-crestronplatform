@@ -5,6 +5,7 @@ import { PLATFORM_NAME, PLUGIN_NAME } from "./settings";
 import { CrestronConnection } from "./CrestronConnection";
 import { Lightbulb } from "./Lightbulb";
 import { DimLightbulb } from "./DimLightbulb";
+import { HeaterCooler } from "./HeaterCooler";
 
 /**
  * HomebridgePlatform
@@ -117,6 +118,12 @@ export class CrestronPlatform implements DynamicPlatformPlugin {
                             new DimLightbulb(this, existingAccessory, this.eventEmitter);
                             break;
                         }
+                    case "HeaterCooler":
+                        {
+                            this.log.info("create existing heatercooler accessory: " + existingAccessory.displayName);
+                            new HeaterCooler(this, existingAccessory, this.eventEmitter);
+                            break;
+                        }
                 }
 
                 // it is possible to remove platform accessories at any time using `api.unregisterPlatformAccessories`, eg.:
@@ -147,6 +154,12 @@ export class CrestronPlatform implements DynamicPlatformPlugin {
                         {
                             this.log.info(`create not existing dimlightbulb accessory: ${accessory.displayName}`);
                             new DimLightbulb(this, accessory, this.eventEmitter);
+                            break;
+                        }
+                    case "HeaterCooler":
+                        {
+                            this.log.info("create not existing heatercooler accessory: " + accessory.displayName);
+                            new HeaterCooler(this, accessory, this.eventEmitter);
                             break;
                         }
                 }
