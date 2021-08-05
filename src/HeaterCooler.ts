@@ -13,8 +13,8 @@ export class HeaterCooler {
     private service: Service;
     private id: number;
     private eventEmitter: EventEmitter;
-    private deviceType = "DimLightbulb";
-    private eventMsg = "eventLightBrightness";
+    private deviceType = "HeaterCooler";
+    private eventPowerStateMsg = "eventLightBrightness";
     private setMsg = "setLightBrightness";
     private getMsg = "getLightBrightness";
 
