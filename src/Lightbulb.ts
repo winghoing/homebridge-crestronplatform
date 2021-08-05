@@ -53,8 +53,8 @@ export class Lightbulb {
         // each service must implement at-minimum the "required characteristics" for the given service type
         // see https://developers.homebridge.io/#/service/Lightbulb
         this.service.getCharacteristic(this.platform.Characteristic.On)
-            .onSet(this.setOn.bind(this))
-            .onGet(this.getOn.bind(this));
+            .onSet(this.handleOnSet.bind(this))
+            .onGet(this.handleOnGet.bind(this));
     }
 
     /**
@@ -69,7 +69,7 @@ export class Lightbulb {
      * @example
      * this.service.updateCharacteristic(this.platform.Characteristic.On, true)
      */
-    async getOn(): Promise<CharacteristicValue> {
+    async handleOnGet(): Promise<CharacteristicValue> {
         const isOn = this.states.On;
         this.platform.log.info(`${this.id}: Get Characteristic On From Homekit -> ${isOn}`);
         this.platform.sendData(`${this.deviceType}:${this.id}:${this.getMsg}:*`);
@@ -91,7 +91,7 @@ export class Lightbulb {
      * Handle "SET" requests from HomeKit
      * These are sent when the user changes the state of an accessory, for example, changing the Brightness
      */
-    async setOn(value: CharacteristicValue) {
+    async handleOnSet(value: CharacteristicValue) {
         let tmpValue = value as boolean;
         let setValue = 0;
         if (this.states.On != tmpValue) {

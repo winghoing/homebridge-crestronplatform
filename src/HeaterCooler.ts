@@ -9,7 +9,7 @@ import { EventEmitter } from "events";
  * An instance of this class is created for each accessory your platform registers
  * Each accessory may expose multiple services of different service types.
  */
-export class DimLightbulb {
+export class HeaterCooler {
     private service: Service;
     private id: number;
     private eventEmitter: EventEmitter;
@@ -54,13 +54,13 @@ export class DimLightbulb {
         // each service must implement at-minimum the "required characteristics" for the given service type
         // see https://developers.homebridge.io/#/service/Lightbulb
         this.service.getCharacteristic(this.platform.Characteristic.On)
-            .onSet(this.handleOnSet.bind(this))
-            .onGet(this.handleOnGet.bind(this));
+            .onSet(this.setOn.bind(this))
+            .onGet(this.getOn.bind(this));
 
         // register handlers for the Brightness Characteristic
         this.service.getCharacteristic(this.platform.Characteristic.Brightness)
-            .onSet(this.handleBrightnessSet.bind(this))
-            .onGet(this.handleBrightnessGet.bind(this));
+            .onSet(this.setBrightness.bind(this))
+            .onGet(this.getBrightness.bind(this));       // SET - bind to the 'setBrightness` method below
     }
 
     /**
@@ -75,13 +75,13 @@ export class DimLightbulb {
      * @example
      * this.service.updateCharacteristic(this.platform.Characteristic.On, true)
      */
-    async handleOnGet(): Promise<CharacteristicValue> {
+    async getOn(): Promise<CharacteristicValue> {
         const isOn = this.states.On;
         this.platform.log.info(`${this.id}: Get Characteristic On From Homekit -> ${isOn}`);
         return isOn;
     }
 
-    async handleBrightnessGet(): Promise<CharacteristicValue> {
+    async getBrightness(): Promise<CharacteristicValue> {
         const brightness = this.states.Brightness;
 
         this.platform.log.info(`${this.id}: Get Characteristic Brightness From Homekit -> ${brightness}`);
@@ -95,7 +95,7 @@ export class DimLightbulb {
      * Handle "SET" requests from HomeKit
      * These are sent when the user changes the state of an accessory, for example, changing the Brightness
      */
-    async handleOnSet(value: CharacteristicValue) {
+    async setOn(value: CharacteristicValue) {
         this.states.On = value as boolean;
         if (this.states.On == true && this.states.Brightness == 0) {
             this.states.Brightness = 100;
@@ -111,7 +111,7 @@ export class DimLightbulb {
         this.platform.log.info(`${this.id}: Set Characteristic On By Homekit -> ${value}`);
     }
 
-    async handleBrightnessSet(value: CharacteristicValue) {
+    async setBrightness(value: CharacteristicValue) {
         // implement your own code to set the brightness
         let tmpValue = value as number;
 
