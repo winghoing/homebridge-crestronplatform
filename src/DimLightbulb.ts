@@ -14,9 +14,9 @@ export class DimLightbulb {
     private id: number;
     private eventEmitter: EventEmitter;
     private deviceType = "DimLightbulb";
-    private eventMsg = "eventLightBrightness";
-    private setMsg = "setLightBrightness";
-    private getMsg = "getLightBrightness";
+    private eventLightBrightnessMsg = "eventLightBrightness";
+    private setLightBrightnessMsg = "setLightBrightness";
+    private getLightBrightnessMsg = "getLightBrightness";
 
     /**
      * These are just used to create a working example
@@ -35,8 +35,8 @@ export class DimLightbulb {
         this.id = accessory.context.device.id;
         this.accessory = accessory;
         this.eventEmitter = eventEmitter;
-        this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.getMsg}`, this.getBrightnessEvent.bind(this));
-        this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.eventMsg}`, this.setBrightnessEvent.bind(this));
+        this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.getLightBrightnessMsg}`, this.getBrightnessEvent.bind(this));
+        this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.eventLightBrightnessMsg}`, this.setBrightnessEvent.bind(this));
         // set accessory information
         this.accessory.getService(this.platform.Service.AccessoryInformation)!
             .setCharacteristic(this.platform.Characteristic.Manufacturer, 'Default-Manufacturer')
@@ -86,7 +86,7 @@ export class DimLightbulb {
 
         this.platform.log.info(`${this.id}: Get Characteristic Brightness From Homekit -> ${brightness}`);
 
-        this.platform.sendData(`${this.deviceType}:${this.id}:${this.getMsg}:*`);
+        this.platform.sendData(`${this.deviceType}:${this.id}:${this.getLightBrightnessMsg}:*`);
 
         return brightness;
     }
@@ -100,12 +100,12 @@ export class DimLightbulb {
         if (this.states.On == true && this.states.Brightness == 0) {
             this.states.Brightness = 100;
             this.service.updateCharacteristic(this.platform.Characteristic.Brightness, this.states.Brightness);
-            this.platform.sendData(`${this.deviceType}:${this.id}:${this.setMsg}:${this.states.Brightness}:*`);
+            this.platform.sendData(`${this.deviceType}:${this.id}:${this.setLightBrightnessMsg}:${this.states.Brightness}:*`);
         }
         else if (this.states.On == false) {
             this.states.Brightness = 0;
             this.service.updateCharacteristic(this.platform.Characteristic.Brightness, this.states.Brightness);
-            this.platform.sendData(`${this.deviceType}:${this.id}:${this.setMsg}:${this.states.Brightness}:*`);
+            this.platform.sendData(`${this.deviceType}:${this.id}:${this.setLightBrightnessMsg}:${this.states.Brightness}:*`);
         }
 
         this.platform.log.info(`${this.id}: Set Characteristic On By Homekit -> ${value}`);
@@ -118,7 +118,7 @@ export class DimLightbulb {
         if (this.states.Brightness != tmpValue) {
             this.states.On = (tmpValue > 0) ? true : false;
             this.states.Brightness = tmpValue;
-            this.platform.sendData(`${this.deviceType}:${this.id}:${this.setMsg}:${this.states.Brightness}:*`);
+            this.platform.sendData(`${this.deviceType}:${this.id}:${this.setLightBrightnessMsg}:${this.states.Brightness}:*`);
             this.platform.log.info(`${this.id}: Set Characteristic Brightness By Homekit -> ${this.states.Brightness}`);
         }
     }
