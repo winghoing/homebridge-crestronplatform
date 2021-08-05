@@ -1,8 +1,8 @@
-import { Service, PlatformAccessory, CharacteristicValue } from 'homebridge';
+import { Service, PlatformAccessory, CharacteristicValue } from "homebridge";
 
-import { CrestronPlatform } from './CrestronPlatform';
+import { CrestronPlatform } from "./CrestronPlatform";
 
-import { EventEmitter } from 'events';
+import { EventEmitter } from "events";
 
 /**
  * Platform Accessory
@@ -10,107 +10,106 @@ import { EventEmitter } from 'events';
  * Each accessory may expose multiple services of different service types.
  */
 export class Lightbulb {
-  private service: Service;
-  private id: number;
-  private eventEmitter: EventEmitter;
-  private deviceType = "Lightbulb";
-  private eventMsg = "eventPowerState";
-  private setMsg = "setPowerState";
-  private getMsg = "getPowerState";
+    private service: Service;
+    private id: number;
+    private eventEmitter: EventEmitter;
+    private deviceType = "Lightbulb";
+    private eventMsg = "eventPowerState";
+    private setMsg = "setPowerState";
+    private getMsg = "getPowerState";
 
-  /**
-   * These are just used to create a working example
-   * You should implement your own code to track the state of your accessory
-   */
-  private states = {
-    On: false
-  };
+    /**
+     * These are just used to create a working example
+     * You should implement your own code to track the state of your accessory
+     */
+    private states = {
+        On: false
+    };
 
-  constructor(
-    private platform: CrestronPlatform,
-    private accessory: PlatformAccessory,
-    eventEmitter: EventEmitter
-  ) {
-    this.id = accessory.context.device.id;
-    this.accessory = accessory;
-    this.eventEmitter = eventEmitter;
-    this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.getMsg}`, this.getLightStateEvent.bind(this));
-    this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.eventMsg}`, this.setLightStateEvent.bind(this));
-    // set accessory information
-    this.accessory.getService(this.platform.Service.AccessoryInformation)!
-      .setCharacteristic(this.platform.Characteristic.Manufacturer, 'Default-Manufacturer')
-      .setCharacteristic(this.platform.Characteristic.Model, 'Default-Model')
-      .setCharacteristic(this.platform.Characteristic.SerialNumber, 'Default-Serial');
+    constructor(
+        private platform: CrestronPlatform,
+        private accessory: PlatformAccessory,
+        eventEmitter: EventEmitter
+    ) {
+        this.id = accessory.context.device.id;
+        this.accessory = accessory;
+        this.eventEmitter = eventEmitter;
+        this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.getMsg}`, this.getLightStateEvent.bind(this));
+        this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.eventMsg}`, this.setLightStateEvent.bind(this));
+        // set accessory information
+        this.accessory.getService(this.platform.Service.AccessoryInformation)!
+            .setCharacteristic(this.platform.Characteristic.Manufacturer, 'Default-Manufacturer')
+            .setCharacteristic(this.platform.Characteristic.Model, 'Default-Model')
+            .setCharacteristic(this.platform.Characteristic.SerialNumber, 'Default-Serial');
 
-    // get the LightBulb service if it exists, otherwise create a new LightBulb service
-    // you can create multiple services for each accessory
-    this.service = this.accessory.getService(this.platform.Service.Lightbulb) || this.accessory.addService(this.platform.Service.Lightbulb);
+        // get the LightBulb service if it exists, otherwise create a new LightBulb service
+        // you can create multiple services for each accessory
+        this.service = this.accessory.getService(this.platform.Service.Lightbulb) || this.accessory.addService(this.platform.Service.Lightbulb);
 
-    // set the service name, this is what is displayed as the default name on the Home app
-    // in this example we are using the name we stored in the `accessory.context` in the `discoverDevices` method.
-    this.service.setCharacteristic(this.platform.Characteristic.Name, accessory.context.device.name);
+        // set the service name, this is what is displayed as the default name on the Home app
+        // in this example we are using the name we stored in the `accessory.context` in the `discoverDevices` method.
+        this.service.setCharacteristic(this.platform.Characteristic.Name, accessory.context.device.name);
 
-    // each service must implement at-minimum the "required characteristics" for the given service type
-    // see https://developers.homebridge.io/#/service/Lightbulb
-    this.service.getCharacteristic(this.platform.Characteristic.On)
-      .onSet(this.setOn.bind(this))
-      .onGet(this.getOn.bind(this));
-  }
-
-  /**
-   * Handle the "GET" requests from HomeKit
-   * These are sent when HomeKit wants to know the current state of the accessory, for example, checking if a Light bulb is on.
-   *
-   * GET requests should return as fast as possbile. A long delay here will result in
-   * HomeKit being unresponsive and a bad user experience in general.
-   *
-   * If your device takes time to respond you should update the status of your device
-   * asynchronously instead using the `updateCharacteristic` method instead.
-   * @example
-   * this.service.updateCharacteristic(this.platform.Characteristic.On, true)
-   */
-  async setOn(value: CharacteristicValue){
-    let tmpValue = value as boolean;
-    let setValue = 0;
-    if(this.states.On != tmpValue)
-    {
-	this.states.On = tmpValue;
-	setValue = this.states.On?1:0;
-	this.platform.sendData(`${this.deviceType}:${this.id}:${this.setMsg}:${setValue}:*`);
-        this.platform.log.info(`${this.id}: Set Characteristic On By Homekit -> ${this.states.On}`);
+        // each service must implement at-minimum the "required characteristics" for the given service type
+        // see https://developers.homebridge.io/#/service/Lightbulb
+        this.service.getCharacteristic(this.platform.Characteristic.On)
+            .onSet(this.setOn.bind(this))
+            .onGet(this.getOn.bind(this));
     }
-  }
 
-  async getOn(): Promise<CharacteristicValue> {
-    const isOn = this.states.On;
-    this.platform.log.info(`${this.id}: Get Characteristic On From Homekit -> ${isOn}`);
-    this.platform.sendData(`${this.deviceType}:${this.id}:${this.getMsg}:*`);
-    return isOn;
-  }
-
-  /**
-   * Handle "SET" requests from HomeKit
-   * These are sent when the user changes the state of an accessory, for example, changing the Brightness
-   */
-  getLightStateEvent(value: number){
-     let tmpValue = (value == 1)?true:false;
-
-     if(this.states.On != tmpValue){	  
-       this.states.On = tmpValue;
-       this.platform.log.info(`${this.id}: Retrieve Characteristic On From Crestron Processor -> ${this.states.On}`);
-     
-       this.service.updateCharacteristic(this.platform.Characteristic.On, this.states.On);
-     }
-  }
-
-  setLightStateEvent(value: number){
-    let tmpValue = (value == 1)?true:false;	
-    
-    if(this.states.On != tmpValue){ 
-       this.states.On = tmpValue;
-       this.platform.log.info(`${this.id}: Set Characteristic On By Crestron Processor -> ${this.states.On}`);
-
-       this.service.updateCharacteristic(this.platform.Characteristic.On, this.states.On);
+    /**
+     * Handle the "GET" requests from HomeKit
+     * These are sent when HomeKit wants to know the current state of the accessory, for example, checking if a Light bulb is on.
+     *
+     * GET requests should return as fast as possbile. A long delay here will result in
+     * HomeKit being unresponsive and a bad user experience in general.
+     *
+     * If your device takes time to respond you should update the status of your device
+     * asynchronously instead using the `updateCharacteristic` method instead.
+     * @example
+     * this.service.updateCharacteristic(this.platform.Characteristic.On, true)
+     */
+    async getOn(): Promise<CharacteristicValue> {
+        const isOn = this.states.On;
+        this.platform.log.info(`${this.id}: Get Characteristic On From Homekit -> ${isOn}`);
+        this.platform.sendData(`${this.deviceType}:${this.id}:${this.getMsg}:*`);
+        return isOn;
     }
-  }
+
+    getLightStateEvent(value: number) {
+        let tmpValue = (value == 1) ? true : false;
+
+        if (this.states.On != tmpValue) {
+            this.states.On = tmpValue;
+            this.platform.log.info(`${this.id}: Retrieve Characteristic On From Crestron Processor -> ${this.states.On}`);
+
+            this.service.updateCharacteristic(this.platform.Characteristic.On, this.states.On);
+        }
+    }
+
+    /**
+     * Handle "SET" requests from HomeKit
+     * These are sent when the user changes the state of an accessory, for example, changing the Brightness
+     */
+    async setOn(value: CharacteristicValue) {
+        let tmpValue = value as boolean;
+        let setValue = 0;
+        if (this.states.On != tmpValue) {
+            this.states.On = tmpValue;
+            setValue = this.states.On ? 1 : 0;
+            this.platform.sendData(`${this.deviceType}:${this.id}:${this.setMsg}:${setValue}:*`);
+            this.platform.log.info(`${this.id}: Set Characteristic On By Homekit -> ${this.states.On}`);
+        }
+    }
+
+    setLightStateEvent(value: number) {
+        let tmpValue = (value == 1) ? true : false;
+
+        if (this.states.On != tmpValue) {
+            this.states.On = tmpValue;
+            this.platform.log.info(`${this.id}: Set Characteristic On By Crestron Processor -> ${this.states.On}`);
+
+            this.service.updateCharacteristic(this.platform.Characteristic.On, this.states.On);
+        }
+    }
 }
