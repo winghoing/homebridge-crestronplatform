@@ -35,8 +35,9 @@ export class HeaterCooler {
      */
     private states = {
         Active: 0,
-        CurrentHeaterCoolerState: 0;
-        TargetHeaterCoolerState: 0;
+        CurrentHeaterCoolerState: 0,
+        TargetHeaterCoolerState: 0,
+        RotationSpeed: 100,
         CurrentTemperature: 0,
         TargetTemperature: 0
     };
@@ -77,13 +78,13 @@ export class HeaterCooler {
         this.service.getCharacteristic(this.platform.Characteristic.TargetHeaterCoolerState)
             .onSet(this.handleTargetHeaterCoolerStateSet.bind(this))
             .onGet(this.handleTargetHeaterCoolerStateGet.bind(this));
-                   
-        this.service.getCharacteristic(this.platform.Characteristic.CurrentTemperature)
-            .onGet(this.handleCurrentTemperatureGet.bind(this));
         
         this.service.getCharacteristic(this.platform.Characteristic.RotationSpeed)
             .onSet(this.handleRotationSpeedSet.bind(this))
             .onGet(this.handleRotationSpeedGet.bind(this));
+        
+        this.service.getCharacteristic(this.platform.Characteristic.CurrentTemperature)
+            .onGet(this.handleCurrentTemperatureGet.bind(this));
         
         this.service.getCharacteristic(this.platform.Characteristic.CoolingThresholdTemperature)
             .onSet(this.handleCoolingThresholdTemperatureSet.bind(this))
@@ -123,6 +124,12 @@ export class HeaterCooler {
         const targetHeaterCoolerState = this.states.TargetHeaterCoolerState;
         this.platform.log.info(`${this.deviceType}:${this.id}: Get Characteristic TargetHeaterCoolerState  From Homekit -> ${targetHeaterCoolerState}`);
         return targetHeaterCoolerState;
+    }
+    
+    async handleRotationSpeedGet(): Promise<CharacteristicValue> {
+        const rotationSpeed = this.states.RotationSpeed;
+        this.platform.log.info(`${this.deviceType}:${this.id}: Get Characteristic RotationSpeed  From Homekit -> ${rotationSpeed}`);
+        return rotationSpeed;
     }
     
     async handleCurrentTemperatureGet(): Promise<CharacteristicValue> {
@@ -171,6 +178,11 @@ export class HeaterCooler {
     async handleTargetHeaterCoolerStateSet(value: CharacteristicValue) {
         this.states.TargetHeaterCoolerState = value as number;
         this.platform.log.info(`${this.deviceType}:${this.id}: Set Characteristic TargetHeaterCoolerState By Homekit -> ${value}`);
+    }
+    
+    async handleRotationSpeedSet(value: CharacteristicValue) {
+        this.states.RotationSpeed = value as number;
+        this.platform.log.info(`${this.deviceType}:${this.id}: Set Characteristic RotationSpeed By Homekit -> ${value}`);
     }
     
     async handleCoolingThresholdTemperatureSet(value: CharacteristicValue) {
