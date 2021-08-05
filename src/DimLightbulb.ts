@@ -24,7 +24,7 @@ export class DimLightbulb {
      */
     private states = {
         On: false,
-        Brightness: 100,
+        Brightness: 100
     };
 
     constructor(
