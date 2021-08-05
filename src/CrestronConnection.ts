@@ -1,5 +1,5 @@
-import { Socket } from 'net';
-import { CrestronPlatform } from './CrestronPlatform';
+import { Socket } from "net";
+import { CrestronPlatform } from "./CrestronPlatform";
 
 export class CrestronConnection {
     platform: CrestronPlatform;
