@@ -1,10 +1,10 @@
-import { API, DynamicPlatformPlugin, Logger, PlatformAccessory, PlatformConfig, Service, Characteristic } from 'homebridge';
-import { EventEmitter } from 'events';
+import { API, DynamicPlatformPlugin, Logger, PlatformAccessory, PlatformConfig, Service, Characteristic } from "homebridge";
+import { EventEmitter } from "events";
 
-import { PLATFORM_NAME, PLUGIN_NAME } from './settings';
-import { CrestronConnection } from './CrestronConnection';
-import { Lightbulb } from './Lightbulb';
-import { DimLightbulb } from './DimLightbulb';
+import { PLATFORM_NAME, PLUGIN_NAME } from "./settings";
+import { CrestronConnection } from "./CrestronConnection";
+import { Lightbulb } from "./Lightbulb";
+import { DimLightbulb } from "./DimLightbulb";
 
 /**
  * HomebridgePlatform
@@ -25,14 +25,14 @@ export class CrestronPlatform implements DynamicPlatformPlugin {
     public readonly config: PlatformConfig,
     public readonly api: API,
   ) {
-    this.log.debug('Finished initializing platform:', this.config.name);
+    this.log.debug(`Finished initializing platform: ${this.config.name}`);
     this.crestronConn = new CrestronConnection(this.config["port"], this.config["host"], this);
     this.eventEmitter = new EventEmitter();
     // When this event is fired it means Homebridge has restored all cached accessories from disk.
     // Dynamic Platform plugins should only register new accessories after this event was fired,
     // in order to ensure they weren't added to homebridge already. This event can also be used
     // to start discovery of new accessories.
-    this.api.on('didFinishLaunching', () => {
+    this.api.on("didFinishLaunching", () => {
       log.debug('Executed didFinishLaunching callback');
       // run the method to discover / register your devices as accessories
       this.discoverDevices();
@@ -45,7 +45,7 @@ export class CrestronPlatform implements DynamicPlatformPlugin {
       var msgDataArr = msg.toString().split(":");
       this.log.info('received data from crestron:', msgDataArr);
       var emitMsg = `${msgDataArr[0]}:${msgDataArr[1]}:${msgDataArr[2]}`;
-      this.log.info("emit message: " + emitMsg);
+      this.log.info(`emit message: ${emitMsg}`);
       if(msgDataArr[0] != ""){
         this.eventEmitter.emit(emitMsg, parseInt(msgDataArr[3]));
       }
@@ -53,7 +53,7 @@ export class CrestronPlatform implements DynamicPlatformPlugin {
   }
 
   sendData(data: string) {
-    this.log.info("send data to crestron: ", data);
+    this.log.info(`send data to crestron: ${data}`);
     this.crestronConn.writeData(data);
   }
 
@@ -62,7 +62,7 @@ export class CrestronPlatform implements DynamicPlatformPlugin {
    * It should be used to setup event handlers for characteristics and update respective values.
    */
   configureAccessory(accessory: PlatformAccessory) {
-    this.log.info('Loading accessory from cache:', accessory.displayName);
+    this.log.info(`Loading accessory from cache: ${accessory.displayName}`);
 
     // add the restored accessory to the accessories cache so we can track if it has already been registered
     this.accessories.push(accessory);
@@ -94,7 +94,7 @@ export class CrestronPlatform implements DynamicPlatformPlugin {
 
       if (existingAccessory) {
         // the accessory already exists
-        this.log.info('Restoring existing accessory from cache:', existingAccessory.displayName);
+        this.log.info(`Restoring existing accessory from cache: ${existingAccessory.displayName}`);
 
         // if you need to update the accessory.context then you should run `api.updatePlatformAccessories`. eg.:
 	existingAccessory.context.device = device;
@@ -103,7 +103,7 @@ export class CrestronPlatform implements DynamicPlatformPlugin {
 
         // create the accessory handler for the restored accessory
 	// this is imported from `platformAccessory.ts`
-	this.log.info("existing accessory type: " + device.type);
+	this.log.info(`existing accessory type: ${device.type}`);
 	switch(device.type){
 	  case "Lightbulb":
 	    {
@@ -125,7 +125,7 @@ export class CrestronPlatform implements DynamicPlatformPlugin {
         // this.log.info('Removing existing accessory from cache:', existingAccessory.displayName);
       } else {
         // the accessory does not yet exist, so we need to create it
-        this.log.info('Adding new accessory:', device.name);
+        this.log.info(`adding new accessory: ${device.name}`);
 
         // create a new accessory
         const accessory = new this.api.platformAccessory(device.name, uuid);
@@ -139,13 +139,13 @@ export class CrestronPlatform implements DynamicPlatformPlugin {
 	switch (device.type) {
 	  case "Lightbulb":
 	    {
-	       this.log.info("create not existing lightbulb accessory: " + accessory.displayName);
+	       this.log.info(`create not existing lightbulb accessory: ${accessory.displayName}`);
 	       new Lightbulb(this, accessory, this.eventEmitter);
 	       break;
             }
           case "DimLightbulb":
 	    {
-	       this.log.info("create not existing dimlightbulb accessory: " + accessory.displayName);
+	       this.log.info(`create not existing dimlightbulb accessory: ${accessory.displayName}`);
                new DimLightbulb(this, accessory, this.eventEmitter);
 	       break;
             }
