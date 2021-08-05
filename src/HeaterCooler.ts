@@ -34,8 +34,11 @@ export class HeaterCooler {
      * You should implement your own code to track the state of your accessory
      */
     private states = {
-        On: false,
-        CurrentTemperature: 100,
+        Active: 0,
+        CurrentHeaterCoolerState: 0;
+        TargetHeaterCoolerState: 0;
+        CurrentTemperature: 0,
+        TargetTemperature: 0
     };
 
     constructor(
@@ -46,8 +49,8 @@ export class HeaterCooler {
         this.id = accessory.context.device.id;
         this.accessory = accessory;
         this.eventEmitter = eventEmitter;
-        this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.getMsg}`, this.getBrightnessEvent.bind(this));
-        this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.eventMsg}`, this.setBrightnessEvent.bind(this));
+        this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.getPowerStateMsg}`, this.getPowerStateEvent.bind(this));
+        this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.eventPowerStateMsg}`, this.setPowerStateEvent.bind(this));
         // set accessory information
         this.accessory.getService(this.platform.Service.AccessoryInformation)!
             .setCharacteristic(this.platform.Characteristic.Manufacturer, 'Default-Manufacturer')
@@ -69,16 +72,27 @@ export class HeaterCooler {
             .onGet(this.handleActiveGet.bind(this));
         
         this.service.getCharacteristic(this.platform.Characteristic.CurrentHeaterCoolerState)
-            .onSet(this.handleCurrentHeaterCoolerStateSet.bind(this)
             .onGet(this.handleCurrentHeaterCoolerStateGet.bind(this));
                   
         this.service.getCharacteristic(this.platform.Characteristic.TargetHeaterCoolerState)
-            .onSet(this.handleTargetHeaterCoolerStateSet.bind(this)
+            .onSet(this.handleTargetHeaterCoolerStateSet.bind(this))
             .onGet(this.handleTargetHeaterCoolerStateGet.bind(this));
                    
         this.service.getCharacteristic(this.platform.Characteristic.CurrentTemperature)
-            .onSet(this.handleCurrentTemperatureSet.bind(this)
             .onGet(this.handleCurrentTemperatureGet.bind(this));
+        
+        this.service.getCharacteristic(this.platform.Characteristic.RotationSpeed)
+            .onSet(this.handleRotationSpeedSet.bind(this))
+            .onGet(this.handleRotationSpeedGet.bind(this));
+        
+        this.service.getCharacteristic(this.platform.Characteristic.CoolingThresholdTemperature)
+            .onSet(this.handleCoolingThresholdTemperatureSet.bind(this))
+            .onGet(this.handleCoolingThresholdTemperatureGet.bind(this));
+            
+        this.service.getCharacteristic(this.platform.Characteristic.HeatingThresholdTemperature)
+            .onSet(this.handleHeatingThresholdTemperatureSet.bind(this))
+            .onGet(this.handleHeatingThresholdTemperatuerGet.bind(this));
+                   
     }
 
     /**
@@ -93,20 +107,30 @@ export class HeaterCooler {
      * @example
      * this.service.updateCharacteristic(this.platform.Characteristic.On, true)
      */
-    async getOn(): Promise<CharacteristicValue> {
+    async handleActiveGet(): Promise<CharacteristicValue> {
+        /*
         const isOn = this.states.On;
-        this.platform.log.info(`${this.id}: Get Characteristic On From Homekit -> ${isOn}`);
+        this.platform.log.info(`${this.deviceType}:${this.id}: Get Characteristic On From Homekit -> ${isOn}`);
         return isOn;
+        */
     }
 
-    async getBrightness(): Promise<CharacteristicValue> {
+    async handleCurrentTemperatureGet(): Promise<CharacteristicValue> {
+        /*
         const brightness = this.states.Brightness;
 
-        this.platform.log.info(`${this.id}: Get Characteristic Brightness From Homekit -> ${brightness}`);
+        this.platform.log.info(`${this.deviceType}:${this.id}: Get Characteristic Brightness From Homekit -> ${brightness}`);
 
         this.platform.sendData(`${this.deviceType}:${this.id}:${this.getMsg}:*`);
 
         return brightness;
+        */
+    }
+
+    async handleTargetHeaterCoolerStateGet(): Promise<CharacteristicValue> {
+    }
+    
+    async handleCurrentTemperatureGet(): Promise<CharacteristicValue> {
     }
 
     /**
@@ -114,6 +138,7 @@ export class HeaterCooler {
      * These are sent when the user changes the state of an accessory, for example, changing the Brightness
      */
     async handleActiveSet(value: CharacteristicValue) {
+        /*
         this.states.On = value as boolean;
         if (this.states.On == true && this.states.Brightness == 0) {
             this.states.Brightness = 100;
@@ -126,44 +151,58 @@ export class HeaterCooler {
             this.platform.sendData(`${this.deviceType}:${this.id}:${this.setMsg}:${this.states.Brightness}:*`);
         }
 
-        this.platform.log.info(`${this.id}: Set Characteristic On By Homekit -> ${value}`);
+        this.platform.log.info(`${this.deviceType}:${this.id}: Set Characteristic On By Homekit -> ${value}`);
+        */
     }
 
-    async setBrightness(value: CharacteristicValue) {
+    async handleCurrentHeaterCoolerStateSet(value: CharacteristicValue) {
         // implement your own code to set the brightness
+        /*
         let tmpValue = value as number;
 
         if (this.states.Brightness != tmpValue) {
             this.states.On = (tmpValue > 0) ? true : false;
             this.states.Brightness = tmpValue;
             this.platform.sendData(`${this.deviceType}:${this.id}:${this.setMsg}:${this.states.Brightness}:*`);
-            this.platform.log.info(`${this.id}: Set Characteristic Brightness By Homekit -> ${this.states.Brightness}`);
+            this.platform.log.info(`${this.deviceType}:${this.id}: Set Characteristic Brightness By Homekit -> ${this.states.Brightness}`);
         }
+        */
+    }
+    
+    async handleTargetHeaterCoolerStateSet(value: CharacteristicValue) {
+        
+    }
+    
+    async handleCurrentTemperatureSet(value: CharacteristicValue) {
     }
 
-    getBrightnessEvent(value: number) {
+    getPowerStateEvent(value: number) {
+        /*
         let tmpValue = value;
 
         if (this.states.Brightness != tmpValue) {
             this.states.On = (tmpValue > 0) ? true : false;
             this.states.Brightness = tmpValue;
-            this.platform.log.info(`${this.id}: Retrieve Characteristic Brightness From Crestron Processor -> ${this.states.Brightness}`);
+            this.platform.log.info(`${this.deviceType}:${this.id}: Retrieve Characteristic Brightness From Crestron Processor -> ${this.states.Brightness}`);
 
             this.service.updateCharacteristic(this.platform.Characteristic.On, this.states.On);
             this.service.updateCharacteristic(this.platform.Characteristic.Brightness, this.states.Brightness);
         }
+        */
     }
 
-    setBrightnessEvent(value: number) {
+    setPowerStateEvent(value: number) {
+        /*
         let tmpValue = value;
 
         if (this.states.Brightness != tmpValue) {
             this.states.On = (tmpValue > 0) ? true : false;
             this.states.Brightness = tmpValue;
-            this.platform.log.info(`${this.id}: Set Characteristic Brightness By Crestron Processor -> ${this.states.Brightness}`);
+            this.platform.log.info(`${this.deviceType}:${this.id}: Set Characteristic Brightness By Crestron Processor -> ${this.states.Brightness}`);
 
             this.service.updateCharacteristic(this.platform.Characteristic.On, this.states.On);
             this.service.updateCharacteristic(this.platform.Characteristic.Brightness, this.states.Brightness);
         }
+        */
     }
 }
