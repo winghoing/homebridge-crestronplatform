@@ -75,18 +75,7 @@ export class Lightbulb {
         this.platform.sendData(`${this.deviceType}:${this.id}:${this.getMsg}:*`);
         return isOn;
     }
-
-    getLightStateEvent(value: number) {
-        let tmpValue = (value == 1) ? true : false;
-
-        if (this.states.On != tmpValue) {
-            this.states.On = tmpValue;
-            this.platform.log.info(`${this.id}: Retrieve Characteristic On From Crestron Processor -> ${this.states.On}`);
-
-            this.service.updateCharacteristic(this.platform.Characteristic.On, this.states.On);
-        }
-    }
-
+    
     /**
      * Handle "SET" requests from HomeKit
      * These are sent when the user changes the state of an accessory, for example, changing the Brightness
@@ -99,6 +88,17 @@ export class Lightbulb {
             setValue = this.states.On ? 1 : 0;
             this.platform.sendData(`${this.deviceType}:${this.id}:${this.setMsg}:${setValue}:*`);
             this.platform.log.info(`${this.id}: Set Characteristic On By Homekit -> ${this.states.On}`);
+        }
+    }
+    
+    getLightStateEvent(value: number) {
+        let tmpValue = (value == 1) ? true : false;
+
+        if (this.states.On != tmpValue) {
+            this.states.On = tmpValue;
+            this.platform.log.info(`${this.id}: Retrieve Characteristic On From Crestron Processor -> ${this.states.On}`);
+
+            this.service.updateCharacteristic(this.platform.Characteristic.On, this.states.On);
         }
     }
 
