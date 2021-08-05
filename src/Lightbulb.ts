@@ -71,7 +71,7 @@ export class Lightbulb {
      */
     async handleOnGet(): Promise<CharacteristicValue> {
         const isOn = this.states.On;
-        this.platform.log.info(`${this.id}: Get Characteristic On From Homekit -> ${isOn}`);
+        this.platform.log.info(`${this.deviceType}:${this.id}: Get Characteristic On From Homekit -> ${isOn}`);
         this.platform.sendData(`${this.deviceType}:${this.id}:${this.getPowerStateMsg}:*`);
         return isOn;
     }
@@ -87,7 +87,7 @@ export class Lightbulb {
             this.states.On = tmpValue;
             setValue = this.states.On ? 1 : 0;
             this.platform.sendData(`${this.deviceType}:${this.id}:${this.setPowerStateMsg}:${setValue}:*`);
-            this.platform.log.info(`${this.id}: Set Characteristic On By Homekit -> ${this.states.On}`);
+            this.platform.log.info(`${this.deviceType}:${this.id}: Set Characteristic On By Homekit -> ${this.states.On}`);
         }
     }
     
@@ -96,7 +96,7 @@ export class Lightbulb {
 
         if (this.states.On != tmpValue) {
             this.states.On = tmpValue;
-            this.platform.log.info(`${this.id}: Retrieve Characteristic On From Crestron Processor -> ${this.states.On}`);
+            this.platform.log.info(`${this.deviceType}:${this.id}: Retrieve Characteristic On From Crestron Processor -> ${this.states.On}`);
 
             this.service.updateCharacteristic(this.platform.Characteristic.On, this.states.On);
         }
@@ -107,7 +107,7 @@ export class Lightbulb {
 
         if (this.states.On != tmpValue) {
             this.states.On = tmpValue;
-            this.platform.log.info(`${this.id}: Set Characteristic On By Crestron Processor -> ${this.states.On}`);
+            this.platform.log.info(`${this.deviceType}:${this.id}: Set Characteristic On By Crestron Processor -> ${this.states.On}`);
 
             this.service.updateCharacteristic(this.platform.Characteristic.On, this.states.On);
         }
