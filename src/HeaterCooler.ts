@@ -85,12 +85,27 @@ export class HeaterCooler {
         
         this.service.getCharacteristic(this.platform.Characteristic.CurrentTemperature)
             .onGet(this.handleCurrentTemperatureGet.bind(this));
+
+        this.platform.log.info(`this.platform.config.minValue: ${this.platform.config.minValue}`);
+        this.platform.log.info(`this.platform.config.maxValue: ${this.platform.config.maxValue}`);
+        this.platform.log.info(`this.platform.config.minStep: ${this.platform.config.minStep}`);
+        this.platform.log.info(`this.platform.config.temperatureDisplayUnit: ${this.platform.config.temperatureDisplayUnit}`);
         
         this.service.getCharacteristic(this.platform.Characteristic.CoolingThresholdTemperature)
+            .setProps({
+                minValue: this.platform.config.minValue,
+                maxValue: this.platform.config.maxValue,
+                minStep: this.platform.config.minStep
+            })
             .onSet(this.handleCoolingThresholdTemperatureSet.bind(this))
             .onGet(this.handleCoolingThresholdTemperatureGet.bind(this));
             
         this.service.getCharacteristic(this.platform.Characteristic.HeatingThresholdTemperature)
+            .setProps({
+                minValue: this.platform.config.minValue,
+                maxValue: this.platform.config.maxValue,
+                minStep: this.platform.config.minStep
+            })
             .onSet(this.handleHeatingThresholdTemperatureSet.bind(this))
             .onGet(this.handleHeatingThresholdTemperatureGet.bind(this));
                    
@@ -133,7 +148,7 @@ export class HeaterCooler {
     }
     
     async handleCurrentTemperatureGet(): Promise<CharacteristicValue> {
-        const currentTemperature = this.states.CurrentTemperature;
+        const currentTemperature = 100;
         this.platform.log.info(`${this.deviceType}:${this.id}: Get Characteristic CurrentTemperature From Homekit -> ${currentTemperature}`);
         //this.platform.sendData(`${this.deviceType}:${this.id}:${this.getMsg}:*`);
         return currentTemperature;
