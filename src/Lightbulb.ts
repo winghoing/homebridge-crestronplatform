@@ -14,9 +14,9 @@ export class Lightbulb {
     private id: number;
     private eventEmitter: EventEmitter;
     private deviceType = "Lightbulb";
-    private eventMsg = "eventPowerState";
-    private setMsg = "setPowerState";
-    private getMsg = "getPowerState";
+    private eventPowerStateMsg = "eventPowerState";
+    private setPowerStateMsg = "setPowerState";
+    private getPowerStateMsg = "getPowerState";
 
     /**
      * These are just used to create a working example
@@ -34,8 +34,8 @@ export class Lightbulb {
         this.id = accessory.context.device.id;
         this.accessory = accessory;
         this.eventEmitter = eventEmitter;
-        this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.getMsg}`, this.getLightStateEvent.bind(this));
-        this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.eventMsg}`, this.setLightStateEvent.bind(this));
+        this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.getPowerStateMsg}`, this.getLightStateEvent.bind(this));
+        this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.eventPowerStateMsg}`, this.setLightStateEvent.bind(this));
         // set accessory information
         this.accessory.getService(this.platform.Service.AccessoryInformation)!
             .setCharacteristic(this.platform.Characteristic.Manufacturer, 'Default-Manufacturer')
@@ -72,7 +72,7 @@ export class Lightbulb {
     async handleOnGet(): Promise<CharacteristicValue> {
         const isOn = this.states.On;
         this.platform.log.info(`${this.id}: Get Characteristic On From Homekit -> ${isOn}`);
-        this.platform.sendData(`${this.deviceType}:${this.id}:${this.getMsg}:*`);
+        this.platform.sendData(`${this.deviceType}:${this.id}:${this.getPowerStateMsg}:*`);
         return isOn;
     }
     
@@ -86,7 +86,7 @@ export class Lightbulb {
         if (this.states.On != tmpValue) {
             this.states.On = tmpValue;
             setValue = this.states.On ? 1 : 0;
-            this.platform.sendData(`${this.deviceType}:${this.id}:${this.setMsg}:${setValue}:*`);
+            this.platform.sendData(`${this.deviceType}:${this.id}:${this.setPowerStateMsg}:${setValue}:*`);
             this.platform.log.info(`${this.id}: Set Characteristic On By Homekit -> ${this.states.On}`);
         }
     }
