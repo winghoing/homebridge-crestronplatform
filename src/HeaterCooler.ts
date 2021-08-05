@@ -149,7 +149,7 @@ export class HeaterCooler {
     }
     
     async handleCurrentTemperatureGet(): Promise<CharacteristicValue> {
-        const currentTemperature = 100;
+        const currentTemperature = this.states.CurrentTemperature;
         this.platform.log.info(`${this.deviceType}:${this.id}: Get Characteristic CurrentTemperature From Homekit -> ${currentTemperature}`);
         //this.platform.sendData(`${this.deviceType}:${this.id}:${this.getMsg}:*`);
         return currentTemperature;
