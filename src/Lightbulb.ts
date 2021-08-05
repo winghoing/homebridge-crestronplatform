@@ -71,10 +71,12 @@ export class Lightbulb {
    */
   async setOn(value: CharacteristicValue){
     let tmpValue = value as boolean;
+    let setValue = 0;
     if(this.states.On != tmpValue)
     {
 	this.states.On = tmpValue;
-	this.platform.sendData(`${this.deviceType}:${this.id}:${this.setMsg}:${this.states.On}:*`);
+	setValue = this.states.On?1:0;
+	this.platform.sendData(`${this.deviceType}:${this.id}:${this.setMsg}:${setValue}:*`);
         this.platform.log.info(`${this.id}: Set Characteristic On By Homekit -> ${this.states.On}`);
     }
   }
