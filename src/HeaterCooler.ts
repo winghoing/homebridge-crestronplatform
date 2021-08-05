@@ -14,17 +14,28 @@ export class HeaterCooler {
     private id: number;
     private eventEmitter: EventEmitter;
     private deviceType = "HeaterCooler";
-    private eventPowerStateMsg = "eventLightBrightness";
-    private setMsg = "setLightBrightness";
-    private getMsg = "getLightBrightness";
-
+    private eventPowerStateMsg = "eventPowerState";
+    private setPowerStateMsg = "setPowerState";
+    private getPowerStateMsg = "getPowerState";
+    private eventTargetHeaterCoolerStateMsg = "eventTargetHeaterCoolerState";
+    private setTargetHeaterCoolerStateMsg = "getTargetHeaterCoolerState";
+    private getTargetHeaterCoolerStateMsg = "setTargetHeaterCoolerState";
+    private eventCurrentTempMsg = "eventCurrentTemperature";
+    private getCurrentTempMsg = "getCurrentTemperature";
+    private eventTargetTempMsg = "eventTargetTemperature";
+    private setTargetTempMsg = "setTargetTemperature";
+    private getTargetTempMsg = "getTargetTemperature";
+    private eventRotationSpeedMsg = "eventRotationSpeed";
+    private setRotationSpeedMsg = "setRotationSpeed";
+    private getRotationSpeedMsg = "getRotationSpeed";
+    
     /**
      * These are just used to create a working example
      * You should implement your own code to track the state of your accessory
      */
     private states = {
         On: false,
-        Brightness: 100,
+        CurrentTemperature: 100,
     };
 
     constructor(
@@ -45,7 +56,7 @@ export class HeaterCooler {
 
         // get the LightBulb service if it exists, otherwise create a new LightBulb service
         // you can create multiple services for each accessory
-        this.service = this.accessory.getService(this.platform.Service.Lightbulb) || this.accessory.addService(this.platform.Service.Lightbulb);
+        this.service = this.accessory.getService(this.platform.Service.HeaterCooler) || this.accessory.addService(this.platform.Service.HeaterCooler);
 
         // set the service name, this is what is displayed as the default name on the Home app
         // in this example we are using the name we stored in the `accessory.context` in the `discoverDevices` method.
@@ -53,14 +64,21 @@ export class HeaterCooler {
 
         // each service must implement at-minimum the "required characteristics" for the given service type
         // see https://developers.homebridge.io/#/service/Lightbulb
-        this.service.getCharacteristic(this.platform.Characteristic.On)
-            .onSet(this.setOn.bind(this))
-            .onGet(this.getOn.bind(this));
-
-        // register handlers for the Brightness Characteristic
-        this.service.getCharacteristic(this.platform.Characteristic.Brightness)
-            .onSet(this.setBrightness.bind(this))
-            .onGet(this.getBrightness.bind(this));       // SET - bind to the 'setBrightness` method below
+        this.service.getCharacteristic(this.platform.Characteristic.Active)
+            .onSet(this.handleActiveSet.bind(this))
+            .onGet(this.handleActiveGet.bind(this));
+        
+        this.service.getCharacteristic(this.platform.Characteristic.CurrentHeaterCoolerState)
+            .onSet(this.handleCurrentHeaterCoolerStateSet.bind(this)
+            .onGet(this.handleCurrentHeaterCoolerStateGet.bind(this));
+                  
+        this.service.getCharacteristic(this.platform.Characteristic.TargetHeaterCoolerState)
+            .onSet(this.handleTargetHeaterCoolerStateSet.bind(this)
+            .onGet(this.handleTargetHeaterCoolerStateGet.bind(this));
+                   
+        this.service.getCharacteristic(this.platform.Characteristic.CurrentTemperature)
+            .onSet(this.handleCurrentTemperatureSet.bind(this)
+            .onGet(this.handleCurrentTemperatureGet.bind(this));
     }
 
     /**
@@ -95,7 +113,7 @@ export class HeaterCooler {
      * Handle "SET" requests from HomeKit
      * These are sent when the user changes the state of an accessory, for example, changing the Brightness
      */
-    async setOn(value: CharacteristicValue) {
+    async handleActiveSet(value: CharacteristicValue) {
         this.states.On = value as boolean;
         if (this.states.On == true && this.states.Brightness == 0) {
             this.states.Brightness = 100;
