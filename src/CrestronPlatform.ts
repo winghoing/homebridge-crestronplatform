@@ -44,7 +44,7 @@ export class CrestronPlatform implements DynamicPlatformPlugin {
         var msgArr = data.toString().split("*");
         for (let msg of msgArr) {
             var msgDataArr = msg.toString().split(":");
-            this.log.info('received data from crestron:', msgDataArr);
+            this.log.info(`received data from crestron: ${msgDataArr}`);
             var emitMsg = `${msgDataArr[0]}:${msgDataArr[1]}:${msgDataArr[2]}`;
             this.log.info(`emit message: ${emitMsg}`);
             if (msgDataArr[0] != "") {
@@ -108,19 +108,22 @@ export class CrestronPlatform implements DynamicPlatformPlugin {
                 switch (device.type) {
                     case "Lightbulb":
                         {
-                            this.log.info("create existing lightbulb accessory: " + existingAccessory.displayName);
+                            this.log.info(`create existing lightbulb accessory: ${existingAccessory.displayName}`);
                             new Lightbulb(this, existingAccessory, this.eventEmitter);
                             break;
                         }
                     case "DimLightbulb":
                         {
-                            this.log.info("create existing dimlightbulb accessory: " + existingAccessory.displayName);
+                            this.log.info(`create existing dimlightbulb accessory: ${existingAccessory.displayName}`);
                             new DimLightbulb(this, existingAccessory, this.eventEmitter);
                             break;
                         }
                     case "HeaterCooler":
                         {
-                            this.log.info("create existing heatercooler accessory: " + existingAccessory.displayName);
+                            this.log.info(`this.config.minValue: ${this.config.minValue}`);
+                            this.log.info(`this.config.maxValue: ${this.config.maxValue}`);
+                            this.log.info(`this.config.temperatureDisplayUnit: ${this.config.temperatureDisplayUnit}`);
+                            this.log.info(`create existing heatercooler accessory: ${existingAccessory.displayName}`);
                             new HeaterCooler(this, existingAccessory, this.eventEmitter);
                             break;
                         }
@@ -158,7 +161,10 @@ export class CrestronPlatform implements DynamicPlatformPlugin {
                         }
                     case "HeaterCooler":
                         {
-                            this.log.info("create not existing heatercooler accessory: " + accessory.displayName);
+                            this.log.info(`this.config.minValue: ${this.config.minValue}`);
+                            this.log.info(`this.config.maxValue: ${this.config.maxValue}`);
+                            this.log.info(`this.config.temperatureDisplayUnit: ${this.config.temperatureDisplayUnit}`);
+                            this.log.info(`create not existing heatercooler accessory: ${accessory.displayName}`);
                             new HeaterCooler(this, accessory, this.eventEmitter);
                             break;
                         }
