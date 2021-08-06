@@ -108,7 +108,7 @@ export class DimLightbulb {
             this.platform.sendData(`${this.deviceType}:${this.id}:${this.setLightBrightnessMsg}:${this.states.Brightness}:*`);
         }
 
-        this.platform.log.info(`${this.id}: Set Characteristic On By Homekit -> ${value}`);
+        this.platform.log.info(`${this.deviceType}:${this.id}: Set Characteristic On By Homekit -> ${value}`);
     }
 
     async handleBrightnessSet(value: CharacteristicValue) {
