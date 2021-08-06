@@ -143,7 +143,7 @@ export class HeaterCooler {
      * this.service.updateCharacteristic(this.platform.Characteristic.On, true)
      */
     async handleActiveGet(): Promise<CharacteristicValue> {
-        const isActive= this.states.Active;
+        const isActive = this.states.Active;
         this.platform.log.info(`${this.deviceType}:${this.id}: Get Characteristic Active From Homekit -> ${isActive}`);
         this.platform.sendData(`${this.deviceType}:${this.id}:${this.getPowerStateMsg}:*`);
         return isActive;
@@ -151,8 +151,8 @@ export class HeaterCooler {
     
     async handleCurrentHeaterCoolerStateGet(): Promise<CharacteristicValue> {
         const currentHeaterCoolerState = this.states.CurrentHeaterCoolerState;
-        //this.platform.log.info(`${this.deviceType}:${this.id}: Get Characteristic CurrentHeaterCoolerState From Homekit -> ${currentHeaterCoolerState}`);
-        this.platform.sendData(`${this.deviceType}:${this.id}:${this.getCurrentHeaterCoolerStateMsg}:*`);
+        this.platform.log.info(`${this.deviceType}:${this.id}: Get Characteristic CurrentHeaterCoolerState From Homekit -> ${currentHeaterCoolerState}`);
+        //this.platform.sendData(`${this.deviceType}:${this.id}:${this.getCurrentHeaterCoolerStateMsg}:*`);
         reutrn currentHeaterCoolerState;
     }
 
