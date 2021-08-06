@@ -190,47 +190,52 @@ export class HeaterCooler {
      * These are sent when the user changes the state of an accessory, for example, changing the Brightness
      */
     async handleActiveSet(value: CharacteristicValue) {
-        this.states.Active = value as number;
-        this.platform.log.info(`${this.deviceType}:${this.id}: Set Characteristic Active By Homekit -> ${value}`);
-        /*
-        this.states.On = value as boolean;
-        if (this.states.On == true && this.states.Brightness == 0) {
-            this.states.Brightness = 100;
-            this.service.updateCharacteristic(this.platform.Characteristic.Brightness, this.states.Brightness);
-            this.platform.sendData(`${this.deviceType}:${this.id}:${this.setMsg}:${this.states.Brightness}:*`);
+        let tmpActiveValue = value as number;
+        if(this.states.Active != tmpActiveValue) {
+            this.states.Active = tmpActiveValue;
+            this.platform.sendData(`${this.deviceType}:${this.id}:${this.setPowerStateMsg}:${this.states.Active}:*`);
+            this.platform.log.info(`${this.deviceType}:${this.id}: Set Characteristic Active By Homekit -> ${value}`);
         }
-        else if (this.states.On == false) {
-            this.states.Brightness = 0;
-            this.service.updateCharacteristic(this.platform.Characteristic.Brightness, this.states.Brightness);
-            this.platform.sendData(`${this.deviceType}:${this.id}:${this.setMsg}:${this.states.Brightness}:*`);
-        }
-
-        this.platform.log.info(`${this.deviceType}:${this.id}: Set Characteristic On By Homekit -> ${value}`);
-        */
     }
     
     async handleTargetHeaterCoolerStateSet(value: CharacteristicValue) {
-        this.states.TargetHeaterCoolerState = value as number;
-        this.platform.log.info(`${this.deviceType}:${this.id}: Set Characteristic TargetHeaterCoolerState By Homekit -> ${value}`);
+        let tmpTargetHeaterCoolerState = value as number;
+        if(this.states.TargetHeaterCoolerState != tmpTargetHeaterCoolerState) { 
+            this.states.TargetHeaterCoolerState = tmpTargetHeaterCoolerState;
+            this.platform.sendData(`${this.deviceType}:${this.id}:${this.setTargetHeaterCoolerStateMsg}:${this.states.TargetHeaterCoolerState}:*`);
+            this.platform.log.info(`${this.deviceType}:${this.id}: Set Characteristic TargetHeaterCoolerState By Homekit -> ${value}`);
+        }
     }
     
     async handleRotationSpeedSet(value: CharacteristicValue) {
-        this.states.RotationSpeed = value as number;
-        this.platform.log.info(`${this.deviceType}:${this.id}: Set Characteristic RotationSpeed By Homekit -> ${value}`);
+        let tmpRotationSpeed = value as number;
+        if(this.states.RotationSpeed != tmpRotationSpeed) {
+            this.states.RotationSpeed = tmpRotationSpeed;
+            this.platform.sendData(`${this.deviceType}:${this.id}:${this.setRotationSpeedMsg}:${this.states.RotationSpeed}:*`);
+            this.platform.log.info(`${this.deviceType}:${this.id}: Set Characteristic RotationSpeed By Homekit -> ${value}`);
+        }
     }
     
     async handleCoolingThresholdTemperatureSet(value: CharacteristicValue) {
-        this.states.CoolingThresholdTemperature = value as number;
-        this.states.HeatingThresholdTemperature = value as number;
-        this.service.updateCharacteristic(this.platform.Characteristic.HeatingThresholdTemperature, value);
-        this.platform.log.info(`${this.deviceType}:${this.id}: Set Characteristic CoolingThresholdTemperature By Homekit -> ${value}`);
+        let tmpCoolingThresholdTemperature = value as number;
+        if(this.states.CoolingThresholdTemperature != tmpCoolingThresholdTemperature) {
+            this.states.CoolingThresholdTemperature = tmpCoolingThresholdTemperature;
+            this.states.HeatingThresholdTemperature = tmpCoolingThresholdTemperature;
+            this.service.updateCharacteristic(this.platform.Characteristic.HeatingThresholdTemperature, value);
+            this.platform.sendData(`${this.deviceType}:${this.id}:${this.setTargetTempMsg}:${this.states.CoolingThresholdTemperature}:*`);
+            this.platform.log.info(`${this.deviceType}:${this.id}: Set Characteristic CoolingThresholdTemperature By Homekit -> ${value}`);
+        }
     }
     
     async handleHeatingThresholdTemperatureSet(value: CharacteristicValue) {
-        this.states.HeatingThresholdTemperature = value as number;
-        this.states.CoolingThresholdTemperature = value as number;
-        this.service.updateCharacteristic(this.platform.Characteristic.CoolingThresholdTemperature, value);
-        this.platform.log.info(`${this.deviceType}:${this.id}: Set Characteristic HeatingThresholdTemperature By Homekit -> ${value}`);
+        let tmpHeatingThresholdTemperature = value as number;
+        if(this.states.HeatingThresholdTemperature != tmpHeatingThresholdTemperature) {
+            this.states.HeatingThresholdTemperature = tmpHeatingThresholdTemperature;
+            this.states.CoolingThresholdTemperature = tmpHeatingThresholdTemperature;
+            this.service.updateCharacteristic(this.platform.Characteristic.CoolingThresholdTemperature, value);
+            this.platform.sendData(`${this.deviceType}:${this.id}:${this.setTargetTempMsg}:${this.states.HeatingThresholdTemperature}:*`);
+            this.platform.log.info(`${this.deviceType}:${this.id}: Set Characteristic HeatingThresholdTemperature By Homekit -> ${value}`);
+        }
     }
 
     getPowerStateEvent(value: number) {
@@ -246,7 +251,7 @@ export class HeaterCooler {
             this.service.updateCharacteristic(this.platform.Characteristic.Brightness, this.states.Brightness);
         }
         */
-        this.service.updateCharacteristic(this.platform.Characteristic.CurrentTemperature, -270);
+        
     }
 
     setPowerStateEvent(value: number) {
@@ -271,6 +276,8 @@ export class HeaterCooler {
     }
     
     getCurrentTemperatureEvent(value: number) {
+        let 
+        this.service.updateCharacteristic(this.platform.Characteristic.CurrentTemperature, -270);
     }
     
     setCurrentTemperatureEvent(value: number) {
