@@ -35,6 +35,7 @@ export class HeaterCooler {
      */
     private states = {
         Active: 0,
+        CurrentHeaterCoolerState: 0,
         TargetHeaterCoolerState: 0,
         RotationSpeed: 100,
         CurrentTemperature: 24,
@@ -85,8 +86,15 @@ export class HeaterCooler {
         this.service.getCharacteristic(this.platform.Characteristic.Active)
             .onSet(this.handleActiveSet.bind(this))
             .onGet(this.handleActiveGet.bind(this));
-                  
+        
+        this.service.getCharacteristic(this.platform.Characteristic.CurrentHeaterCoolerState)
+            .onGet(this.handleCurrentHeaterCoolerStateGet.bind(this));
+        
         this.service.getCharacteristic(this.platform.Characteristic.TargetHeaterCoolerState)
+            .setProps({
+                minValue: 1,
+                maxValue: 2
+            })
             .onSet(this.handleTargetHeaterCoolerStateSet.bind(this))
             .onGet(this.handleTargetHeaterCoolerStateGet.bind(this));
         
@@ -140,19 +148,17 @@ export class HeaterCooler {
         this.platform.sendData(`${this.deviceType}:${this.id}:${this.getPowerStateMsg}:*`);
         return isActive;
     }
-
-    /*
+    
     async handleCurrentHeaterCoolerStateGet(): Promise<CharacteristicValue> {
         const currentHeaterCoolerState = this.states.CurrentHeaterCoolerState;
-        this.platform.log.info(`${this.deviceType}:${this.id}: Get Characteristic CurrentHeaterCoolerState  From Homekit -> ${currentHeaterCoolerState}`);
-        this.platform.sendData(`${this.deviceType}:${this.id}:${this.getCurrent
-        return currentHeaterCoolerState;
+        //this.platform.log.info(`${this.deviceType}:${this.id}: Get Characteristic CurrentHeaterCoolerState From Homekit -> ${currentHeaterCoolerState}`);
+        this.platform.sendData(`${this.deviceType}:${this.id}:${this.getCurrentHeaterCoolerStateMsg}:*`);
+        reutrn currentHeaterCoolerState;
     }
-    */
 
     async handleTargetHeaterCoolerStateGet(): Promise<CharacteristicValue> {
         const targetHeaterCoolerState = this.states.TargetHeaterCoolerState;
-        this.platform.log.info(`${this.deviceType}:${this.id}: Get Characteristic TargetHeaterCoolerState  From Homekit -> ${targetHeaterCoolerState}`);
+        this.platform.log.info(`${this.deviceType}:${this.id}: Get Characteristic TargetHeaterCoolerState From Homekit -> ${targetHeaterCoolerState}`);
         this.platform.sendData(`${this.deviceType}:${this.id}:${this.getTargetHeaterCoolerStateMsg}:*`);
         return targetHeaterCoolerState;
     }
@@ -239,59 +245,98 @@ export class HeaterCooler {
     }
 
     getPowerStateEvent(value: number) {
-        /*
-        let tmpValue = value;
-
-        if (this.states.Brightness != tmpValue) {
-            this.states.On = (tmpValue > 0) ? true : false;
-            this.states.Brightness = tmpValue;
-            this.platform.log.info(`${this.deviceType}:${this.id}: Retrieve Characteristic Brightness From Crestron Processor -> ${this.states.Brightness}`);
-
-            this.service.updateCharacteristic(this.platform.Characteristic.On, this.states.On);
-            this.service.updateCharacteristic(this.platform.Characteristic.Brightness, this.states.Brightness);
-        }
-        */
-        
+        let tmpActiveValue = value;
+        if (this.states.Active != tmpActiveValue) {
+            this.states.Active = tmpActiveValue;
+            this.platform.log.info(`${this.deviceType}:${this.id}: Retrieve Characteristic Active From Crestron Processor -> ${this.states.Active}`);
+            this.service.updateCharacteristic(this.platform.Characteristic.Active, this.states.Active);
+        }      
     }
 
     setPowerStateEvent(value: number) {
-        /*
-        let tmpValue = value;
-
-        if (this.states.Brightness != tmpValue) {
-            this.states.On = (tmpValue > 0) ? true : false;
-            this.states.Brightness = tmpValue;
-            this.platform.log.info(`${this.deviceType}:${this.id}: Set Characteristic Brightness By Crestron Processor -> ${this.states.Brightness}`);
-
-            this.service.updateCharacteristic(this.platform.Characteristic.On, this.states.On);
-            this.service.updateCharacteristic(this.platform.Characteristic.Brightness, this.states.Brightness);
+        let tmpActiveValue = value;
+        if (this.states.Active != tmpActiveValue) {
+            this.states.Active = tmpActiveValue;
+            this.platform.log.info(`${this.deviceType}:${this.id}: Set Characteristic Active By Crestron Processor -> ${this.states.Active}`);
+            this.service.updateCharacteristic(this.platform.Characteristic.Active, this.states.Active);
         }
-        */
     }
     
     getTargetHeaterCoolerStateEvent(value: number) {
+        let tmpTargetHeaterCoolerState = value;
+        if(this.states.TargetHeaterCoolerState != tmpTargetHeaterCoolerState) {
+           this.states.TargetHeaterCoolerState = tmpTargetHeaterCoolerState;
+           this.platform.log.info(`${this.deviceType}:${this.id}: Set Characteristic TargetHeaterCoolerState By Crestron Processor -> $(this.states.TargetHeaterCoolerState}`);
+           this.service.updateCharacteristic(this.platform.Characteristic.TargetHeaterCoolerState, this.states.TargetHeaterCoolerState);
+        }
     }
     
     setTargetHeaterCoolerStateEvent(value: number) {
+        let tmpTargetHeaterCoolerState = value;
+        if(this.states.TargetHeaterCoolerState != tmpTargetHeaterCoolerState) {
+           this.states.TargetHeaterCoolerState = tmpTargetHeaterCoolerState;
+           this.platform.log.info(`${this.deviceType}:${this.id}: Retrieve Characteristic TargetHeaterCoolerState From Crestron Processor -> $(this.states.TargetHeaterCoolerState}`);
+           this.service.updateCharacteristic(this.platform.Characteristic.TargetHeaterCoolerState, this.states.TargetHeaterCoolerState);
+        }
     }
     
     getCurrentTemperatureEvent(value: number) {
-        let 
-        this.service.updateCharacteristic(this.platform.Characteristic.CurrentTemperature, -270);
+        let tmpCurrentTemperature = value;
+        if(this.states.CurrentTemperature != tmpCurrentTemperature) {
+            this.states.CurrentTemperature = tmpCurrentTemperature;
+            this.platform.log.info(`${this.deviceType}:${this.id}: Retrieve Characteristic CurrentTemperature From Crestron Processor -> ${this.states.CurrentTemperature}`);
+            this.service.updateCharacteristic(this.platform.Characteristic.CurrentTemperature, this.states.CurrentTemperature);
+        }
     }
     
     setCurrentTemperatureEvent(value: number) {
+        let tmpCurrentTemperature = value;
+        if(this.states.CurrentTemperature != tmpCurrentTemperature) {
+            this.states.CurrentTemperature = tmpCurrentTemperature;
+            this.platform.log.info(`${this.deviceType}:${this.id}: Set Characteristic CurrentTemperature By Crestron Processor -> ${this.states.CurrentTemperature}`);
+            this.service.updateCharacteristic(this.platform.Characteristic.CurrentTemperature, this.states.CurrentTemperature);
+        }
     }
     
     getTargetTemperatureEvent(value: number) {
+        let tmpTargetTemperature = value;
+        if(this.states.CoolingThresholdTemperature != tmpTargetTemperature || this.states.HeatingThresholdTemperature != tmpTargetTemperature) {
+            this.states.CoolingThresholdTemperature = tmpTargetTemperature;
+            this.states.HeatingThresholdTemperature = tmpTargetTemperature;
+            this.platform.log.info(`${this.deviceType}:${this.id}: Retrieve Characteristic TargetTemperature From Crestron Processor -> ${tmpTargetTemperature}`);
+            this.service.updateCharacteristic(this.platform.Characteristic.CoolingThresholdTemperature, this.states.CoolingThresholdTemperature);
+            this.service.updateCharacteristic(this.platform.Characteristic.HeatingThresholdTemperature, this.states.HeatingThresholdTemperature);
+        }
     }
     
     setTargetTemperatureEvent(value: number) {
+        let tmpTargetTemperature = value;
+        if(this.states.CoolingThresholdTemperature != tmpTargetTemperature || this.states.HeatingThresholdTemperature != tmpTargetTemperature) {
+            this.states.CoolingThresholdTemperature = tmpTargetTemperature;
+            this.states.HeatingThresholdTemperature = tmpTargetTemperature;
+            this.platform.log.info(`${this.deviceType}:${this.id}: Set Characteristic TargetTemperature By Crestron Processor -> ${tmpTargetTemperature}`);
+            this.service.updateCharacteristic(this.platform.Characteristic.CoolingThresholdTemperature, this.states.CoolingThresholdTemperature);
+            this.service.updateCharacteristic(this.platform.Characteristic.HeatingThresholdTemperature, this.states.HeatingThresholdTemperature);
+        }
     }
     
     getRotationSpeedEvent(value: number) {
+        let tmpRotationSpeed = value;
+        if(this.states.RotationSpeed != tmpRotationSpeed)
+        {
+            this.states.RotationSpeed = tmpRotationSpeed;
+            this.platform.log.info(`${this.deviceType}:${this.id}: Retrieve Characteristic RotationSpeed From Crestron Processor -> ${this.states.RotationSpeed}`);
+            this.service.updateCharacteristic(this.platform.Characteristic.RotationSpeed, this.states.RotationSpeed);
+        }
     }
     
     setRotationSpeedEvent(value: number) {
+        let tmpRotationSpeed = value;
+        if(this.states.RotationSpeed != tmpRotationSpeed)
+        {
+            this.states.RotationSpeed = tmpRotationSpeed;
+            this.platform.log.info(`${this.deviceType}:${this.id}: Set Characteristic RotationSpeed By Crestron Processor -> ${this.states.RotationSpeed}`);
+            this.service.updateCharacteristic(this.platform.Characteristic.RotationSpeed, this.states.RotationSpeed);
+        }
     }
 }
