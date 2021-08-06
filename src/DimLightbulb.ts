@@ -113,33 +113,38 @@ export class DimLightbulb {
 
     async handleBrightnessSet(value: CharacteristicValue) {
         // implement your own code to set the brightness
-        let tmpValue = value as number;
+        let tmpBrightnessValue = value as number;
 
-        if (this.states.Brightness != tmpValue) {
-            this.states.On = (tmpValue > 0) ? true : false;
-            this.states.Brightness = tmpValue;
+        if (this.states.Brightness != tmpBrightnessValue) {
+            this.states.On = (tmpBrightnessValue > 0) ? true : false;
+            this.states.Brightness = tmpBrightnessValue;
             this.platform.sendData(`${this.deviceType}:${this.id}:${this.setLightBrightnessMsg}:${this.states.Brightness}:*`);
             this.platform.log.info(`${this.deviceType}:${this.id}: Set Characteristic Brightness By Homekit -> ${this.states.Brightness}`);
         }
     }
 
     getBrightnessEvent(value: number) {
-        let tmpValue = value;
-
-        this.states.On = (tmpValue > 0) ? true : false;
-        this.service.updateCharacteristic(this.platform.Characteristic.On, this.states.On);
+        let tmpBrightnessValue = value;
+        let tmpOnValue = (tmpBrightnessValue > 0) ? true : false;
+        if(this.states.On != tmpOnValue) {
+            this.states.On = tmpOnValue;
+            this.platform.log.info(`${this.deviceType}:${this.id}: Retrieve Characteristic On From Crestron Processor -> ${this.states.On}`);
+            this.service.updateCharacteristic(this.platform.Characteristic.On, this.states.On);
+        }
         
-        this.states.Brightness = tmpValue;
-        this.platform.log.info(`${this.deviceType}:${this.id}: Retrieve Characteristic Brightness From Crestron Processor -> ${this.states.Brightness}`);
-        this.service.updateCharacteristic(this.platform.Characteristic.Brightness, this.states.Brightness);
+        if(this.states.Brightness != tmpBrightnessValue) { 
+            this.states.Brightness = tmpBrightnessValue;
+            this.platform.log.info(`${this.deviceType}:${this.id}: Retrieve Characteristic Brightness From Crestron Processor -> ${this.states.Brightness}`);
+            this.service.updateCharacteristic(this.platform.Characteristic.Brightness, this.states.Brightness);
+        }
     }
 
     setBrightnessEvent(value: number) {
-        let tmpValue = value;
+        let tmpBrightnessValue = value;
 
-        if (this.states.Brightness != tmpValue) {
-            this.states.On = (tmpValue > 0) ? true : false;
-            this.states.Brightness = tmpValue;
+        if (this.states.Brightness != tmpBrightnessValue) {
+            this.states.On = (tmpBrightnessValue > 0) ? true : false;
+            this.states.Brightness = tmpBrightnessValue;
             this.platform.log.info(`${this.deviceType}:${this.id}: Set Characteristic Brightness By Crestron Processor -> ${this.states.Brightness}`);
 
             this.service.updateCharacteristic(this.platform.Characteristic.On, this.states.On);
