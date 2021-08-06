@@ -37,7 +37,7 @@ export class HeaterCooler {
         Active: 0,
         TargetHeaterCoolerState: 0,
         RotationSpeed: 100,
-        CurrentTemperature: 0,
+        CurrentTemperature: 24,
         CoolingThresholdTemperature: 24,
         HeatingThresholdTemperature: 24
     };
@@ -141,41 +141,47 @@ export class HeaterCooler {
         return isActive;
     }
 
+    /*
     async handleCurrentHeaterCoolerStateGet(): Promise<CharacteristicValue> {
         const currentHeaterCoolerState = this.states.CurrentHeaterCoolerState;
         this.platform.log.info(`${this.deviceType}:${this.id}: Get Characteristic CurrentHeaterCoolerState  From Homekit -> ${currentHeaterCoolerState}`);
         this.platform.sendData(`${this.deviceType}:${this.id}:${this.getCurrent
         return currentHeaterCoolerState;
     }
+    */
 
     async handleTargetHeaterCoolerStateGet(): Promise<CharacteristicValue> {
         const targetHeaterCoolerState = this.states.TargetHeaterCoolerState;
         this.platform.log.info(`${this.deviceType}:${this.id}: Get Characteristic TargetHeaterCoolerState  From Homekit -> ${targetHeaterCoolerState}`);
+        this.platform.sendData(`${this.deviceType}:${this.id}:${this.getTargetHeaterCoolerStateMsg}:*`);
         return targetHeaterCoolerState;
     }
     
     async handleRotationSpeedGet(): Promise<CharacteristicValue> {
         const rotationSpeed = this.states.RotationSpeed;
         this.platform.log.info(`${this.deviceType}:${this.id}: Get Characteristic RotationSpeed  From Homekit -> ${rotationSpeed}`);
+        this.platform.sendData(`${this.deviceType}:${this.id}:${this.getRotationSpeedMsg}:*`);
         return rotationSpeed;
     }
     
     async handleCurrentTemperatureGet(): Promise<CharacteristicValue> {
         const currentTemperature = this.states.CurrentTemperature;
         this.platform.log.info(`${this.deviceType}:${this.id}: Get Characteristic CurrentTemperature From Homekit -> ${currentTemperature}`);
-        //this.platform.sendData(`${this.deviceType}:${this.id}:${this.getMsg}:*`);
+        this.platform.sendData(`${this.deviceType}:${this.id}:${this.getCurrentTempMsg}:*`);
         return currentTemperature;
     }
     
     async handleCoolingThresholdTemperatureGet(): Promise<CharacteristicValue> {
         const coolingThresholdTemperature = this.states.CoolingThresholdTemperature;
         this.platform.log.info(`${this.deviceType}:${this.id}: Get Characteristic CoolingThresholdTemperature From Homekit -> ${coolingThresholdTemperature}`);
+        this.platform.sendData(`${this.deviceType}:${this.id}:${this.getTargetTempMsg}:*`);
         return coolingThresholdTemperature;
     }
     
     async handleHeatingThresholdTemperatureGet(): Promise<CharacteristicValue> {
         const heatingThresholdTemperature = this.states.HeatingThresholdTemperature;
         this.platform.log.info(`${this.deviceType}:${this.id}: Get Characteristic HeatingThresholdTemperature From Homekit -> ${heatingThresholdTemperature}`);
+        this.platform.sendData(`${this.deviceType}:${this.id}:${this.getTargetTempMsg}:*`);
         return heatingThresholdTemperature;
     }
 
