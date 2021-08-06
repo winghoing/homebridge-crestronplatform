@@ -35,12 +35,11 @@ export class HeaterCooler {
      */
     private states = {
         Active: 0,
-        CurrentHeaterCoolerState: 0,
         TargetHeaterCoolerState: 0,
         RotationSpeed: 100,
         CurrentTemperature: 0,
-        CoolingThresholdTemperature: 0,
-        HeatingThresholdTemperature: 0
+        CoolingThresholdTemperature: 24,
+        HeatingThresholdTemperature: 24
     };
 
     constructor(
@@ -48,11 +47,25 @@ export class HeaterCooler {
         private accessory: PlatformAccessory,
         eventEmitter: EventEmitter
     ) {
+        /*
+        this.platform.log.info(`this.platform.config.minValue: ${this.platform.config.minValue}`);
+        this.platform.log.info(`this.platform.config.maxValue: ${this.platform.config.maxValue}`);
+        this.platform.log.info(`this.platform.config.minStep: ${this.platform.config.minStep}`);
+        this.platform.log.info(`this.platform.config.temperatureDisplayUnit: ${this.platform.config.temperatureDisplayUnit}`);
+        */
         this.id = accessory.context.device.id;
         this.accessory = accessory;
         this.eventEmitter = eventEmitter;
         this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.getPowerStateMsg}`, this.getPowerStateEvent.bind(this));
         this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.eventPowerStateMsg}`, this.setPowerStateEvent.bind(this));
+        this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.getTargetHeaterCoolerStateMsg}`, this.getTargetHeaterCoolerStateEvent.bind(this));
+        this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.eventTargetHeaterCoolerStateMsg}`, this.setTargetHeaterCoolerStateEvent.bind(this));
+        this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.getCurrentTempMsg}`, this.getCurrentTemperatureEvent.bind(this));
+        this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.eventCurrentTempMsg}`, this.setCurrentTemperatureEvent.bind(this));
+        this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.getTargetTempMsg}`, this.getTargetTemperatureEvent.bind(this));
+        this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.eventTargetTempMsg}`, this.setTargetTemperatureEvent.bind(this));
+        this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.getRotationSpeedMsg}`, this.getRotationSpeedEvent.bind(this));
+        this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.eventRotationSpeedMsg}`, this.setRotationSpeedEvent.bind(this));
         // set accessory information
         this.accessory.getService(this.platform.Service.AccessoryInformation)!
             .setCharacteristic(this.platform.Characteristic.Manufacturer, 'Default-Manufacturer')
@@ -72,9 +85,6 @@ export class HeaterCooler {
         this.service.getCharacteristic(this.platform.Characteristic.Active)
             .onSet(this.handleActiveSet.bind(this))
             .onGet(this.handleActiveGet.bind(this));
-        
-        this.service.getCharacteristic(this.platform.Characteristic.CurrentHeaterCoolerState)
-            .onGet(this.handleCurrentHeaterCoolerStateGet.bind(this));
                   
         this.service.getCharacteristic(this.platform.Characteristic.TargetHeaterCoolerState)
             .onSet(this.handleTargetHeaterCoolerStateSet.bind(this))
@@ -85,13 +95,13 @@ export class HeaterCooler {
             .onGet(this.handleRotationSpeedGet.bind(this));
         
         this.service.getCharacteristic(this.platform.Characteristic.CurrentTemperature)
+            .setProps({
+                minValue: this.platform.config.minValue,
+                maxValue: this.platform.config.maxValue,
+                minStep: this.platform.config.minStep
+            })
             .onGet(this.handleCurrentTemperatureGet.bind(this));
 
-        this.platform.log.info(`this.platform.config.minValue: ${this.platform.config.minValue}`);
-        this.platform.log.info(`this.platform.config.maxValue: ${this.platform.config.maxValue}`);
-        this.platform.log.info(`this.platform.config.minStep: ${this.platform.config.minStep}`);
-        this.platform.log.info(`this.platform.config.temperatureDisplayUnit: ${this.platform.config.temperatureDisplayUnit}`);
-        
         this.service.getCharacteristic(this.platform.Characteristic.CoolingThresholdTemperature)
             .setProps({
                 minValue: this.platform.config.minValue,
@@ -127,12 +137,14 @@ export class HeaterCooler {
     async handleActiveGet(): Promise<CharacteristicValue> {
         const isActive= this.states.Active;
         this.platform.log.info(`${this.deviceType}:${this.id}: Get Characteristic Active From Homekit -> ${isActive}`);
+        this.platform.sendData(`${this.deviceType}:${this.id}:${this.getPowerStateMsg}:*`);
         return isActive;
     }
 
     async handleCurrentHeaterCoolerStateGet(): Promise<CharacteristicValue> {
         const currentHeaterCoolerState = this.states.CurrentHeaterCoolerState;
         this.platform.log.info(`${this.deviceType}:${this.id}: Get Characteristic CurrentHeaterCoolerState  From Homekit -> ${currentHeaterCoolerState}`);
+        this.platform.sendData(`${this.deviceType}:${this.id}:${this.getCurrent
         return currentHeaterCoolerState;
     }
 
@@ -244,5 +256,29 @@ export class HeaterCooler {
             this.service.updateCharacteristic(this.platform.Characteristic.Brightness, this.states.Brightness);
         }
         */
+    }
+    
+    getTargetHeaterCoolerStateEvent(value: number) {
+    }
+    
+    setTargetHeaterCoolerStateEvent(value: number) {
+    }
+    
+    getCurrentTemperatureEvent(value: number) {
+    }
+    
+    setCurrentTemperatureEvent(value: number) {
+    }
+    
+    getTargetTemperatureEvent(value: number) {
+    }
+    
+    setTargetTemperatureEvent(value: number) {
+    }
+    
+    getRotationSpeedEvent(value: number) {
+    }
+    
+    setRotationSpeedEvent(value: number) {
     }
 }
