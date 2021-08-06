@@ -153,7 +153,7 @@ export class HeaterCooler {
         const currentHeaterCoolerState = this.states.CurrentHeaterCoolerState;
         this.platform.log.info(`${this.deviceType}:${this.id}: Get Characteristic CurrentHeaterCoolerState From Homekit -> ${currentHeaterCoolerState}`);
         //this.platform.sendData(`${this.deviceType}:${this.id}:${this.getCurrentHeaterCoolerStateMsg}:*`);
-        reutrn currentHeaterCoolerState;
+        return currentHeaterCoolerState;
     }
 
     async handleTargetHeaterCoolerStateGet(): Promise<CharacteristicValue> {
