@@ -159,6 +159,13 @@
               "type": "string",
               "default": "LIGHT",
               "required": true
+            },
+            "thatOtherOption": {
+              "title": "This option is hidden unless `showOption` is true",
+              "type": "string",
+              "condition": {
+                  "functionBody": "return model.type === HeaterCooler;"
+              }
             }
           }
         }
