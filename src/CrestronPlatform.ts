@@ -80,9 +80,10 @@ export class CrestronPlatform implements DynamicPlatformPlugin {
         // A real plugin you would discover accessories from the local network, cloud services
         // or a user-defined array in the platform config.
         let configLightbulbs = this.config["lightbulbs"];
-        let configACs = this.config["ACs"];
+        let configHeaterCoolers = this.config["ACs"];
         //this.log.info(`printing accessories: ${configDevices}`);
-
+        registerDevices(configLightbulbs, "Lightbulb");
+        registerDevices(configHeaterCoolers, "HeaterCooler");
     }
 
     registerDevices(configDevices, deviceType) {
@@ -116,14 +117,13 @@ export class CrestronPlatform implements DynamicPlatformPlugin {
                     switch (deviceType) {
                         case "Lightbulb":
                             {
-                                this.log.info(`create existing lightbulb accessory: ${existingAccessory.displayName}`);
-                                new Lightbulb(this, existingAccessory, this.eventEmitter);
-                                break;
-                            }
-                        case "DimLightbulb":
-                            {
-                                this.log.info(`create existing dimlightbulb accessory: ${existingAccessory.displayName}`);
-                                new DimLightbulb(this, existingAccessory, this.eventEmitter);
+                                if(device.type == "NonDimmable") {
+                                    this.log.info(`create existing lightbulb accessory: ${existingAccessory.displayName}`);
+                                    new Lightbulb(this, existingAccessory, this.eventEmitter);
+                                }else if(device.type == "Dimmable") {
+                                    this.log.info(`create existing dimlightbulb accessory: ${existingAccessory.displayName}`);
+                                    new DimLightbulb(this, existingAccessory, this.eventEmitter);
+                                }
                                 break;
                             }
                         case "HeaterCooler":
@@ -158,14 +158,13 @@ export class CrestronPlatform implements DynamicPlatformPlugin {
                     switch (deviceType) {
                         case "Lightbulb":
                             {
-                                this.log.info(`create not existing lightbulb accessory: ${accessory.displayName}`);
-                                new Lightbulb(this, accessory, this.eventEmitter);
-                                break;
-                            }
-                        case "DimLightbulb":
-                            {
-                                this.log.info(`create not existing dimlightbulb accessory: ${accessory.displayName}`);
-                                new DimLightbulb(this, accessory, this.eventEmitter);
+                                if(device.type == "NonDimmable") {
+                                    this.log.info(`create existing lightbulb accessory: ${existingAccessory.displayName}`);
+                                    new Lightbulb(this, existingAccessory, this.eventEmitter);
+                                }else if(device.type == "Dimmable") {
+                                    this.log.info(`create existing dimlightbulb accessory: ${existingAccessory.displayName}`);
+                                    new DimLightbulb(this, existingAccessory, this.eventEmitter);
+                                }
                                 break;
                             }
                         case "HeaterCooler":
@@ -174,8 +173,8 @@ export class CrestronPlatform implements DynamicPlatformPlugin {
                                 //this.log.info(`device.maxTemperatureValue: ${device.maxTemperatureValue}`);
                                 //this.log.info(`device.minTemperatureStep: ${device.minTemperatureStep}`);
                                 //this.log.info(`device.temperatureDisplayUnit: ${device.temperatureDisplayUnit}`);
-                                //this.log.info(`create not existing heatercooler accessory: ${accessory.displayName}`);
-                                new HeaterCooler(this, accessory, this.eventEmitter);
+                                this.log.info(`create existing heatercooler accessory: ${existingAccessory.displayName}`);
+                                new HeaterCooler(this, existingAccessory, this.eventEmitter);
                                 break;
                             }
                     }
