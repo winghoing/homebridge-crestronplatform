@@ -88,7 +88,8 @@ export class CrestronPlatform implements DynamicPlatformPlugin {
                 // generate a unique id for the accessory this should be generated from
                 // something globally unique, but constant, for example, the device serial
                 // number or MAC address
-                this.log.info(`printing current device: ${device}`);
+                console.log("printing current device: " + device.toString());
+                //this.log.info(`printing current device: ${device.toString()}`);
                 const uuid = this.api.hap.uuid.generate(device.name.toString() + device.id.toString());
 
                 // see if an accessory with the same uuid has already been registered and restored from
