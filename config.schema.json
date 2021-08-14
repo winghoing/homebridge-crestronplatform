@@ -19,32 +19,36 @@
                 "description": "Crestron processor IP"
             },
             "accessories": {
-                "title": "Accessories Config",
+                "title": "accessories",
                 "type": "array",
                 "items": {
-                    "NonDimLightbulbs": {
-                        "title": "Non Dim Lightbulbs",
-                        "type": "object",
-                        "properties": {
-                            "id": {
-                                "title": "id",
-                                "type": "number",
-                                "default": 1,
-                                "minimum": 1,
-                                "required": true
+                    "title": "Accessories Config",
+                    "type": "object",
+                    "properties": {
+                        "NonDimLightbulbs": {
+                            "title": "Non Dim Lightbulbs",
+                            "type": "object",
+                            "properties": {
+                                "id": {
+                                    "title": "id",
+                                    "type": "number",
+                                    "default": 1,
+                                    "minimum": 1,
+                                    "required": true
+                                }
                             }
-                        }
-                    },
-                    "DimLightbulbs": {
-                        "title": "Dim Lightbulbs",
-                        "type": "object",
-                        "properties": {
-                            "id": {
-                                "title": "id",
-                                "type": "number",
-                                "default": 1,
-                                "minimum": 1,
-                                "required": true
+                        },
+                        "DimLightbulbs": {
+                            "title": "Dim Lightbulbs",
+                            "type": "object",
+                            "properties": {
+                                "id": {
+                                    "title": "id",
+                                    "type": "number",
+                                    "default": 1,
+                                    "minimum": 1,
+                                    "required": true
+                                }
                             }
                         }
                     }
