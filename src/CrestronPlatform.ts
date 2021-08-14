@@ -88,7 +88,7 @@ export class CrestronPlatform implements DynamicPlatformPlugin {
                 // generate a unique id for the accessory this should be generated from
                 // something globally unique, but constant, for example, the device serial
                 // number or MAC address
-                console.log("printing current device: " + device.toString());
+                //console.log("printing current device: " + device.toString());
                 //this.log.info(`printing current device: ${device.toString()}`);
                 const uuid = this.api.hap.uuid.generate(device.name.toString() + device.id.toString());
 
@@ -123,10 +123,10 @@ export class CrestronPlatform implements DynamicPlatformPlugin {
                             }
                         case "HeaterCooler":
                             {
-                                this.log.info(`device.minTemperatureValue: ${device.minTemperatureValue}`);
-                                this.log.info(`device.maxTemperatureValue: ${device.maxTemperatureValue}`);
-                                this.log.info(`device.minTemperatureStep: ${device.minTemperatureStep}`);
-                                this.log.info(`device.TemperatureDisplayUnit: ${device.TemperatureDisplayUnit}`);
+                                //this.log.info(`device.minTemperatureValue: ${device.minTemperatureValue}`);
+                                //this.log.info(`device.maxTemperatureValue: ${device.maxTemperatureValue}`);
+                                //this.log.info(`device.minTemperatureStep: ${device.minTemperatureStep}`);
+                                //this.log.info(`device.TemperatureDisplayUnit: ${device.temperatureDisplayUnit}`);
                                 this.log.info(`create existing heatercooler accessory: ${existingAccessory.displayName}`);
                                 new HeaterCooler(this, existingAccessory, this.eventEmitter);
                                 break;
@@ -165,11 +165,11 @@ export class CrestronPlatform implements DynamicPlatformPlugin {
                             }
                         case "HeaterCooler":
                             {
-                                this.log.info(`device.minTemperatureValue: ${device.minTemperatureValue}`);
-                                this.log.info(`device.maxTemperatureValue: ${device.maxTemperatureValue}`);
-                                this.log.info(`device.minTemperatureStep: ${device.minTemperatureStep}`);
-                                this.log.info(`device.TemperatureDisplayUnit: ${device.TemperatureDisplayUnit}`);
-                                this.log.info(`create not existing heatercooler accessory: ${accessory.displayName}`);
+                                //this.log.info(`device.minTemperatureValue: ${device.minTemperatureValue}`);
+                                //this.log.info(`device.maxTemperatureValue: ${device.maxTemperatureValue}`);
+                                //this.log.info(`device.minTemperatureStep: ${device.minTemperatureStep}`);
+                                //this.log.info(`device.TemperatureDisplayUnit: ${device.temperatureDisplayUnit}`);
+                                //this.log.info(`create not existing heatercooler accessory: ${accessory.displayName}`);
                                 new HeaterCooler(this, accessory, this.eventEmitter);
                                 break;
                             }
