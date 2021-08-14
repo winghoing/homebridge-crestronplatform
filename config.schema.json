@@ -145,7 +145,10 @@
                             "type": "number",
                             "default": 32,
                             "required": false,
-                            "description": "HeaterCooler SetTemperature MaxValue,Default:32"
+                            "description": "HeaterCooler SetTemperature MaxValue,Default:32",
+                            "condition": {
+                                "functionBody": "return (model.accessories[arrayIndices].type === 'HeaterCooler')"
+                            }
                         },
                         "minTemperatureStep": {
                             "title": "minTemperatureStep",
