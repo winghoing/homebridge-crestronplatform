@@ -34,6 +34,7 @@ export class HeaterCooler {
      * You should implement your own code to track the state of your accessory
      */
     private states = {
+        TemperatureDisplayUnits: 0,
         Active: 0,
         CurrentHeaterCoolerState: 0,
         TargetHeaterCoolerState: 0,
@@ -48,13 +49,13 @@ export class HeaterCooler {
         private accessory: PlatformAccessory,
         eventEmitter: EventEmitter
     ) {
-        /*
-        this.platform.log.info(`this.platform.config.minValue: ${this.platform.config.minValue}`);
-        this.platform.log.info(`this.platform.config.maxValue: ${this.platform.config.maxValue}`);
-        this.platform.log.info(`this.platform.config.minStep: ${this.platform.config.minStep}`);
-        this.platform.log.info(`this.platform.config.temperatureDisplayUnit: ${this.platform.config.temperatureDisplayUnit}`);
-        */
+        this.log.info(`accessory.context.device.minTemperatureValue: ${accessory.context.device.minTemperatureValue}`);
+        this.log.info(`accessory.context.device.maxTemperatureValue: ${accessory.context.device.maxTemperatureValue}`);
+        this.log.info(`accessory.context.device.minTemperatureStep: ${accessory.context.device.minTemperatureStep}`);
+        this.log.info(`accessory.context.device.TemperatureDisplayUnit: ${accessory.context.device.TemperatureDisplayUnit}`);
+            
         this.id = accessory.context.device.id;
+        this.states.TemperatureDisplayUnits = accessory.context.device.TemperatureDisplayUnit;
         this.accessory = accessory;
         this.eventEmitter = eventEmitter;
         this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.getPowerStateMsg}`, this.getPowerStateEvent.bind(this));
@@ -104,30 +105,32 @@ export class HeaterCooler {
         
         this.service.getCharacteristic(this.platform.Characteristic.CurrentTemperature)
             .setProps({
-                minValue: this.platform.config.minValue,
-                maxValue: this.platform.config.maxValue,
-                minStep: this.platform.config.minStep
+                minValue: accessory.context.device.minTemperatureValue,
+                maxValue: accessory.context.device.maxTemperatureValue,
+                minStep: accessory.context.device.minTemperatureStep
             })
             .onGet(this.handleCurrentTemperatureGet.bind(this));
 
         this.service.getCharacteristic(this.platform.Characteristic.CoolingThresholdTemperature)
             .setProps({
-                minValue: this.platform.config.minValue,
-                maxValue: this.platform.config.maxValue,
-                minStep: this.platform.config.minStep
+                minValue: accessory.context.device.minTemperatureValue,
+                maxValue: accessory.context.device.maxTemperatureValue,
+                minStep: accessory.context.device.minTemperatureStep
             })
             .onSet(this.handleCoolingThresholdTemperatureSet.bind(this))
             .onGet(this.handleCoolingThresholdTemperatureGet.bind(this));
             
         this.service.getCharacteristic(this.platform.Characteristic.HeatingThresholdTemperature)
             .setProps({
-                minValue: this.platform.config.minValue,
-                maxValue: this.platform.config.maxValue,
-                minStep: this.platform.config.minStep
+                minValue: accessory.context.device.minTemperatureValue,
+                maxValue: accessory.context.device.maxTemperatureValue,
+                minStep: accessory.context.device.minTemperatureStep
             })
             .onSet(this.handleHeatingThresholdTemperatureSet.bind(this))
             .onGet(this.handleHeatingThresholdTemperatureGet.bind(this));
-                   
+        
+        this.service.getCharacteristic(this.platform.Characteristic.TemperatureDisplayUnits)
+            .onGet(this.handleTemperatureDisplayUnitsGet.bind(this));
     }
 
     /**
@@ -189,6 +192,12 @@ export class HeaterCooler {
         this.platform.log.info(`${this.deviceType}:${this.id}: Get Characteristic HeatingThresholdTemperature From Homekit -> ${heatingThresholdTemperature}`);
         this.platform.sendData(`${this.deviceType}:${this.id}:${this.getTargetTempMsg}:*`);
         return heatingThresholdTemperature;
+    }
+    
+    asyc handleTemperatureDisplayUnitsGet(): Promise<CharacteristicValue> {
+        const temperatureDisplayUnits = this.states.TemperatureDisplayUnits;
+        this.platform.log.info(`${this.deviceType}:${this.id}: Get Characteristic TemperatureDisplayUnits From Homekit -> ${temperatureDisplayUnits}`);
+        return temperatureDisplayUnits;
     }
 
     /**
