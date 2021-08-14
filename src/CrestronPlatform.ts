@@ -80,7 +80,7 @@ export class CrestronPlatform implements DynamicPlatformPlugin {
         // A real plugin you would discover accessories from the local network, cloud services
         // or a user-defined array in the platform config.
         let configDevices = this.config["accessories"];
-        //this.log.info(`printing accessories: ${configDevices}`);
+        this.log.info(`printing accessories: ${configDevices}`);
         // loop over the discovered devices and register each one if it has not already been registered
         if(configDevices != undefined) {
             for (let device of configDevices) {
