@@ -128,9 +128,10 @@ export class HeaterCooler {
             })
             .onSet(this.handleHeatingThresholdTemperatureSet.bind(this))
             .onGet(this.handleHeatingThresholdTemperatureGet.bind(this));
-        
+        /*
         this.service.getCharacteristic(this.platform.Characteristic.TemperatureDisplayUnits)
             .onGet(this.handleTemperatureDisplayUnitsGet.bind(this));
+        */
     }
 
     /**
