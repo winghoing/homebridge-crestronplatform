@@ -138,8 +138,8 @@
                             "default": "LIGHT",
                             "required": true
                         },
-                        "minTemperatureValue": {
-                            "title": "minTemperatureValue",
+                        "a": {
+                            "title": "a",
                             "type": "number",
                             "default": 16,
                             "required": false,
@@ -148,15 +148,15 @@
                                 "functionBody": "return (model.accessories[arrayIndices].type === 'HeaterCooler')"
                             }
                         },
-                        "maxTemperatureValue": {
-                            "title": "maxTemperatureValue",
+                        "b": {
+                            "title": "b",
                             "type": "number",
                             "default": 32,
                             "required": false,
                             "description": "HeaterCooler SetTemperature MaxValue,Default:32"
                         },
-                        "minTemperatureStep": {
-                            "title": "minTemperatureStep",
+                        "c": {
+                            "title": "c",
                             "type": "number",
                             "default": 1,
                             "required": false,
@@ -165,8 +165,8 @@
                                 "functionBody": "return (model.accessories[arrayIndices].type === 'HeaterCooler')"
                             }
                         },
-                        "TemperatureDisplayUnit": {
-                            "title": "Temperature Display Unit",
+                        "d": {
+                            "title": "d",
                             "type": "integer",
                             "default": 0,
                             "required": false,
