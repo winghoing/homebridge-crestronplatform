@@ -79,10 +79,15 @@ export class CrestronPlatform implements DynamicPlatformPlugin {
         // EXAMPLE ONLY
         // A real plugin you would discover accessories from the local network, cloud services
         // or a user-defined array in the platform config.
-        let configDevices = this.config["accessories"];
+        let configLightbulbs = this.config["lightbulbs"];
+        let configACs = this.config["ACs"];
         //this.log.info(`printing accessories: ${configDevices}`);
+
+    }
+
+    registerDevices(configDevices, deviceType) {
         // loop over the discovered devices and register each one if it has not already been registered
-        if(configDevices != undefined) {
+        if (configDevices != undefined) {
             for (let device of configDevices) {
 
                 // generate a unique id for the accessory this should be generated from
@@ -107,8 +112,8 @@ export class CrestronPlatform implements DynamicPlatformPlugin {
 
                     // create the accessory handler for the restored accessory
                     // this is imported from `platformAccessory.ts`
-                    this.log.info(`existing accessory type: ${device.type}`);
-                    switch (device.type) {
+                    this.log.info(`existing accessory type: ${deviceType}`);
+                    switch (deviceType) {
                         case "Lightbulb":
                             {
                                 this.log.info(`create existing lightbulb accessory: ${existingAccessory.displayName}`);
@@ -150,7 +155,7 @@ export class CrestronPlatform implements DynamicPlatformPlugin {
 
                     // create the accessory handler for the newly create accessory
                     // this is imported from `platformAccessory.ts`
-                    switch (device.type) {
+                    switch (deviceType) {
                         case "Lightbulb":
                             {
                                 this.log.info(`create not existing lightbulb accessory: ${accessory.displayName}`);
