@@ -49,10 +49,10 @@ export class HeaterCooler {
         private accessory: PlatformAccessory,
         eventEmitter: EventEmitter
     ) {
-        this.log.info(`accessory.context.device.minTemperatureValue: ${accessory.context.device.minTemperatureValue}`);
-        this.log.info(`accessory.context.device.maxTemperatureValue: ${accessory.context.device.maxTemperatureValue}`);
-        this.log.info(`accessory.context.device.minTemperatureStep: ${accessory.context.device.minTemperatureStep}`);
-        this.log.info(`accessory.context.device.TemperatureDisplayUnit: ${accessory.context.device.TemperatureDisplayUnit}`);
+        this.platform.log.info(`accessory.context.device.minTemperatureValue: ${accessory.context.device.minTemperatureValue}`);
+        this.platform.log.info(`accessory.context.device.maxTemperatureValue: ${accessory.context.device.maxTemperatureValue}`);
+        this.platform.log.info(`accessory.context.device.minTemperatureStep: ${accessory.context.device.minTemperatureStep}`);
+        this.platform.log.info(`accessory.context.device.TemperatureDisplayUnit: ${accessory.context.device.TemperatureDisplayUnit}`);
             
         this.id = accessory.context.device.id;
         this.states.TemperatureDisplayUnits = accessory.context.device.TemperatureDisplayUnit;
