@@ -159,11 +159,11 @@ export class CrestronPlatform implements DynamicPlatformPlugin {
                         case "Lightbulb":
                             {
                                 if(device.type == "NonDimmable") {
-                                    this.log.info(`create existing lightbulb accessory: ${existingAccessory.displayName}`);
-                                    new Lightbulb(this, existingAccessory, this.eventEmitter);
+                                    this.log.info(`create not existing lightbulb accessory: ${accessory.displayName}`);
+                                    new Lightbulb(this, accessory, this.eventEmitter);
                                 }else if(device.type == "Dimmable") {
-                                    this.log.info(`create existing dimlightbulb accessory: ${existingAccessory.displayName}`);
-                                    new DimLightbulb(this, existingAccessory, this.eventEmitter);
+                                    this.log.info(`create nof existing dimlightbulb accessory: ${accessory.displayName}`);
+                                    new DimLightbulb(this, accessory, this.eventEmitter);
                                 }
                                 break;
                             }
@@ -173,8 +173,8 @@ export class CrestronPlatform implements DynamicPlatformPlugin {
                                 //this.log.info(`device.maxTemperatureValue: ${device.maxTemperatureValue}`);
                                 //this.log.info(`device.minTemperatureStep: ${device.minTemperatureStep}`);
                                 //this.log.info(`device.temperatureDisplayUnit: ${device.temperatureDisplayUnit}`);
-                                this.log.info(`create existing heatercooler accessory: ${existingAccessory.displayName}`);
-                                new HeaterCooler(this, existingAccessory, this.eventEmitter);
+                                this.log.info(`create not existing heatercooler accessory: ${accessory.displayName}`);
+                                new HeaterCooler(this, accessory, this.eventEmitter);
                                 break;
                             }
                     }
