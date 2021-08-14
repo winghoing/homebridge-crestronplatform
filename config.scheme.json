@@ -1,138 +1,30 @@
 {
-    "pluginAlias": "homebridge-crestronplatform",
-    "pluginType": "platform",
-    "singular": true,
-    "schema": {
-        "type": "object",
-        "properties": {
-            "name": {
-                "title": "name",
-                "type": "string",
-                "default": "KOMEN",
-                "required": true
-            },
-            "host": {
-                "title": "host",
-                "type": "string",
-                "placeholder": "192.168.1.100",
-                "required": true,
-                "description": "Crestron professor IP must added"
-            },
-            "port": {
-                "title": "port",
-                "type": "string",
-                "default": "50001",
-                "required": true,
-                "description": "the Marco Port"
-            },
-            "accessories": {
-                "title": "accessories",
-                "type": "array",
-                "items": {
-                    "title": "Accessories Config",
-                    "type": "object",
-                    "properties": {
-                        "id": {
-                            "title": "id",
-                            "type": "number",
-                            "default": 1,
-                            "minimum": 1,
-                            "required": true
-                        },
-                        "type": {
-                            "title": "type",
-                            "type": "string",
-                            "oneOf": [
-                                {
-                                    "title": "Lightbulb",
-                                    "enum": [
-                                        "Lightbulb"
-                                    ]
-                                },
-                                {
-                                    "title": "DimLightbulb",
-                                    "enum": [
-                                        "DimLightbulb"
-                                    ]
-                                },
-                                {
-                                    "title": "HeaterCooler",
-                                    "enum": [
-                                        "HeaterCooler"
-                                    ]
-                                },
-                                {
-                                    "title": "SpeedFan",
-                                    "enum": [
-                                        "SpeedFan"
-                                    ]
-                                },
-                                {
-                                    "title": "AirPurifier",
-                                    "enum": [
-                                        "AirPurifier"
-                                    ]
-                                },
-                                {
-                                    "title": "WindowCovering",
-                                    "enum": [
-                                        "WindowCovering"
-                                    ]
-                                },
-                                {
-                                    "title": "AirQualitySensor",
-                                    "enum": [
-                                        "AirQualitySensor"
-                                    ]
-                                },
-                                {
-                                    "title": "HumiditySensor",
-                                    "enum": [
-                                        "HumiditySensor"
-                                    ]
-                                },
-                                {
-                                    "title": "TemperatureSensor",
-                                    "enum": [
-                                        "TemperatureSensor"
-                                    ]
-                                },
-                                {
-                                    "title": "CarbonDioxideSensor",
-                                    "enum": [
-                                        "CarbonDioxideSensor "
-                                    ]
-                                },
-                                {
-                                    "title": "OccupancySensor",
-                                    "enum": [
-                                        "OccupancySensor"
-                                    ]
-                                },
-                                {
-                                    "title": "Faucet",
-                                    "enum": [
-                                        "Faucet"
-                                    ]
-                                },
-                                {
-                                    "title": "Switch",
-                                    "enum": [
-                                        "Switch"
-                                    ]
-                                }
-                            ],
-                            "required": true
-                        },
-                        "name": {
-                            "title": "name",
-                            "type": "string",
-                            "default": "LIGHT",
-                            "required": true
-                        }
-                    }
-                }
-            }
-        }
-    }
+	"pluginAlias": "homebridge-crestronplatform",
+	"pluginType": "platform",
+	"singular": true,
+	"schema": {
+		"type": "object",
+		"properties": {
+			"name": {
+				"title": "Name",
+				"type": "string",
+				"required": true,
+				"default": "Example Dynamic Platform"
+			},
+			"host": {
+				"title": "host",
+				"type": "string",
+				"placeholder": "192.168.1.100",
+				"required": true,
+				"description": "Crestron professor IP must added"
+			},
+			"port": {
+				"title": "port",
+				"type": "string",
+				"default": "50001",
+				"required": true,
+				"description": "the Marco Port"
+			}
+		}
+	}
 }
