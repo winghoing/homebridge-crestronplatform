@@ -82,8 +82,8 @@ export class CrestronPlatform implements DynamicPlatformPlugin {
         let configLightbulbs = this.config["lightbulbs"];
         let configHeaterCoolers = this.config["ACs"];
         //this.log.info(`printing accessories: ${configDevices}`);
-        registerDevices(configLightbulbs, "Lightbulb");
-        registerDevices(configHeaterCoolers, "HeaterCooler");
+        this.registerDevices(configLightbulbs, "Lightbulb");
+        this.registerDevices(configHeaterCoolers, "HeaterCooler");
     }
 
     registerDevices(configDevices, deviceType) {
