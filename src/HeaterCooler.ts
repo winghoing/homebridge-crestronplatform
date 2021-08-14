@@ -34,6 +34,7 @@ export class HeaterCooler {
      * You should implement your own code to track the state of your accessory
      */
     private states = {
+        TemperatureDisplayUnits: 1,
         Active: 0,
         CurrentHeaterCoolerState: 0,
         TargetHeaterCoolerState: 0,
@@ -48,12 +49,11 @@ export class HeaterCooler {
         private accessory: PlatformAccessory,
         eventEmitter: EventEmitter
     ) {
-        /*
-        this.platform.log.info(`this.platform.config.minValue: ${this.platform.config.minValue}`);
-        this.platform.log.info(`this.platform.config.maxValue: ${this.platform.config.maxValue}`);
-        this.platform.log.info(`this.platform.config.minStep: ${this.platform.config.minStep}`);
-        this.platform.log.info(`this.platform.config.temperatureDisplayUnit: ${this.platform.config.temperatureDisplayUnit}`);
-        */
+        this.log.info(`accessory.context.device.minTemperatureValue: ${accessory.context.device.minTemperatureValue}`);
+        this.log.info(`accessory.context.device.maxTemperatureValue: ${accessory.context.device.maxTemperatureValue}`);
+        this.log.info(`accessory.context.device.minTemperatureStep: ${accessory.context.device.minTemperatureStep}`);
+        this.log.info(`accessory.context.device.TemperatureDisplayUnit: ${accessory.context.device.TemperatureDisplayUnit}`);
+            
         this.id = accessory.context.device.id;
         this.accessory = accessory;
         this.eventEmitter = eventEmitter;
@@ -104,26 +104,26 @@ export class HeaterCooler {
         
         this.service.getCharacteristic(this.platform.Characteristic.CurrentTemperature)
             .setProps({
-                minValue: this.platform.config.minValue,
-                maxValue: this.platform.config.maxValue,
-                minStep: this.platform.config.minStep
+                minValue: accessory.context.device.minTemperatureValue,
+                maxValue: accessory.context.device.maxTemperatureValue,
+                minStep: accessory.context.device.minTemperatureStep
             })
             .onGet(this.handleCurrentTemperatureGet.bind(this));
 
         this.service.getCharacteristic(this.platform.Characteristic.CoolingThresholdTemperature)
             .setProps({
-                minValue: this.platform.config.minValue,
-                maxValue: this.platform.config.maxValue,
-                minStep: this.platform.config.minStep
+                minValue: accessory.context.device.minTemperatureValue,
+                maxValue: accessory.context.device.maxTemperatureValue,
+                minStep: accessory.context.device.minTemperatureStep
             })
             .onSet(this.handleCoolingThresholdTemperatureSet.bind(this))
             .onGet(this.handleCoolingThresholdTemperatureGet.bind(this));
             
         this.service.getCharacteristic(this.platform.Characteristic.HeatingThresholdTemperature)
             .setProps({
-                minValue: this.platform.config.minValue,
-                maxValue: this.platform.config.maxValue,
-                minStep: this.platform.config.minStep
+                minValue: accessory.context.device.minTemperatureValue,
+                maxValue: accessory.context.device.maxTemperatureValue,
+                minStep: accessory.context.device.minTemperatureStep
             })
             .onSet(this.handleHeatingThresholdTemperatureSet.bind(this))
             .onGet(this.handleHeatingThresholdTemperatureGet.bind(this));
