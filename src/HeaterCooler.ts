@@ -34,7 +34,7 @@ export class HeaterCooler {
      * You should implement your own code to track the state of your accessory
      */
     private states = {
-        TemperatureDisplayUnits: 1,
+        TemperatureDisplayUnits: 0,
         Active: 0,
         CurrentHeaterCoolerState: 0,
         TargetHeaterCoolerState: 0,
@@ -55,6 +55,7 @@ export class HeaterCooler {
         this.log.info(`accessory.context.device.TemperatureDisplayUnit: ${accessory.context.device.TemperatureDisplayUnit}`);
             
         this.id = accessory.context.device.id;
+        this.states.TemperatureDisplayUnits = accessory.context.device.TemperatureDisplayUnit;
         this.accessory = accessory;
         this.eventEmitter = eventEmitter;
         this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.getPowerStateMsg}`, this.getPowerStateEvent.bind(this));
@@ -127,7 +128,9 @@ export class HeaterCooler {
             })
             .onSet(this.handleHeatingThresholdTemperatureSet.bind(this))
             .onGet(this.handleHeatingThresholdTemperatureGet.bind(this));
-                   
+        
+        this.service.getCharacteristic(this.platform.Characteristic.TemperatureDisplayUnits)
+            .onGet(this.handleTemperatureDisplayUnitsGet.bind(this));
     }
 
     /**
@@ -189,6 +192,12 @@ export class HeaterCooler {
         this.platform.log.info(`${this.deviceType}:${this.id}: Get Characteristic HeatingThresholdTemperature From Homekit -> ${heatingThresholdTemperature}`);
         this.platform.sendData(`${this.deviceType}:${this.id}:${this.getTargetTempMsg}:*`);
         return heatingThresholdTemperature;
+    }
+    
+    asyc handleTemperatureDisplayUnitsGet(): Promise<CharacteristicValue> {
+        const temperatureDisplayUnits = this.states.TemperatureDisplayUnits;
+        this.platform.log.info(`${this.deviceType}:${this.id}: Get Characteristic TemperatureDisplayUnits From Homekit -> ${temperatureDisplayUnits}`);
+        return temperatureDisplayUnits;
     }
 
     /**
