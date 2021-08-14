@@ -80,7 +80,7 @@ export class CrestronPlatform implements DynamicPlatformPlugin {
         // A real plugin you would discover accessories from the local network, cloud services
         // or a user-defined array in the platform config.
         let configDevices = this.config["accessories"];
-        this.log.info(`printing accessories: ${configDevices}`);
+        //this.log.info(`printing accessories: ${configDevices}`);
         // loop over the discovered devices and register each one if it has not already been registered
         if(configDevices != undefined) {
             for (let device of configDevices) {
@@ -88,6 +88,7 @@ export class CrestronPlatform implements DynamicPlatformPlugin {
                 // generate a unique id for the accessory this should be generated from
                 // something globally unique, but constant, for example, the device serial
                 // number or MAC address
+                this.log.info(`printing current device: ${device}`);
                 const uuid = this.api.hap.uuid.generate(device.name.toString() + device.id.toString());
 
                 // see if an accessory with the same uuid has already been registered and restored from
