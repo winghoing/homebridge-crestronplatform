@@ -129,6 +129,45 @@
                             "type": "string",
                             "default": "LIGHT",
                             "required": true
+                        },
+                        "minTemperatureValue": {
+                            "title": "minTemperatureValue",
+                            "type": "number",
+                            "default": 16,
+                            "required": false,
+                            "description": "HeaterCooler SetTemperature MinValue,Default:16",
+                            "condition": {
+                                "functionBody": "return (model.accessories[arrayIndices].type === 'HeaterCooler')"
+                            }
+                        },
+                        "maxTemperatureValue": {
+                            "title": "maxTemperatureValue",
+                            "type": "number",
+                            "default": 32,
+                            "required": false,
+                            "description": "HeaterCooler SetTemperature MaxValue,Default:32"
+                        },
+                        "minTemperatureStep": {
+                            "title": "minTemperatureStep",
+                            "type": "number",
+                            "default": 1,
+                            "required": false,
+                            "description": "HeaterCooler Temperature minStep",
+                            "condition": {
+                                "functionBody": "return (model.accessories[arrayIndices].type === 'HeaterCooler')"
+                            }
+                        },
+                        "temperatureDisplayUnits": {
+                            "title": "temperatureDisplayUnits",
+                            "type": "integer",
+                            "default": 0,
+                            "required": false,
+                            "minimum": 0,
+                            "maximum": 1,
+                            "description": "HeaterCooler Temperature Display 1:Fahrenheit, 0:Celsius,Default:0",
+                            "condition": {
+                                "functionBody": "return (model.accessories[arrayIndices].type === 'HeaterCooler')"
+                            }
                         }
                     }
                 }
