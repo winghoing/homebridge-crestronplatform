@@ -6,40 +6,128 @@
         "type": "object",
         "properties": {
             "name": {
-                "title": "name",
+                "title": "Name",
                 "type": "string",
                 "default": "homebridge",
+                "placeholder": "homebridge",
                 "required": true
             },
             "host": {
-                "title": "host",
+                "title": "Host",
                 "type": "string",
+                "default": "192.168.1.100",
                 "placeholder": "192.168.1.100",
                 "required": true,
                 "description": "Crestron processor IP"
             },
+            "port": {
+                "title": "Port",
+                "type": "string",
+                "default": "50001",
+                "placeholder": "50001",
+                "required": true,
+                "description": "Crestron processor control port"
+            },
             "lightbulbs": {
-                "title": "lightbulbs",
+                "title": "Lightbulbs",
                 "type": "array",
                 "items": {
-                    "title": "Lightbulbs Config",
+                    "title": "Lightbulb Configuration",
                     "type": "object",
                     "properties": {
                         "id": {
-                            "title": "id",
+                            "title": "ID",
                             "type": "number",
-			    "default": 1,
-			    "minimum": 1,
-			    "required": true
+                            "default": 1,
+                            "minimum": 1,
+                            "required": true
+                        },
+                        "name": {
+                            "title": "Name",
+                            "type": "string",
+                            "default": "LIGHT",
+                            "required": true
                         },
                         "type": {
-                            "title": "type",
+                            "title": "Type",
                             "type": "string",
                             "oneOf": [
-			    	{ "title": "Non Dimmable", "enum": ["NonDimmable"] },
-				{ "title": "Dimmable", "enum": ["Dimmable"] }
-			    ],
-		   	    "required": true
+                                {
+                                    "title": "Non Dimmable",
+                                    "enum": [
+                                        "NonDimmable"
+                                    ]
+                                },
+                                {
+                                    "title": "Dimmable",
+                                    "enum": [
+                                        "Dimmable"
+                                    ]
+                                }
+                            ],
+                            "required": true
+                        }
+                    }
+                }
+            },
+            "ACs": {
+                "title": "air conditioners",
+                "type": "array",
+                "items": {
+                    "title": "Air conditioner Configuration",
+                    "type": "object",
+                    "properties": {
+                        "id": {
+                            "title": "ID",
+                            "type": "number",
+                            "default": 1,
+                            "minimum": 1,
+                            "required": true
+                        },
+                        "name": {
+                            "title": "Name",
+                            "type": "string",
+                            "default": "AC",
+                            "required": true
+                        },
+                        "minTemperatureValue": {
+                            "title": "minTemperatureValue",
+                            "type": "number",
+                            "default": 16,
+                            "required": false,
+                            "description": "HeaterCooler SetTemperature MinValue,Default:16",
+                            "condition": {
+                                "functionBody": "return (model.accessories[arrayIndices].type === 'HeaterCooler')"
+                            }
+                        },
+                        "maxTemperatureValue": {
+                            "title": "maxTemperatureValue",
+                            "type": "number",
+                            "default": 32,
+                            "required": false,
+                            "description": "HeaterCooler SetTemperature MaxValue,Default:32"
+                        },
+                        "minTemperatureStep": {
+                            "title": "minTemperatureStep",
+                            "type": "number",
+                            "default": 1,
+                            "required": false,
+                            "description": "HeaterCooler Temperature minStep",
+                            "condition": {
+                                "functionBody": "return (model.accessories[arrayIndices].type === 'HeaterCooler')"
+                            }
+                        },
+                        "temperatureDisplayUnits": {
+                            "title": "temperatureDisplayUnits",
+                            "type": "integer",
+                            "default": 0,
+                            "required": false,
+                            "minimum": 0,
+                            "maximum": 1,
+                            "description": "HeaterCooler Temperature Display 1:Fahrenheit, 0:Celsius,Default:0",
+                            "condition": {
+                                "functionBody": "return (model.accessories[arrayIndices].type === 'HeaterCooler')"
+                            }
                         }
                     }
                 }
