@@ -49,13 +49,13 @@ export class HeaterCooler {
         private accessory: PlatformAccessory,
         eventEmitter: EventEmitter
     ) {
-        this.platform.log.info(`accessory.context.device.minTemperatureValue: ${accessory.context.device.minTemperatureValue}`);
-        this.platform.log.info(`accessory.context.device.maxTemperatureValue: ${accessory.context.device.maxTemperatureValue}`);
-        this.platform.log.info(`accessory.context.device.minTemperatureStep: ${accessory.context.device.minTemperatureStep}`);
-        this.platform.log.info(`accessory.context.device.TemperatureDisplayUnit: ${accessory.context.device.TemperatureDisplayUnit}`);
+        //this.platform.log.info(`accessory.context.device.minTemperatureValue: ${accessory.context.device.minTemperatureValue}`);
+        //this.platform.log.info(`accessory.context.device.maxTemperatureValue: ${accessory.context.device.maxTemperatureValue}`);
+        //this.platform.log.info(`accessory.context.device.minTemperatureStep: ${accessory.context.device.minTemperatureStep}`);
+        //this.platform.log.info(`accessory.context.device.temperatureDisplayUnit: ${accessory.context.device.temperatureDisplayUnit}`);
             
         this.id = accessory.context.device.id;
-        this.states.TemperatureDisplayUnits = accessory.context.device.TemperatureDisplayUnit;
+        this.states.TemperatureDisplayUnits = accessory.context.device.temperatureDisplayUnit;
         this.accessory = accessory;
         this.eventEmitter = eventEmitter;
         this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.getPowerStateMsg}`, this.getPowerStateEvent.bind(this));
