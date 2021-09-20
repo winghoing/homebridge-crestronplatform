@@ -326,7 +326,7 @@ export class HeaterCooler {
         let tmpTargetHeaterCoolerState = value;
         if(this.states.TargetHeaterCoolerState != tmpTargetHeaterCoolerState) {
            this.states.TargetHeaterCoolerState = tmpTargetHeaterCoolerState;
-           if(this.states.Active = 1 && this.states.CurrentHeaterCoolerState != (this.states.TargetHeaterCoolerState + 1)) {
+           if(this.states.Active === 1 && this.states.CurrentHeaterCoolerState != (this.states.TargetHeaterCoolerState + 1)) {
                 this.states.CurrentHeaterCoolerState = this.states.TargetHeaterCoolerState + 1;
                 this.platform.log.info(`${this.deviceType}:${this.id}: Update Characteristic CurrentHeaterCoolerState To -> ${this.states.CurrentHeaterCoolerState}`);
                 this.service.updateCharacteristic(this.platform.Characteristic.CurrentHeaterCoolerState, this.states.CurrentHeaterCoolerState);
@@ -340,7 +340,7 @@ export class HeaterCooler {
         let tmpTargetHeaterCoolerState = value;
         if(this.states.TargetHeaterCoolerState != tmpTargetHeaterCoolerState) {
            this.states.TargetHeaterCoolerState = tmpTargetHeaterCoolerState;
-           if(this.states.Active = 1 && this.states.CurrentHeaterCoolerState != (this.states.TargetHeaterCoolerState + 1)) {
+           if(this.states.Active === 1 && this.states.CurrentHeaterCoolerState != (this.states.TargetHeaterCoolerState + 1)) {
                 this.states.CurrentHeaterCoolerState = this.states.TargetHeaterCoolerState + 1;
                 this.platform.log.info(`${this.deviceType}:${this.id}: Update Characteristic CurrentHeaterCoolerState To -> ${this.states.CurrentHeaterCoolerState}`);
                 this.service.updateCharacteristic(this.platform.Characteristic.CurrentHeaterCoolerState, this.states.CurrentHeaterCoolerState);
