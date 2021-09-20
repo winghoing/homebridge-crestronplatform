@@ -200,6 +200,7 @@ export class HeaterCooler {
     }
     
     async handleTemperatureDisplayUnitsGet(): Promise<CharacteristicValue> {
+        this.platform.log.info(`Testing -> ${this.states.TemperatureDisplayUnits}`);
         const temperatureDisplayUnits = this.states.TemperatureDisplayUnits;
         this.platform.log.info(`${this.deviceType}:${this.id}: Get Characteristic TemperatureDisplayUnits From Homekit -> ${temperatureDisplayUnits}`);
         this.platform.sendData(`${this.deviceType}:${this.id}:${this.getTemperatureDisplayUnitsMsg}:*`);
