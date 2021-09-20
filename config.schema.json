@@ -28,11 +28,11 @@
                 "required": true,
                 "description": "Crestron processor control port"
             },
-            "lightbulbs": {
-                "title": "Lightbulbs",
+            "non-dimmable-lightbulbs": {
+                "title": "Non Dimmable Lightbulbs",
                 "type": "array",
                 "items": {
-                    "title": "Lightbulb Configuration",
+                    "title": "Non Dimmable Lightbulb Configuration",
                     "type": "object",
                     "properties": {
                         "id": {
@@ -45,26 +45,30 @@
                         "name": {
                             "title": "Name",
                             "type": "string",
-                            "default": "LIGHT",
+                            "default": "NonDimLIGHT",
+                            "required": true
+                        }
+                    }
+                }
+            },
+            "dimmable-lightbulbs": {
+                "title": "Dimmable Lightbulbs",
+                "type": "array",
+                "items": {
+                    "title": "Dimmable Lightbulb Configuration",
+                    "type": "object",
+                    "properties": {
+                        "id": {
+                            "title": "ID",
+                            "type": "number",
+                            "default": 1,
+                            "minimum": 1,
                             "required": true
                         },
-                        "type": {
-                            "title": "Type",
+                        "name": {
+                            "title": "Name",
                             "type": "string",
-                            "oneOf": [
-                                {
-                                    "title": "Non Dimmable",
-                                    "enum": [
-                                        "NonDimmable"
-                                    ]
-                                },
-                                {
-                                    "title": "Dimmable",
-                                    "enum": [
-                                        "Dimmable"
-                                    ]
-                                }
-                            ],
+                            "default": "DimLIGHT",
                             "required": true
                         }
                     }
