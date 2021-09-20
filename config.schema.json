@@ -99,10 +99,7 @@
                             "type": "number",
                             "default": 16,
                             "required": false,
-                            "description": "HeaterCooler SetTemperature MinValue,Default:16",
-                            "condition": {
-                                "functionBody": "return (model.accessories[arrayIndices].type === 'HeaterCooler')"
-                            }
+                            "description": "HeaterCooler SetTemperature MinValue,Default:16"
                         },
                         "maxTemperatureValue": {
                             "title": "maxTemperatureValue",
@@ -116,10 +113,7 @@
                             "type": "number",
                             "default": 1,
                             "required": false,
-                            "description": "HeaterCooler Temperature minStep",
-                            "condition": {
-                                "functionBody": "return (model.accessories[arrayIndices].type === 'HeaterCooler')"
-                            }
+                            "description": "HeaterCooler Temperature minStep"
                         },
                         "temperatureDisplayUnits": {
                             "title": "temperatureDisplayUnits",
@@ -128,10 +122,7 @@
                             "required": false,
                             "minimum": 0,
                             "maximum": 1,
-                            "description": "HeaterCooler Temperature Display 1:Fahrenheit, 0:Celsius,Default:0",
-                            "condition": {
-                                "functionBody": "return (model.accessories[arrayIndices].type === 'HeaterCooler')"
-                            }
+                            "description": "HeaterCooler Temperature Display 1:Fahrenheit, 0:Celsius,Default:0"
                         }
                     }
                 }
