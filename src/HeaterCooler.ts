@@ -17,6 +17,7 @@ export class HeaterCooler {
     private eventPowerStateMsg = "eventPowerState";
     private setPowerStateMsg = "setPowerState";
     private getPowerStateMsg = "getPowerState";
+    private getCurrentHeaterCoolerStateMsg = "getCurrentHeaterCoolerState";
     private eventTargetHeaterCoolerStateMsg = "eventTargetHeaterCoolerState";
     private setTargetHeaterCoolerStateMsg = "setTargetHeaterCoolerState";
     private getTargetHeaterCoolerStateMsg = "getTargetHeaterCoolerState";
