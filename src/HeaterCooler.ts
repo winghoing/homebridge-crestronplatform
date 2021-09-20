@@ -18,8 +18,8 @@ export class HeaterCooler {
     private setPowerStateMsg = "setPowerState";
     private getPowerStateMsg = "getPowerState";
     private eventTargetHeaterCoolerStateMsg = "eventTargetHeaterCoolerState";
-    private setTargetHeaterCoolerStateMsg = "getTargetHeaterCoolerState";
-    private getTargetHeaterCoolerStateMsg = "setTargetHeaterCoolerState";
+    private setTargetHeaterCoolerStateMsg = "setTargetHeaterCoolerState";
+    private getTargetHeaterCoolerStateMsg = "getTargetHeaterCoolerState";
     private eventCurrentTempMsg = "eventCurrentTemperature";
     private getCurrentTempMsg = "getCurrentTemperature";
     private eventTargetTempMsg = "eventTargetTemperature";
@@ -155,7 +155,7 @@ export class HeaterCooler {
     async handleCurrentHeaterCoolerStateGet(): Promise<CharacteristicValue> {
         const currentHeaterCoolerState = this.states.CurrentHeaterCoolerState;
         this.platform.log.info(`${this.deviceType}:${this.id}: Get Characteristic CurrentHeaterCoolerState From Homekit -> ${currentHeaterCoolerState}`);
-        //this.platform.sendData(`${this.deviceType}:${this.id}:${this.getCurrentHeaterCoolerStateMsg}:*`);
+        this.platform.sendData(`${this.deviceType}:${this.id}:${this.getCurrentHeaterCoolerStateMsg}:*`);
         return currentHeaterCoolerState;
     }
 
@@ -208,6 +208,11 @@ export class HeaterCooler {
         let tmpActiveValue = value as number;
         if(this.states.Active != tmpActiveValue) {
             this.states.Active = tmpActiveValue;
+            if(this.states.Active = 1) {
+                this.states.CurrentHeaterCoolerState = this.states.TargetHeaterCoolerState + 1;
+                this.platform.log.info(`${this.deviceType}:${this.id}: Set Characteristic CurrentHeaterCoolerState By Homekit -> ${this.states.CurrentHeaterCoolerState}`);
+                this.service.updateCharacteristic(this.platform.Characteristic.CurrentHeaterCoolerState, this.states.CurrentHeaterCoolerState);
+            }
             this.platform.sendData(`${this.deviceType}:${this.id}:${this.setPowerStateMsg}:${this.states.Active}:*`);
             this.platform.log.info(`${this.deviceType}:${this.id}: Set Characteristic Active By Homekit -> ${value}`);
         }
@@ -216,7 +221,12 @@ export class HeaterCooler {
     async handleTargetHeaterCoolerStateSet(value: CharacteristicValue) {
         let tmpTargetHeaterCoolerState = value as number;
         if(this.states.TargetHeaterCoolerState != tmpTargetHeaterCoolerState) { 
-            this.states.TargetHeaterCoolerState = tmpTargetHeaterCoolerState;
+            this.states.TargetHeaterCoolerState = tmpTargetHeaterCoolerState;          
+            if(this.states.Active = 1) {
+                this.states.CurrentHeaterCoolerState = this.states.TargetHeaterCoolerState + 1;
+                this.platform.log.info(`${this.deviceType}:${this.id}: Set Characteristic CurrentHeaterCoolerState By Homekit -> ${this.states.CurrentHeaterCoolerState}`);
+                this.service.updateCharacteristic(this.platform.Characteristic.CurrentHeaterCoolerState, this.states.CurrentHeaterCoolerState);
+            }
             this.platform.sendData(`${this.deviceType}:${this.id}:${this.setTargetHeaterCoolerStateMsg}:${this.states.TargetHeaterCoolerState}:*`);
             this.platform.log.info(`${this.deviceType}:${this.id}: Set Characteristic TargetHeaterCoolerState By Homekit -> ${value}`);
         }
@@ -257,6 +267,11 @@ export class HeaterCooler {
         let tmpActiveValue = value;
         if (this.states.Active != tmpActiveValue) {
             this.states.Active = tmpActiveValue;
+            if(this.states.Active = 1) {
+                this.states.CurrentHeaterCoolerState = this.states.TargetHeaterCoolerState + 1;
+                this.platform.log.info(`${this.deviceType}:${this.id}: Update Characteristic CurrentHeaterCoolerState To -> ${this.states.CurrentHeaterCoolerState}`);
+                this.service.updateCharacteristic(this.platform.Characteristic.CurrentHeaterCoolerState, this.states.CurrentHeaterCoolerState);
+            }
             this.platform.log.info(`${this.deviceType}:${this.id}: Retrieve Characteristic Active From Crestron Processor -> ${this.states.Active}`);
             this.service.updateCharacteristic(this.platform.Characteristic.Active, this.states.Active);
         }      
@@ -266,6 +281,11 @@ export class HeaterCooler {
         let tmpActiveValue = value;
         if (this.states.Active != tmpActiveValue) {
             this.states.Active = tmpActiveValue;
+            if(this.states.Active = 1) {
+                this.states.CurrentHeaterCoolerState = this.states.TargetHeaterCoolerState + 1;
+                this.platform.log.info(`${this.deviceType}:${this.id}: Update Characteristic CurrentHeaterCoolerState To -> ${this.states.CurrentHeaterCoolerState}`);
+                this.service.updateCharacteristic(this.platform.Characteristic.CurrentHeaterCoolerState, this.states.CurrentHeaterCoolerState);
+            }
             this.platform.log.info(`${this.deviceType}:${this.id}: Set Characteristic Active By Crestron Processor -> ${this.states.Active}`);
             this.service.updateCharacteristic(this.platform.Characteristic.Active, this.states.Active);
         }
@@ -275,7 +295,12 @@ export class HeaterCooler {
         let tmpTargetHeaterCoolerState = value;
         if(this.states.TargetHeaterCoolerState != tmpTargetHeaterCoolerState) {
            this.states.TargetHeaterCoolerState = tmpTargetHeaterCoolerState;
-           this.platform.log.info(`${this.deviceType}:${this.id}: Set Characteristic TargetHeaterCoolerState By Crestron Processor -> $(this.states.TargetHeaterCoolerState}`);
+           if(this.states.Active = 1) {
+                this.states.CurrentHeaterCoolerState = this.states.TargetHeaterCoolerState + 1;
+                this.platform.log.info(`${this.deviceType}:${this.id}: Update Characteristic CurrentHeaterCoolerState To -> ${this.states.CurrentHeaterCoolerState}`);
+                this.service.updateCharacteristic(this.platform.Characteristic.CurrentHeaterCoolerState, this.states.CurrentHeaterCoolerState);
+            }
+           this.platform.log.info(`${this.deviceType}:${this.id}: Retrieve Characteristic TargetHeaterCoolerState From Crestron Processor -> $(this.states.TargetHeaterCoolerState}`);
            this.service.updateCharacteristic(this.platform.Characteristic.TargetHeaterCoolerState, this.states.TargetHeaterCoolerState);
         }
     }
@@ -284,7 +309,12 @@ export class HeaterCooler {
         let tmpTargetHeaterCoolerState = value;
         if(this.states.TargetHeaterCoolerState != tmpTargetHeaterCoolerState) {
            this.states.TargetHeaterCoolerState = tmpTargetHeaterCoolerState;
-           this.platform.log.info(`${this.deviceType}:${this.id}: Retrieve Characteristic TargetHeaterCoolerState From Crestron Processor -> $(this.states.TargetHeaterCoolerState}`);
+           if(this.states.Active = 1) {
+                this.states.CurrentHeaterCoolerState = this.states.TargetHeaterCoolerState + 1;
+                this.platform.log.info(`${this.deviceType}:${this.id}: Update Characteristic CurrentHeaterCoolerState To -> ${this.states.CurrentHeaterCoolerState}`);
+                this.service.updateCharacteristic(this.platform.Characteristic.CurrentHeaterCoolerState, this.states.CurrentHeaterCoolerState);
+            } 
+           this.platform.log.info(`${this.deviceType}:${this.id}: Set Characteristic TargetHeaterCoolerState By Crestron Processor -> $(this.states.TargetHeaterCoolerState}`);
            this.service.updateCharacteristic(this.platform.Characteristic.TargetHeaterCoolerState, this.states.TargetHeaterCoolerState);
         }
     }
