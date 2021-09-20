@@ -58,7 +58,6 @@ export class HeaterCooler {
         //this.platform.log.info(`accessory.context.device.temperatureDisplayUnit: ${accessory.context.device.temperatureDisplayUnit}`);
             
         this.id = accessory.context.device.id;
-        this.states.TemperatureDisplayUnits = accessory.context.device.temperatureDisplayUnit;
         this.accessory = accessory;
         this.eventEmitter = eventEmitter;
         this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.getPowerStateMsg}`, this.getPowerStateEvent.bind(this));
@@ -200,9 +199,7 @@ export class HeaterCooler {
     }
     
     async handleTemperatureDisplayUnitsGet(): Promise<CharacteristicValue> {
-        this.platform.log.info(`Testing Active Value: ${this.states.Active}`);
-        this.platform.log.info(`Testing Units Value: ${this.states.TemperatureDisplayUnits}`);
-        const temperatureDisplayUnits = 0;
+        const temperatureDisplayUnits = this.states.TemperatureDisplayUnits;
         this.platform.log.info(`${this.deviceType}:${this.id}: Get Characteristic TemperatureDisplayUnits From Homekit -> ${temperatureDisplayUnits}`);
         this.platform.sendData(`${this.deviceType}:${this.id}:${this.getTemperatureDisplayUnitsMsg}:*`);
         return temperatureDisplayUnits;
