@@ -93,7 +93,7 @@ export class HeaterCooler {
         
         this.service.getCharacteristic(this.platform.Characteristic.TargetHeaterCoolerState)
             .setProps({
-                minValue: 1,
+                minValue: 0,
                 maxValue: 2
             })
             .onSet(this.handleTargetHeaterCoolerStateSet.bind(this))
