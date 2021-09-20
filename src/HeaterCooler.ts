@@ -29,6 +29,8 @@ export class HeaterCooler {
     private eventRotationSpeedMsg = "eventRotationSpeed";
     private setRotationSpeedMsg = "setRotationSpeed";
     private getRotationSpeedMsg = "getRotationSpeed";
+    private setTemperatureDisplayUnitsMsg = "setTemperatureDisplayUnits";
+    private getTemperatureDisplayUnitsMsg = "getTemperatureDisplayUnits";
     
     /**
      * These are just used to create a working example
@@ -132,6 +134,7 @@ export class HeaterCooler {
             .onGet(this.handleHeatingThresholdTemperatureGet.bind(this));
 
         this.service.getCharacteristic(this.platform.Characteristic.TemperatureDisplayUnits)
+            .onSet(this.handleTemperatureDisplayUnitsSet.bind(this))
             .onGet(this.handleTemperatureDisplayUnitsGet.bind(this));
     }
 
@@ -199,6 +202,7 @@ export class HeaterCooler {
     async handleTemperatureDisplayUnitsGet(): Promise<CharacteristicValue> {
         const temperatureDisplayUnits = this.states.TemperatureDisplayUnits;
         this.platform.log.info(`${this.deviceType}:${this.id}: Get Characteristic TemperatureDisplayUnits From Homekit -> ${temperatureDisplayUnits}`);
+        this.platform.sendData(`${this.deviceType}:${this.id}:${this.getTemperatureDisplayUnitsMsg}:*`);
         return temperatureDisplayUnits;
     }
 
@@ -267,6 +271,15 @@ export class HeaterCooler {
             this.service.updateCharacteristic(this.platform.Characteristic.CoolingThresholdTemperature, value);
             this.platform.sendData(`${this.deviceType}:${this.id}:${this.setTargetTempMsg}:${this.states.HeatingThresholdTemperature}:*`);
             this.platform.log.info(`${this.deviceType}:${this.id}: Set Characteristic HeatingThresholdTemperature By Homekit -> ${value}`);
+        }
+    }
+    
+    async handleTemperatureDisplayUnitsSet(value: CharacteristicValue) {
+        let tmpTemperatureDisplayUnits = value as number;
+        if(this.states.TemperatureDisplayUnits != tmpTemperatureDisplayUnits) {
+            this.states.TemperatureDisplayUnits = tmpTemperatureDisplayUnits;
+            this.platform.sendData(`${this.deviceType}:${this.id}:${this.setTemperatureDisplayUnitsMsg}:${this.states.TemperatureDisplayUnits}:*`);
+            this.platform.log.info(`${this.deviceType}:${this.id}: Set Characteristic TemperatureDisplayUnits By Homekit -> ${value}`);
         }
     }
 
