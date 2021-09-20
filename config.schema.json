@@ -70,8 +70,8 @@
                     }
                 }
             },
-            "ACs": {
-                "title": "air conditioners",
+            "heatercoolers": {
+                "title": "HeaterCooler",
                 "type": "array",
                 "items": {
                     "title": "Air conditioner Configuration",
@@ -87,7 +87,7 @@
                         "name": {
                             "title": "Name",
                             "type": "string",
-                            "default": "AC",
+                            "default": "HeaterCooler",
                             "required": true
                         },
                         "minTemperatureValue": {
