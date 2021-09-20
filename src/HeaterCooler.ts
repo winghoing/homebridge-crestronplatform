@@ -61,6 +61,7 @@ export class HeaterCooler {
         this.eventEmitter = eventEmitter;
         this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.getPowerStateMsg}`, this.getPowerStateEvent.bind(this));
         this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.eventPowerStateMsg}`, this.setPowerStateEvent.bind(this));
+        this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.getCurrentHeaterCoolerStateMsg}`, this.getCurrentHeaterCoolerStateEvent.bind(this));
         this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.getTargetHeaterCoolerStateMsg}`, this.getTargetHeaterCoolerStateEvent.bind(this));
         this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.eventTargetHeaterCoolerStateMsg}`, this.setTargetHeaterCoolerStateEvent.bind(this));
         this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.getCurrentTempMsg}`, this.getCurrentTemperatureEvent.bind(this));
@@ -289,6 +290,21 @@ export class HeaterCooler {
             }
             this.platform.log.info(`${this.deviceType}:${this.id}: Set Characteristic Active By Crestron Processor -> ${this.states.Active}`);
             this.service.updateCharacteristic(this.platform.Characteristic.Active, this.states.Active);
+        }
+    }
+    
+    getCurrentHeaterCoolerStateEvent(value: number) {
+        let tmpCurrentHeaterCoolerState = value;
+        if(this.states.CurrentHeaterCoolerState != tmpCurrentHeaterCoolerState) {
+            this.states.CurrentHeaterCoolerState = tmpCurrentHeaterCoolerState;
+            if(tmpCurrentHeaterCoolerState != 0)
+            {
+                this.states.TargetHeaterCoolerState = tmpCurrentHeaterCoolerState - 1;
+                this.platform.log.info(`${this.deviceType}:${this.id}: Update Characteristic TargetHeaterCoolerState To -> ${this.states.TargetHeaterCoolerState}`);
+                this.service.updateCharacteristic(this.platform.Characteristic.TargetHeaterCoolerState, this.states.TargetHeaterCoolerState);
+            }
+            this.platform.log.info(`${this.deviceType}:${this.id}: Retrieve Characteristic CurrentHeaterCoolerState From Crestron Processor -> $(this.states.CurrentHeaterCoolerState}`);
+            this.service.updateCharacteristic(this.platform.Characteristic.CurrentHeaterCoolerState, this.states.CurrentHeaterCoolerState);
         }
     }
     
