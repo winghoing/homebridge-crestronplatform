@@ -79,10 +79,12 @@ export class CrestronPlatform implements DynamicPlatformPlugin {
         // EXAMPLE ONLY
         // A real plugin you would discover accessories from the local network, cloud services
         // or a user-defined array in the platform config.
-        let configLightbulbs = this.config["lightbulbs"];
-        let configHeaterCoolers = this.config["ACs"];
+        let configNonDimLightbulbs = this.config["non-dimmable-lightbulbs"];
+        let configDimLightbulbs = this.config["dimmable-lightbulbs"];
+        let configHeaterCoolers = this.config["heatercoolers"];
         //this.log.info(`printing accessories: ${configDevices}`);
-        this.registerDevices(configLightbulbs, "Lightbulb");
+        this.registerDevices(configNonDimLightbulbs, "NonDimLightbulb");
+        this.registerDevices(configDimLightbulbs, "DimLightbulb");
         this.registerDevices(configHeaterCoolers, "HeaterCooler");
     }
 
@@ -115,15 +117,16 @@ export class CrestronPlatform implements DynamicPlatformPlugin {
                     // this is imported from `platformAccessory.ts`
                     this.log.info(`existing accessory type: ${deviceType}`);
                     switch (deviceType) {
-                        case "Lightbulb":
+                        case "NonDimLightbulb":
                             {
-                                if(device.type == "NonDimmable") {
-                                    this.log.info(`create existing lightbulb accessory: ${existingAccessory.displayName}`);
-                                    new Lightbulb(this, existingAccessory, this.eventEmitter);
-                                }else if(device.type == "Dimmable") {
-                                    this.log.info(`create existing dimlightbulb accessory: ${existingAccessory.displayName}`);
-                                    new DimLightbulb(this, existingAccessory, this.eventEmitter);
-                                }
+                                this.log.info(`create existing lightbulb accessory: ${existingAccessory.displayName}`);
+                                new Lightbulb(this, existingAccessory, this.eventEmitter);
+                                break;
+                            }
+                        case "DimLightbulb":
+                            {
+                                this.log.info(`create existing dimlightbulb accessory: ${existingAccessory.displayName}`);
+                                new DimLightbulb(this, existingAccessory, this.eventEmitter);
                                 break;
                             }
                         case "HeaterCooler":
@@ -156,15 +159,16 @@ export class CrestronPlatform implements DynamicPlatformPlugin {
                     // create the accessory handler for the newly create accessory
                     // this is imported from `platformAccessory.ts`
                     switch (deviceType) {
-                        case "Lightbulb":
+                        case "NonDimLightbulb":
                             {
-                                if(device.type == "NonDimmable") {
-                                    this.log.info(`create not existing lightbulb accessory: ${accessory.displayName}`);
-                                    new Lightbulb(this, accessory, this.eventEmitter);
-                                }else if(device.type == "Dimmable") {
-                                    this.log.info(`create nof existing dimlightbulb accessory: ${accessory.displayName}`);
-                                    new DimLightbulb(this, accessory, this.eventEmitter);
-                                }
+                                this.log.info(`create not existing lightbulb accessory: ${accessory.displayName}`);
+                                new Lightbulb(this, accessory, this.eventEmitter);
+                                break;
+                            }
+                        case "DimLightbulb":
+                            {
+                                this.log.info(`create nof existing dimlightbulb accessory: ${accessory.displayName}`);
+                                new DimLightbulb(this, accessory, this.eventEmitter);
                                 break;
                             }
                         case "HeaterCooler":
