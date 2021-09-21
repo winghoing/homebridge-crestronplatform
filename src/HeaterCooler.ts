@@ -274,18 +274,14 @@ export class HeaterCooler {
     }
     
     async updateThresholdTemperature(value: number, type: string) {
-        this.platform.log.info(`Test point 1`);
         let tmpThresholdTemperature = value;
         if(type == "HeatingThresholdTemperature") {
-            this.platform.log.info(`Test point 2`);
             this.service.updateCharacteristic(this.platform.Characteristic.HeatingThresholdTemperature, tmpThresholdTemperature);    
             this.platform.log.info(`${this.deviceType}:${this.id}: Update Characteristic HeatingThresholdTemperature: -> ${tmpThresholdTemperature}`);
         }else if(type == "CoolingThresholdTemperature") {
-            this.platform.log.info(`Test point 3`);
             this.service.updateCharacteristic(this.platform.Characteristic.CoolingThresholdTemperature, tmpThresholdTemperature);
             this.platform.log.info(`${this.deviceType}:${this.id}: Update Characteristic CoolingThresholdTemperature: -> ${tmpThresholdTemperature}`);
         }
-        this.platform.log.info(`Test point 4`);
     }
     
     async handleTemperatureDisplayUnitsSet(value: CharacteristicValue) {
