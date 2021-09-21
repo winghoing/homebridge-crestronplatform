@@ -44,7 +44,7 @@ export class CrestronPlatform implements DynamicPlatformPlugin {
         var msgArr = data.toString().split("*");
         for (let msg of msgArr) {
             var msgDataArr = msg.toString().split(":");
-            if (msgDataArr[0] != "") {
+            if (msgDataArr[0].trim() != "") {
                 this.log.info(`received data from crestron: ${msgDataArr}`);
                 var emitMsg = `${msgDataArr[0]}:${msgDataArr[1]}:${msgDataArr[2]}`;
                 this.log.info(`emit message: ${emitMsg}`);
