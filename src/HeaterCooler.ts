@@ -119,8 +119,8 @@ export class HeaterCooler {
                 maxValue: accessory.context.device.maxTemperatureValue,
                 minStep: accessory.context.device.minTemperatureStep
             })
-            .onSet(this.handleThresholdTemperatureSet.bind(this))
-            .onGet(this.handleThresholdTemperatureGet.bind(this));
+            .onSet(this.handleCoolingThresholdTemperatureSet.bind(this))
+            .onGet(this.handleCoolingThresholdTemperatureGet.bind(this));
             
         this.service.getCharacteristic(this.platform.Characteristic.HeatingThresholdTemperature)
             .setProps({
@@ -128,8 +128,8 @@ export class HeaterCooler {
                 maxValue: accessory.context.device.maxTemperatureValue,
                 minStep: accessory.context.device.minTemperatureStep
             })
-            .onSet(this.handleThresholdTemperatureSet.bind(this))
-            .onGet(this.handleThresholdTemperatureGet.bind(this));
+            .onSet(this.handleHeatingThresholdTemperatureSet.bind(this))
+            .onGet(this.handleHeatingThresholdTemperatureGet.bind(this));
 
         this.service.getCharacteristic(this.platform.Characteristic.TemperatureDisplayUnits)
             .onSet(this.handleTemperatureDisplayUnitsSet.bind(this))
@@ -149,7 +149,7 @@ export class HeaterCooler {
      * this.service.updateCharacteristic(this.platform.Characteristic.On, true)
      */
     async handleActiveGet(): Promise<CharacteristicValue> {
-        const isActive = this.service.getCharacteristic(this.platform.Characteristic.Active).value;
+        const isActive = this.states.Active;
         this.platform.log.info(`${this.deviceType}:${this.id}: Get Characteristic Active From Homekit -> ${isActive}`);
         this.platform.sendData(`${this.deviceType}:${this.id}:${this.getPowerStateMsg}:*`);
         return isActive;
@@ -183,11 +183,18 @@ export class HeaterCooler {
         return currentTemperature;
     }
     
-    async handleThresholdTemperatureGet(): Promise<CharacteristicValue> {
-        const thresholdTemperature = this.states.TargetTemperature;
-        this.platform.log.info(`${this.deviceType}:${this.id}: Get Characteristic TargetTemperature From Homekit -> ${thresholdTemperature}`);
+    async handleCoolingThresholdTemperatureGet(): Promise<CharacteristicValue> {
+        const targetTemperature = this.states.TargetTemperature;
+        this.platform.log.info(`${this.deviceType}:${this.id}: Get Characteristic CoolingThresholdTemperature From Homekit -> ${targetTemperature}`);
         this.platform.sendData(`${this.deviceType}:${this.id}:${this.getTargetTempMsg}:*`);
-        return thresholdTemperature;
+        return targetTemperature;
+    }
+    
+    async handleHeatingThresholdTemperatureGet(): Promise<CharacteristicValue> {
+        const targetTemperature = this.states.TargetTemperature;
+        this.platform.log.info(`${this.deviceType}:${this.id}: Get Characteristic HeatingThresholdTemperature From Homekit -> ${targetTemperature}`);
+        this.platform.sendData(`${this.deviceType}:${this.id}:${this.getTargetTempMsg}:*`);
+        return targetTemperature;
     }
     
     async handleTemperatureDisplayUnitsGet(): Promise<CharacteristicValue> {
@@ -243,11 +250,22 @@ export class HeaterCooler {
         }
     }
     
-    async handleThresholdTemperatureSet(value: CharacteristicValue) {
-        let tmpThresholdTemperature = value as number;
-        this.states.TargetTemperature = tmpThresholdTemperature;
+    async handleCoolingThresholdTemperatureSet(value: CharacteristicValue) {
+        let tmpTargetTemperature = value as number;
+        this.states.TargetTemperature = tmpTargetTemperature;
         this.platform.sendData(`${this.deviceType}:${this.id}:${this.setTargetTempMsg}:${this.states.TargetTemperature}:*`);
-        this.platform.log.info(`${this.deviceType}:${this.id}: Set Characteristic ThresholdTemperature By Homekit -> ${tmpThresholdTemperature}`);
+        this.platform.log.info(`${this.deviceType}:${this.id}: Set Characteristic CoolingThresholdTemperature By Homekit -> ${tmpTargetTemperature}`);
+        this.service.getCharacteristic(this.platform.Characteristic.HeatingThresholdTemperature).updateValue(tmpTargetTemperature);
+        this.platform.log.info(`${this.deviceType}:${this.id}: Update Characteristic HeatingThresholdTemperature: -> ${tmpTargetTemperature}`);
+    }
+    
+    async handleHeatingThresholdTemperatureSet(value: CharacteristicValue) {
+        let tmpTargetTemperature = value as number;
+        this.states.TargetTemperature = tmpTargetTemperature;
+        this.platform.sendData(`${this.deviceType}:${this.id}:${this.setTargetTempMsg}:${this.states.TargetTemperature}:*`);
+        this.platform.log.info(`${this.deviceType}:${this.id}: Set Characteristic HeatingThresholdTemperature By Homekit -> ${tmpTargetTemperature}`);
+        this.service.getCharacteristic(this.platform.Characteristic.CoolingThresholdTemperature).updateValue(tmpTargetTemperature);
+        this.platform.log.info(`${this.deviceType}:${this.id}: Update Characteristic CoolingThresholdTemperature: -> ${tmpTargetTemperature}`);
     }
     
     async handleTemperatureDisplayUnitsSet(value: CharacteristicValue) {
