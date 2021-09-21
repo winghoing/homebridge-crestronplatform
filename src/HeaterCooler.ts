@@ -73,7 +73,6 @@ export class HeaterCooler {
         this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.getRotationSpeedMsg}`, this.getRotationSpeedEvent.bind(this));
         this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.eventRotationSpeedMsg}`, this.setRotationSpeedEvent.bind(this));
         this.eventEmitter.on(`${this.updateThresholdTemperatureMsg}`, this.updateThresholdTemperature.bind(this));
-        this.eventEmitter.on(`${this.updateThresholdTemperatureMsg}`, this.updateThresholdTemperature.bind(this));
         // set accessory information
         this.accessory.getService(this.platform.Service.AccessoryInformation)!
             .setCharacteristic(this.platform.Characteristic.Manufacturer, 'Default-Manufacturer')
@@ -279,12 +278,12 @@ export class HeaterCooler {
         let tmpThresholdTemperature = value;
         if(type == "HeatingThresholdTemperature") {
             this.platform.log.info(`Test point 2`);
-            //this.service.updateCharacteristic(this.platform.Characteristic.HeatingThresholdTemperature, tmpThresholdTemperature);    
-            //this.platform.log.info(`${this.deviceType}:${this.id}: Update Characteristic HeatingThresholdTemperature: -> ${tmpThresholdTemperature}`);
+            this.service.updateCharacteristic(this.platform.Characteristic.HeatingThresholdTemperature, tmpThresholdTemperature);    
+            this.platform.log.info(`${this.deviceType}:${this.id}: Update Characteristic HeatingThresholdTemperature: -> ${tmpThresholdTemperature}`);
         }else if(type == "CoolingThresholdTemperature") {
             this.platform.log.info(`Test point 3`);
-            //this.service.updateCharacteristic(this.platform.Characteristic.CoolingThresholdTemperature, tmpThresholdTemperature);
-            //this.platform.log.info(`${this.deviceType}:${this.id}: Update Characteristic CoolingThresholdTemperature: -> ${tmpThresholdTemperature}`);
+            this.service.updateCharacteristic(this.platform.Characteristic.CoolingThresholdTemperature, tmpThresholdTemperature);
+            this.platform.log.info(`${this.deviceType}:${this.id}: Update Characteristic CoolingThresholdTemperature: -> ${tmpThresholdTemperature}`);
         }
         this.platform.log.info(`Test point 4`);
     }
