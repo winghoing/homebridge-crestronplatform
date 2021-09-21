@@ -275,7 +275,7 @@ export class HeaterCooler {
     }
     
     updateThresholdTemperature(value: number, type: string) {
-        if(this.locked = false) {
+        if(this.locked == false) {
             this.locked = true;
             this.platform.log.info(`Test point 1`);
             let tmpThresholdTemperature = value;
