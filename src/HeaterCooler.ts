@@ -275,8 +275,8 @@ export class HeaterCooler {
     }
     
     updateThresholdTemperature(value: number, type: string) {
-        if(locked = false) {
-            locked = true;
+        if(this.locked = false) {
+            this.locked = true;
             this.platform.log.info(`Test point 1`);
             let tmpThresholdTemperature = value;
             if(type == "HeatingThresholdTemperature") {
@@ -289,7 +289,7 @@ export class HeaterCooler {
                 this.platform.log.info(`${this.deviceType}:${this.id}: Update Characteristic CoolingThresholdTemperature: -> ${tmpThresholdTemperature}`);
             }
             this.platform.log.info(`Test point 4`);
-            locked = false;
+            this.locked = false;
         }
     }
     
