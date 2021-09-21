@@ -246,8 +246,9 @@ export class HeaterCooler {
     async handleThresholdTemperatureSet(value: CharacteristicValue) {
         let tmpThresholdTemperature = value as number;
         this.states.TargetTemperature = tmpThresholdTemperature;
-        //this.platform.log.info(`${this.deviceType}:${this.id}: Set Characteristic HeatingThresholdTemperature By Homekit -> ${tmpThresholdTemperature}`);
-        //this.service.updateCharacteristic(this.platform.Characteristic.HeatingThresholdTemperature, tmpThresholdTemperature);
+        this.service.updateCharacteristic(this.platform.Characteristic.HeatingThresholdTemperature, tmpThresholdTemperature);
+        this.service.updateCharacteristic(this.platform.Characteristic.CoolingThresholdTemperature, tmpThresholdTemperature);
+        this.platform.log.info(`${this.deviceType}:${this.id}: Set Characteristic HeatingThresholdTemperature By Homekit -> ${tmpThresholdTemperature}`);
         this.platform.sendData(`${this.deviceType}:${this.id}:${this.setTargetTempMsg}:${this.states.TargetTemperature}:*`);
         this.platform.log.info(`${this.deviceType}:${this.id}: Set Characteristic ThresholdTemperature By Homekit -> ${tmpThresholdTemperature}`);
     }
