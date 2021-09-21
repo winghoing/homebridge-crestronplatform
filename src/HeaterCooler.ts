@@ -250,7 +250,7 @@ export class HeaterCooler {
         }
     }
     
-    async handleCoolingThresholdTemperatureSet(value: CharacteristicValue) {
+    handleCoolingThresholdTemperatureSet(value: CharacteristicValue) {
         let tmpTargetTemperature = value as number;
         if(this.states.TargetTemperature != tmpTargetTemperature) {
             this.states.TargetTemperature = tmpTargetTemperature;
@@ -261,7 +261,7 @@ export class HeaterCooler {
         }
     }
     
-    async handleHeatingThresholdTemperatureSet(value: CharacteristicValue) {
+    handleHeatingThresholdTemperatureSet(value: CharacteristicValue) {
         let tmpTargetTemperature = value as number;
         if(this.states.TargetTemperature != tmpTargetTemperature) {
             this.states.TargetTemperature = tmpTargetTemperature;
