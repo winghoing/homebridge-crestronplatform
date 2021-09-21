@@ -31,6 +31,8 @@ export class HeaterCooler {
     private getRotationSpeedMsg = "getRotationSpeed";
     private setTemperatureDisplayUnitsMsg = "setTemperatureDisplayUnits";
     private getTemperatureDisplayUnitsMsg = "getTemperatureDisplayUnits";
+    private updateThresholdTemperatureMsg = "UpdatedHeatingThresholdTemperature"
+    private locked = false;
     
     /**
      * These are just used to create a working example
@@ -70,6 +72,8 @@ export class HeaterCooler {
         this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.eventTargetTempMsg}`, this.setTargetTemperatureEvent.bind(this));
         this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.getRotationSpeedMsg}`, this.getRotationSpeedEvent.bind(this));
         this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.eventRotationSpeedMsg}`, this.setRotationSpeedEvent.bind(this));
+        this.eventEmitter.on(`${this.updateThresholdTemperatureMsg}`, this.updateThresholdTemperature.bind(this));
+        this.eventEmitter.on(`${this.updateThresholdTemperatureMsg}`, this.updateThresholdTemperature.bind(this));
         // set accessory information
         this.accessory.getService(this.platform.Service.AccessoryInformation)!
             .setCharacteristic(this.platform.Characteristic.Manufacturer, 'Default-Manufacturer')
@@ -256,6 +260,7 @@ export class HeaterCooler {
             this.states.TargetTemperature = tmpTargetTemperature;
             this.platform.sendData(`${this.deviceType}:${this.id}:${this.setTargetTempMsg}:${this.states.TargetTemperature}:*`);
             this.platform.log.info(`${this.deviceType}:${this.id}: Set Characteristic CoolingThresholdTemperature By Homekit -> ${tmpTargetTemperature}`);
+            this.eventEmitter.emit(`${this.updateThresholdTemperatureMsg}`, tmpTargetTemperature, "HeatingThresholdTemperature");
         }
     }
     
@@ -265,6 +270,18 @@ export class HeaterCooler {
             this.states.TargetTemperature = tmpTargetTemperature;
             this.platform.sendData(`${this.deviceType}:${this.id}:${this.setTargetTempMsg}:${this.states.TargetTemperature}:*`);
             this.platform.log.info(`${this.deviceType}:${this.id}: Set Characteristic HeatingThresholdTemperature By Homekit -> ${tmpTargetTemperature}`);
+            this.eventEmitter.emit(`${this.updateThresholdTemperatureMsg}`, tmpTargetTemperature, "CoolingThresholdTemperature");
+        }
+    }
+    
+    updateThresholdTemperature(value: number, type: string) {
+        let tmpThresholdTemperature = value;
+        if(type == "HeatingThresholdTemperature") {
+            this.service.updateCharacteristic(this.platform.Characteristic.HeatingThresholdTemperature, tmpThresholdTemperature);    
+            this.platform.log.info(`${this.deviceType}:${this.id}: Update Characteristic HeatingThresholdTemperature: -> ${tmpThresholdTemperature}`);
+        }else if(type == "CoolingThresholdTemperature") {
+            this.service.updateCharacteristic(this.platform.Characteristic.CoolingThresholdTemperature, tmpThresholdTemperature);
+            this.platform.log.info(`${this.deviceType}:${this.id}: Update Characteristic CoolingThresholdTemperature: -> ${tmpThresholdTemperature}`);
         }
     }
     
