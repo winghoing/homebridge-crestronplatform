@@ -361,23 +361,21 @@ export class HeaterCooler {
     
     getTargetTemperatureEvent(value: number) {
         let tmpTargetTemperature = value;
-        if(this.states.CoolingThresholdTemperature != tmpTargetTemperature || this.states.HeatingThresholdTemperature != tmpTargetTemperature) {
-            this.states.CoolingThresholdTemperature = tmpTargetTemperature;
-            this.states.HeatingThresholdTemperature = tmpTargetTemperature;
+        if(this.states.TargetTemperature != tmpTargetTemperature) {
+            this.states.TargetTemperature = tmpTargetTemperature;
             this.platform.log.info(`${this.deviceType}:${this.id}: Retrieve Characteristic TargetTemperature From Crestron Processor -> ${tmpTargetTemperature}`);
-            this.service.updateCharacteristic(this.platform.Characteristic.CoolingThresholdTemperature, this.states.CoolingThresholdTemperature);
-            this.service.updateCharacteristic(this.platform.Characteristic.HeatingThresholdTemperature, this.states.HeatingThresholdTemperature);
+            this.service.updateCharacteristic(this.platform.Characteristic.CoolingThresholdTemperature, this.states.TargetTemperature);
+            this.service.updateCharacteristic(this.platform.Characteristic.HeatingThresholdTemperature, this.states.TargetTemperature);
         }
     }
     
     setTargetTemperatureEvent(value: number) {
         let tmpTargetTemperature = value;
-        if(this.states.CoolingThresholdTemperature != tmpTargetTemperature || this.states.HeatingThresholdTemperature != tmpTargetTemperature) {
-            this.states.CoolingThresholdTemperature = tmpTargetTemperature;
-            this.states.HeatingThresholdTemperature = tmpTargetTemperature;
+        if(this.states.TargetTemperature != tmpTargetTemperature) {
+            this.states.TargetTemperature = tmpTargetTemperature;
             this.platform.log.info(`${this.deviceType}:${this.id}: Set Characteristic TargetTemperature By Crestron Processor -> ${tmpTargetTemperature}`);
-            this.service.updateCharacteristic(this.platform.Characteristic.CoolingThresholdTemperature, this.states.CoolingThresholdTemperature);
-            this.service.updateCharacteristic(this.platform.Characteristic.HeatingThresholdTemperature, this.states.HeatingThresholdTemperature);
+            this.service.updateCharacteristic(this.platform.Characteristic.CoolingThresholdTemperature, this.states.TargetTemperature);
+            this.service.updateCharacteristic(this.platform.Characteristic.HeatingThresholdTemperature, this.states.TargetTemperature);
         }
     }
     
