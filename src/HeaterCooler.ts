@@ -128,7 +128,7 @@ export class HeaterCooler {
                 maxValue: accessory.context.device.maxTemperatureValue,
                 minStep: accessory.context.device.minTemperatureStep
             })
-            .onSet(this.handlThresholdTemperatureSet.bind(this))
+            .onSet(this.handleThresholdTemperatureSet.bind(this))
             .onGet(this.handleThresholdTemperatureGet.bind(this));
 
         this.service.getCharacteristic(this.platform.Characteristic.TemperatureDisplayUnits)
@@ -149,7 +149,7 @@ export class HeaterCooler {
      * this.service.updateCharacteristic(this.platform.Characteristic.On, true)
      */
     async handleActiveGet(): Promise<CharacteristicValue> {
-        const isActive = this.service.getCharacteristic(this.platform.Characteristic.Active).Value;
+        const isActive = this.service.getCharacteristic(this.platform.Characteristic.Active).value;
         this.platform.log.info(`${this.deviceType}:${this.id}: Get Characteristic Active From Homekit -> ${isActive}`);
         this.platform.sendData(`${this.deviceType}:${this.id}:${this.getPowerStateMsg}:*`);
         return isActive;
