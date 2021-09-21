@@ -256,7 +256,7 @@ export class HeaterCooler {
         if(this.states.CoolingThresholdTemperature != tmpCoolingThresholdTemperature) {
             this.states.CoolingThresholdTemperature = tmpCoolingThresholdTemperature;
             //this.states.HeatingThresholdTemperature = tmpCoolingThresholdTemperature;
-            this.service.updateCharacteristic(this.platform.Characteristic.HeatingThresholdTemperature, tmpCoolingThresholdTemperature);
+            //this.service.updateCharacteristic(this.platform.Characteristic.HeatingThresholdTemperature, tmpCoolingThresholdTemperature);
             this.platform.sendData(`${this.deviceType}:${this.id}:${this.setTargetTempMsg}:${this.states.CoolingThresholdTemperature}:*`);
             this.platform.log.info(`${this.deviceType}:${this.id}: Set Characteristic CoolingThresholdTemperature By Homekit -> ${tmpCoolingThresholdTemperature}`);
         }
@@ -267,7 +267,7 @@ export class HeaterCooler {
         if(this.states.HeatingThresholdTemperature != tmpHeatingThresholdTemperature) {
             this.states.HeatingThresholdTemperature = tmpHeatingThresholdTemperature;
             //this.states.CoolingThresholdTemperature = tmpHeatingThresholdTemperature;
-            this.service.updateCharacteristic(this.platform.Characteristic.CoolingThresholdTemperature, tmpHeatingThresholdTemperature);
+            //this.service.updateCharacteristic(this.platform.Characteristic.CoolingThresholdTemperature, tmpHeatingThresholdTemperature);
             this.platform.sendData(`${this.deviceType}:${this.id}:${this.setTargetTempMsg}:${this.states.HeatingThresholdTemperature}:*`);
             this.platform.log.info(`${this.deviceType}:${this.id}: Set Characteristic HeatingThresholdTemperature By Homekit -> ${tmpHeatingThresholdTemperature}`);
         }
