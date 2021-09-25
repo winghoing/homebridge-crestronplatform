@@ -123,7 +123,8 @@ export class HeaterCooler {
                 maxValue: accessory.context.device.maxTemperatureValue,
                 minStep: accessory.context.device.minTemperatureStep
             })
-            .onSet(this.handleCoolingThresholdTemperatureSet.bind(this))
+            //.onSet(this.handleCoolingThresholdTemperatureSet.bind(this))
+            .onSet(this.handleTargetTemperatureSet.bind(this))
             .onGet(this.handleCoolingThresholdTemperatureGet.bind(this));
             
         this.service.getCharacteristic(this.platform.Characteristic.HeatingThresholdTemperature)
@@ -132,7 +133,8 @@ export class HeaterCooler {
                 maxValue: accessory.context.device.maxTemperatureValue,
                 minStep: accessory.context.device.minTemperatureStep
             })
-            .onSet(this.handleHeatingThresholdTemperatureSet.bind(this))
+            //.onSet(this.handleHeatingThresholdTemperatureSet.bind(this))
+            .onSet(this.handleTargetTemperatureSet.bind(this))
             .onGet(this.handleHeatingThresholdTemperatureGet.bind(this));
 
         this.service.getCharacteristic(this.platform.Characteristic.TemperatureDisplayUnits)
@@ -283,6 +285,21 @@ export class HeaterCooler {
             this.service.updateCharacteristic(this.platform.Characteristic.CoolingThresholdTemperature, tmpThresholdTemperature);
             this.platform.log.info(`${this.deviceType}:${this.id}: Update Characteristic CoolingThresholdTemperature: -> ${tmpThresholdTemperature}`);
         }
+    }
+    
+    async handleTargetTemperatureSet(value: CharacteristicValue) {
+        let tmpTargetTemperature = value as number;
+        let myPromise = new Promise((myResolve, myReject) => {
+            if(this.states.TargetTemperature != tmpTargetTemperature) {
+                this.states.TargetTemperature = tmpTargetTemperature;
+                this.platform.sendData(`${this.deviceType}:${this.id}:${this.setTargetTempMsg}:${this.states.TargetTemperature * 10}:*`);
+                this.platform.log.info(`${this.deviceType}:${this.id}: Set Characteristic HeatingThresholdTemperature By Homekit -> ${tmpTargetTemperature}`);
+            }
+            myResolve();
+        });
+        await myPromise;
+        await this.service.updateCharacteristic(this.platform.Characteristic.CoolingThresholdTemperature, tmpThresholdTemperature);
+        await this.service.updateCharacteristic(this.platform.Characteristic.CoolingThresholdTemperature, tmpThresholdTemperature);
     }
     
     async handleTemperatureDisplayUnitsSet(value: CharacteristicValue) {
