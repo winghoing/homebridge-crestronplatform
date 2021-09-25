@@ -289,16 +289,13 @@ export class HeaterCooler {
     
     async handleTargetTemperatureSet(value: CharacteristicValue) {
         let tmpTargetTemperature = value as number;
-        let myPromise = new Promise((myResolve, myReject) => {
-            if(this.states.TargetTemperature != tmpTargetTemperature) {
-                this.states.TargetTemperature = tmpTargetTemperature;
-                this.platform.sendData(`${this.deviceType}:${this.id}:${this.setTargetTempMsg}:${this.states.TargetTemperature * 10}:*`);
-                this.platform.log.info(`${this.deviceType}:${this.id}: Set Characteristic HeatingThresholdTemperature By Homekit -> ${tmpTargetTemperature}`);
-            }
-        });
-        await myPromise;
-        await this.service.updateCharacteristic(this.platform.Characteristic.CoolingThresholdTemperature, tmpTargetTemperature);
-        await this.service.updateCharacteristic(this.platform.Characteristic.CoolingThresholdTemperature, tmpTargetTemperature);
+        if(this.states.TargetTemperature != tmpTargetTemperature) {
+            this.states.TargetTemperature = tmpTargetTemperature;
+            this.platform.sendData(`${this.deviceType}:${this.id}:${this.setTargetTempMsg}:${this.states.TargetTemperature * 10}:*`);
+            this.platform.log.info(`${this.deviceType}:${this.id}: Set Characteristic HeatingThresholdTemperature By Homekit -> ${tmpTargetTemperature}`);
+            await this.service.updateCharacteristic(this.platform.Characteristic.CoolingThresholdTemperature, tmpTargetTemperature);
+            await this.service.updateCharacteristic(this.platform.Characteristic.CoolingThresholdTemperature, tmpTargetTemperature);
+        }  
     }
     
     async handleTemperatureDisplayUnitsSet(value: CharacteristicValue) {
