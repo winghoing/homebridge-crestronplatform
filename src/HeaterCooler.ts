@@ -298,8 +298,8 @@ export class HeaterCooler {
             myResolve();
         });
         await myPromise;
-        await this.service.updateCharacteristic(this.platform.Characteristic.CoolingThresholdTemperature, tmpThresholdTemperature);
-        await this.service.updateCharacteristic(this.platform.Characteristic.CoolingThresholdTemperature, tmpThresholdTemperature);
+        await this.service.updateCharacteristic(this.platform.Characteristic.CoolingThresholdTemperature, tmpTargetTemperature);
+        await this.service.updateCharacteristic(this.platform.Characteristic.CoolingThresholdTemperature, tmpTargetTemperature);
     }
     
     async handleTemperatureDisplayUnitsSet(value: CharacteristicValue) {
