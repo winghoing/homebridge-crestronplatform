@@ -260,7 +260,7 @@ export class HeaterCooler {
             this.states.TargetTemperature = tmpTargetTemperature;
             this.platform.sendData(`${this.deviceType}:${this.id}:${this.setTargetTempMsg}:${this.states.TargetTemperature * 10}:*`);
             this.platform.log.info(`${this.deviceType}:${this.id}: Set Characteristic CoolingThresholdTemperature By Homekit -> ${tmpTargetTemperature}`);
-            await updateThresholdTemperature(tmpTargetTemperature, "HeatingThresholdTemperature");
+            await this.updateThresholdTemperature(tmpTargetTemperature, "HeatingThresholdTemperature");
             //this.eventEmitter.emit(`${this.updateThresholdTemperatureMsg}`, tmpTargetTemperature, "HeatingThresholdTemperature");
         }
     }
@@ -271,7 +271,7 @@ export class HeaterCooler {
             this.states.TargetTemperature = tmpTargetTemperature;
             this.platform.sendData(`${this.deviceType}:${this.id}:${this.setTargetTempMsg}:${this.states.TargetTemperature * 10}:*`);
             this.platform.log.info(`${this.deviceType}:${this.id}: Set Characteristic HeatingThresholdTemperature By Homekit -> ${tmpTargetTemperature}`);
-            await updateThresholdTemperature(tmpTargetTemperature, "CoolingThresholdTemperature");
+            await this.updateThresholdTemperature(tmpTargetTemperature, "CoolingThresholdTemperature");
             //this.eventEmitter.emit(`${this.updateThresholdTemperatureMsg}`, tmpTargetTemperature, "CoolingThresholdTemperature");
         }
     }
