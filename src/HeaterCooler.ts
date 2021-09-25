@@ -44,6 +44,7 @@ export class HeaterCooler {
         TargetHeaterCoolerState: 0,
         RotationSpeed: 100,
         CurrentTemperature: 24,
+        TargetTemperature: 24,
         CoolingThresholdTemperature: 24,
         HeatingThresholdTemperature: 24,
         TemperatureDisplayUnits: 0
@@ -258,6 +259,7 @@ export class HeaterCooler {
     async handleCoolingThresholdTemperatureSet(value: CharacteristicValue) {
         const tmpCoolingThresholdTemperature = value as number;
         if(this.states.CoolingThresholdTemperature != tmpCoolingThresholdTemperature) {
+            this.states.TargetTemperature = tmpCoolingThresholdTemperature;
             this.states.CoolingThresholdTemperature = tmpCoolingThresholdTemperature;
             this.platform.sendData(`${this.deviceType}:${this.id}:${this.setTargetTempMsg}:${tmpCoolingThresholdTemperature * 10}:*`);
             this.platform.log.info(`${this.deviceType}:${this.id}: Set Characteristic CoolingThresholdTemperature By Homekit -> ${tmpCoolingThresholdTemperature}`);
@@ -267,6 +269,7 @@ export class HeaterCooler {
     async handleHeatingThresholdTemperatureSet(value: CharacteristicValue) {
         const tmpHeatingThresholdTemperature = value as number;
         if(this.states.HeatingThresholdTemperature != tmpHeatingThresholdTemperature) {
+            this.states.TargetTemperature = tmpHeatingThresholdTemperature;
             this.states.HeatingThresholdTemperature = tmpHeatingThresholdTemperature;
             this.platform.sendData(`${this.deviceType}:${this.id}:${this.setTargetTempMsg}:${tmpHeatingThresholdTemperature * 10}:*`);
             this.platform.log.info(`${this.deviceType}:${this.id}: Set Characteristic HeatingThresholdTemperature By Homekit -> ${tmpHeatingThresholdTemperature}`);
@@ -382,7 +385,8 @@ export class HeaterCooler {
     
     getTargetTemperatureEvent(value: number) {
         const tmpTargetTemperature = value / 10;
-        if(this.states.CoolingThresholdTemperature != tmpTargetTemperature) {
+        if(this.states.TargetTemperature != tmpTargetTemperature) {
+            this.states.TargetTemperature = tmpTargetTemperature;
             this.states.CoolingThresholdTemperature = tmpTargetTemperature;
             this.states.HeatingThresholdTemperature = tmpTargetTemperature;
             this.platform.log.info(`${this.deviceType}:${this.id}: Set Characteristic TargetTemperature By Crestron Processor -> ${tmpTargetTemperature}`);
@@ -393,7 +397,8 @@ export class HeaterCooler {
     
     setTargetTemperatureEvent(value: number) {
         const tmpTargetTemperature = value / 10;
-        if(this.states.CoolingThresholdTemperature != tmpTargetTemperature) {
+        if(this.states.TargetTemperature != tmpTargetTemperature) {
+            this.states.TargetTemperature = tmpTargetTemperature;
             this.states.CoolingThresholdTemperature = tmpTargetTemperature;
             this.states.HeatingThresholdTemperature = tmpTargetTemperature;
             this.platform.log.info(`${this.deviceType}:${this.id}: Set Characteristic TargetTemperature By Crestron Processor -> ${tmpTargetTemperature}`);
