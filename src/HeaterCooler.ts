@@ -31,7 +31,6 @@ export class HeaterCooler {
     private getRotationSpeedMsg = "getRotationSpeed";
     private setTemperatureDisplayUnitsMsg = "setTemperatureDisplayUnits";
     private getTemperatureDisplayUnitsMsg = "getTemperatureDisplayUnits";
-    //private updateThresholdTemperatureMsg = "UpdatedHeatingThresholdTemperature"
     private locked = false;
     
     /**
@@ -75,7 +74,6 @@ export class HeaterCooler {
         this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.eventTargetTempMsg}`, this.setTargetTemperatureEvent.bind(this));
         this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.getRotationSpeedMsg}`, this.getRotationSpeedEvent.bind(this));
         this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.eventRotationSpeedMsg}`, this.setRotationSpeedEvent.bind(this));
-        //this.eventEmitter.on(`${this.updateThresholdTemperatureMsg}`, this.updateThresholdTemperature.bind(this));
         // set accessory information
         this.accessory.getService(this.platform.Service.AccessoryInformation)!
             .setCharacteristic(this.platform.Characteristic.Manufacturer, 'Default-Manufacturer')
