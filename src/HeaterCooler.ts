@@ -123,8 +123,7 @@ export class HeaterCooler {
                 maxValue: accessory.context.device.maxTemperatureValue,
                 minStep: accessory.context.device.minTemperatureStep
             })
-            //.onSet(this.handleCoolingThresholdTemperatureSet.bind(this))
-            .onSet(this.handleTargetTemperatureSet.bind(this))
+            .onSet(this.handleCoolingThresholdTemperatureSet.bind(this))
             .onGet(this.handleCoolingThresholdTemperatureGet.bind(this));
             
         this.service.getCharacteristic(this.platform.Characteristic.HeatingThresholdTemperature)
@@ -133,8 +132,7 @@ export class HeaterCooler {
                 maxValue: accessory.context.device.maxTemperatureValue,
                 minStep: accessory.context.device.minTemperatureStep
             })
-            //.onSet(this.handleHeatingThresholdTemperatureSet.bind(this))
-            .onSet(this.handleTargetTemperatureSet.bind(this))
+            .onSet(this.handleHeatingThresholdTemperatureSet.bind(this))
             .onGet(this.handleHeatingThresholdTemperatureGet.bind(this));
 
         this.service.getCharacteristic(this.platform.Characteristic.TemperatureDisplayUnits)
@@ -279,23 +277,12 @@ export class HeaterCooler {
     async updateThresholdTemperature(value: number, type: string) {
         let tmpThresholdTemperature = value;
         if(type == "HeatingThresholdTemperature") {
-            this.service.updateCharacteristic(this.platform.Characteristic.HeatingThresholdTemperature, tmpThresholdTemperature);    
+            await this.service.updateCharacteristic(this.platform.Characteristic.HeatingThresholdTemperature, tmpThresholdTemperature);    
             this.platform.log.info(`${this.deviceType}:${this.id}: Update Characteristic HeatingThresholdTemperature: -> ${tmpThresholdTemperature}`);
         }else if(type == "CoolingThresholdTemperature") {
-            this.service.updateCharacteristic(this.platform.Characteristic.CoolingThresholdTemperature, tmpThresholdTemperature);
+            await this.service.updateCharacteristic(this.platform.Characteristic.CoolingThresholdTemperature, tmpThresholdTemperature);
             this.platform.log.info(`${this.deviceType}:${this.id}: Update Characteristic CoolingThresholdTemperature: -> ${tmpThresholdTemperature}`);
         }
-    }
-    
-    async handleTargetTemperatureSet(value: CharacteristicValue) {
-        let tmpTargetTemperature = value as number;
-        if(this.states.TargetTemperature != tmpTargetTemperature) {
-            this.states.TargetTemperature = tmpTargetTemperature;
-            this.platform.sendData(`${this.deviceType}:${this.id}:${this.setTargetTempMsg}:${this.states.TargetTemperature * 10}:*`);
-            this.platform.log.info(`${this.deviceType}:${this.id}: Set Characteristic HeatingThresholdTemperature By Homekit -> ${tmpTargetTemperature}`);
-            await this.service.updateCharacteristic(this.platform.Characteristic.CoolingThresholdTemperature, tmpTargetTemperature);
-            await this.service.updateCharacteristic(this.platform.Characteristic.CoolingThresholdTemperature, tmpTargetTemperature);
-        }  
     }
     
     async handleTemperatureDisplayUnitsSet(value: CharacteristicValue) {
