@@ -295,7 +295,6 @@ export class HeaterCooler {
                 this.platform.sendData(`${this.deviceType}:${this.id}:${this.setTargetTempMsg}:${this.states.TargetTemperature * 10}:*`);
                 this.platform.log.info(`${this.deviceType}:${this.id}: Set Characteristic HeatingThresholdTemperature By Homekit -> ${tmpTargetTemperature}`);
             }
-            myResolve();
         });
         await myPromise;
         await this.service.updateCharacteristic(this.platform.Characteristic.CoolingThresholdTemperature, tmpTargetTemperature);
