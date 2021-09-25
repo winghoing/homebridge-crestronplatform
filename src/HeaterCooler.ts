@@ -57,12 +57,12 @@ export class HeaterCooler {
         //this.platform.log.info(`accessory.context.device.minTemperatureValue: ${accessory.context.device.minTemperatureValue}`);
         //this.platform.log.info(`accessory.context.device.maxTemperatureValue: ${accessory.context.device.maxTemperatureValue}`);
         //this.platform.log.info(`accessory.context.device.minTemperatureStep: ${accessory.context.device.minTemperatureStep}`);
-        this.platform.log.info(`accessory.context.device.temperatureDisplayUnit: ${accessory.context.device.temperatureDisplayUnits}`);
+        //this.platform.log.info(`accessory.context.device.temperatureDisplayUnit: ${accessory.context.device.temperatureDisplayUnits}`);
             
         this.id = accessory.context.device.id;
         this.accessory = accessory;
         this.eventEmitter = eventEmitter;
-        //this.states.TemperatureDisplayUnits =  accessory.context.device.temperatureDisplayUnits;
+        this.states.TemperatureDisplayUnits =  accessory.context.device.temperatureDisplayUnits;
         this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.getPowerStateMsg}`, this.getPowerStateEvent.bind(this));
         this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.eventPowerStateMsg}`, this.setPowerStateEvent.bind(this));
         this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.getCurrentHeaterCoolerStateMsg}`, this.getCurrentHeaterCoolerStateEvent.bind(this));
