@@ -50,7 +50,7 @@ export class Television {
         this.service = this.accessory.getService(this.platform.Service.Television) || this.accessory.addService(this.platform.Service.Television);            
         this.speakerService = this.accessory.getService(this.platform.Service.TelevisionSpeaker, this.accessory.displayName + "SpeakerService") || this.accessory.addService(this.platform.Service.TelevisionSpeaker, this.accessory.displayName + "SpeakerService");
         this.service.addLinkedService(this.speakerService);
-        const hdmi1InputService = this.accessory.getService(this.accessory.addService(this.platform.Service.InputSource, this.accessory.displayName + "Input1Service") || this.accessory.addService(this.platform.Service.InputSource, this.accessory.displayName + "Input1Service");
+        const hdmi1InputService = this.accessory.getService(this.platform.Service.InputSource, this.accessory.displayName + "Input1Service") || this.accessory.addService(this.platform.Service.InputSource, this.accessory.displayName + "Input1Service");
         hdmi1InputService
             .setCharacteristic(this.platform.Characteristic.Identifier, 1)
             .setCharacteristic(this.platform.Characteristic.ConfiguredName, 'HDMI 1')
@@ -58,7 +58,7 @@ export class Television {
             .setCharacteristic(this.platform.Characteristic.InputSourceType, this.platform.Characteristic.InputSourceType.HDMI);
         this.service.addLinkedService(hdmi1InputService); // link to tv service
             
-        const hdmi2InputService = this.accessory.getService(this.accessory.addService(this.platform.Service.InputSource, this.accessory.displayName + "Input2Service") || this.accessory.addService(this.platform.Service.InputSource, this.accessory.displayName + "Input2Service");
+        const hdmi2InputService = this.accessory.getService(this.platform.Service.InputSource, this.accessory.displayName + "Input2Service") || this.accessory.addService(this.platform.Service.InputSource, this.accessory.displayName + "Input2Service");
         hdmi2InputService
             .setCharacteristic(this.platform.Characteristic.Identifier, 2)
             .setCharacteristic(this.platform.Characteristic.ConfiguredName, 'HDMI 2')
