@@ -126,13 +126,13 @@ export class DimLightbulb {
     getBrightnessEvent(value: number) {
         let tmpBrightnessValue = value;
         let tmpOnValue = (tmpBrightnessValue > 0) ? true : false;
-        if(this.states.On != tmpOnValue) {
+        if (this.states.On != tmpOnValue) {
             this.states.On = tmpOnValue;
             this.platform.log.info(`${this.deviceType}:${this.id}: Retrieve Characteristic On From Crestron Processor -> ${this.states.On}`);
             this.service.updateCharacteristic(this.platform.Characteristic.On, this.states.On);
         }
-        
-        if(this.states.Brightness != tmpBrightnessValue) { 
+
+        if (this.states.Brightness != tmpBrightnessValue) {
             this.states.Brightness = tmpBrightnessValue;
             this.platform.log.info(`${this.deviceType}:${this.id}: Retrieve Characteristic Brightness From Crestron Processor -> ${this.states.Brightness}`);
             this.service.updateCharacteristic(this.platform.Characteristic.Brightness, this.states.Brightness);

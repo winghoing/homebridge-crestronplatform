@@ -75,7 +75,7 @@ export class Lightbulb {
         this.platform.sendData(`${this.deviceType}:${this.id}:${this.getPowerStateMsg}:*`);
         return isOn;
     }
-    
+
     /**
      * Handle "SET" requests from HomeKit
      * These are sent when the user changes the state of an accessory, for example, changing the Brightness
@@ -90,7 +90,7 @@ export class Lightbulb {
             this.platform.log.info(`${this.deviceType}:${this.id}: Set Characteristic On By Homekit -> ${this.states.On}`);
         }
     }
-    
+
     getLightStateEvent(value: number) {
         let tmpValue = (value == 1) ? true : false;
 

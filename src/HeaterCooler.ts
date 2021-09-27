@@ -31,8 +31,7 @@ export class HeaterCooler {
     private getRotationSpeedMsg = "getRotationSpeed";
     private setTemperatureDisplayUnitsMsg = "setTemperatureDisplayUnits";
     private getTemperatureDisplayUnitsMsg = "getTemperatureDisplayUnits";
-    private locked = false;
-    
+
     /**
      * These are just used to create a working example
      * You should implement your own code to track the state of your accessory
@@ -54,15 +53,10 @@ export class HeaterCooler {
         private accessory: PlatformAccessory,
         eventEmitter: EventEmitter
     ) {
-        //this.platform.log.info(`accessory.context.device.minTemperatureValue: ${accessory.context.device.minTemperatureValue}`);
-        //this.platform.log.info(`accessory.context.device.maxTemperatureValue: ${accessory.context.device.maxTemperatureValue}`);
-        //this.platform.log.info(`accessory.context.device.minTemperatureStep: ${accessory.context.device.minTemperatureStep}`);
-        //this.platform.log.info(`accessory.context.device.temperatureDisplayUnit: ${accessory.context.device.temperatureDisplayUnits}`);
-            
         this.id = accessory.context.device.id;
         this.accessory = accessory;
         this.eventEmitter = eventEmitter;
-        this.states.TemperatureDisplayUnits =  accessory.context.device.temperatureDisplayUnits;
+        this.states.TemperatureDisplayUnits = accessory.context.device.temperatureDisplayUnits;
         this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.getPowerStateMsg}`, this.getPowerStateEvent.bind(this));
         this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.eventPowerStateMsg}`, this.setPowerStateEvent.bind(this));
         this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.getCurrentHeaterCoolerStateMsg}`, this.getCurrentHeaterCoolerStateEvent.bind(this));
@@ -80,7 +74,7 @@ export class HeaterCooler {
             .setCharacteristic(this.platform.Characteristic.Model, 'Default-Model')
             .setCharacteristic(this.platform.Characteristic.SerialNumber, 'Default-Serial');
 
-        // get the LightBulb service if it exists, otherwise create a new LightBulb service
+        // get the HeaterCooler service if it exists, otherwise create a new HeaterCooler service
         // you can create multiple services for each accessory
         this.service = this.accessory.getService(this.platform.Service.HeaterCooler) || this.accessory.addService(this.platform.Service.HeaterCooler);
 
@@ -89,14 +83,14 @@ export class HeaterCooler {
         this.service.setCharacteristic(this.platform.Characteristic.Name, accessory.context.device.name);
 
         // each service must implement at-minimum the "required characteristics" for the given service type
-        // see https://developers.homebridge.io/#/service/Lightbulb
+        // see https://developers.homebridge.io/#/service/HeaterCooler
         this.service.getCharacteristic(this.platform.Characteristic.Active)
             .onSet(this.handleActiveSet.bind(this))
             .onGet(this.handleActiveGet.bind(this));
-        
+
         this.service.getCharacteristic(this.platform.Characteristic.CurrentHeaterCoolerState)
             .onGet(this.handleCurrentHeaterCoolerStateGet.bind(this));
-        
+
         this.service.getCharacteristic(this.platform.Characteristic.TargetHeaterCoolerState)
             .setProps({
                 minValue: 0,
@@ -104,11 +98,11 @@ export class HeaterCooler {
             })
             .onSet(this.handleTargetHeaterCoolerStateSet.bind(this))
             .onGet(this.handleTargetHeaterCoolerStateGet.bind(this));
-        
+
         this.service.getCharacteristic(this.platform.Characteristic.RotationSpeed)
             .onSet(this.handleRotationSpeedSet.bind(this))
             .onGet(this.handleRotationSpeedGet.bind(this));
-        
+
         this.service.getCharacteristic(this.platform.Characteristic.CurrentTemperature)
             .setProps({
                 minValue: accessory.context.device.minTemperatureValue,
@@ -125,7 +119,7 @@ export class HeaterCooler {
             })
             .onSet(this.handleCoolingThresholdTemperatureSet.bind(this))
             .onGet(this.handleCoolingThresholdTemperatureGet.bind(this));
-            
+
         this.service.getCharacteristic(this.platform.Characteristic.HeatingThresholdTemperature)
             .setProps({
                 minValue: accessory.context.device.minTemperatureValue,
@@ -142,7 +136,7 @@ export class HeaterCooler {
 
     /**
      * Handle the "GET" requests from HomeKit
-     * These are sent when HomeKit wants to know the current state of the accessory, for example, checking if a Light bulb is on.
+     * These are sent when HomeKit wants to know the current state of the accessory, for example, checking if a HeaterCooler is on.
      *
      * GET requests should return as fast as possbile. A long delay here will result in
      * HomeKit being unresponsive and a bad user experience in general.
@@ -158,7 +152,7 @@ export class HeaterCooler {
         this.platform.sendData(`${this.deviceType}:${this.id}:${this.getPowerStateMsg}:*`);
         return isActive;
     }
-    
+
     async handleCurrentHeaterCoolerStateGet(): Promise<CharacteristicValue> {
         const currentHeaterCoolerState = this.states.CurrentHeaterCoolerState;
         this.platform.log.info(`${this.deviceType}:${this.id}: Get Characteristic CurrentHeaterCoolerState From Homekit -> ${currentHeaterCoolerState}`);
@@ -172,35 +166,35 @@ export class HeaterCooler {
         this.platform.sendData(`${this.deviceType}:${this.id}:${this.getTargetHeaterCoolerStateMsg}:*`);
         return targetHeaterCoolerState;
     }
-    
+
     async handleRotationSpeedGet(): Promise<CharacteristicValue> {
         const rotationSpeed = this.states.RotationSpeed;
         this.platform.log.info(`${this.deviceType}:${this.id}: Get Characteristic RotationSpeed  From Homekit -> ${rotationSpeed}`);
         this.platform.sendData(`${this.deviceType}:${this.id}:${this.getRotationSpeedMsg}:*`);
         return rotationSpeed;
     }
-    
+
     async handleCurrentTemperatureGet(): Promise<CharacteristicValue> {
         const currentTemperature = this.states.CurrentTemperature;
         this.platform.log.info(`${this.deviceType}:${this.id}: Get Characteristic CurrentTemperature From Homekit -> ${currentTemperature}`);
         this.platform.sendData(`${this.deviceType}:${this.id}:${this.getCurrentTempMsg}:*`);
         return currentTemperature;
     }
-    
+
     async handleCoolingThresholdTemperatureGet(): Promise<CharacteristicValue> {
         const targetTemperature = this.states.TargetTemperature;
         this.platform.log.info(`${this.deviceType}:${this.id}: Get Characteristic CoolingThresholdTemperature From Homekit -> ${targetTemperature}`);
         this.platform.sendData(`${this.deviceType}:${this.id}:${this.getTargetTempMsg}:*`);
         return targetTemperature;
     }
-    
+
     async handleHeatingThresholdTemperatureGet(): Promise<CharacteristicValue> {
         const targetTemperature = this.states.TargetTemperature;
         this.platform.log.info(`${this.deviceType}:${this.id}: Get Characteristic HeatingThresholdTemperature From Homekit -> ${targetTemperature}`);
         this.platform.sendData(`${this.deviceType}:${this.id}:${this.getTargetTempMsg}:*`);
         return targetTemperature;
     }
-    
+
     async handleTemperatureDisplayUnitsGet(): Promise<CharacteristicValue> {
         const temperatureDisplayUnits = this.states.TemperatureDisplayUnits;
         this.platform.log.info(`${this.deviceType}:${this.id}: Get Characteristic TemperatureDisplayUnits From Homekit -> ${temperatureDisplayUnits}`);
@@ -214,14 +208,14 @@ export class HeaterCooler {
      */
     async handleActiveSet(value: CharacteristicValue) {
         const tmpActiveValue = value as number;
-        if(this.states.Active != tmpActiveValue) {
+        if (this.states.Active != tmpActiveValue) {
             this.states.Active = tmpActiveValue;
-            if(tmpActiveValue === 0 && this.states.CurrentHeaterCoolerState != 0) {
+            if (tmpActiveValue === 0 && this.states.CurrentHeaterCoolerState != 0) {
                 this.states.CurrentHeaterCoolerState = 0;
                 this.platform.log.info(`${this.deviceType}:${this.id}: Update Characteristic CurrentHeaterCoolerState: -> ${this.states.CurrentHeaterCoolerState}`);
                 this.service.updateCharacteristic(this.platform.Characteristic.CurrentHeaterCoolerState, this.states.CurrentHeaterCoolerState);
             }
-            else if(tmpActiveValue === 1 && this.states.CurrentHeaterCoolerState != (this.states.TargetHeaterCoolerState + 1)) {
+            else if (tmpActiveValue === 1 && this.states.CurrentHeaterCoolerState != (this.states.TargetHeaterCoolerState + 1)) {
                 this.states.CurrentHeaterCoolerState = this.states.TargetHeaterCoolerState + 1;
                 this.platform.log.info(`${this.deviceType}:${this.id}: Update Characteristic CurrentHeaterCoolerState: -> ${this.states.CurrentHeaterCoolerState}`);
                 this.service.updateCharacteristic(this.platform.Characteristic.CurrentHeaterCoolerState, this.states.CurrentHeaterCoolerState);
@@ -230,12 +224,12 @@ export class HeaterCooler {
             this.platform.log.info(`${this.deviceType}:${this.id}: Set Characteristic Active By Homekit -> ${value}`);
         }
     }
-    
+
     async handleTargetHeaterCoolerStateSet(value: CharacteristicValue) {
         const tmpTargetHeaterCoolerState = value as number;
-        if(this.states.TargetHeaterCoolerState != tmpTargetHeaterCoolerState) { 
-            this.states.TargetHeaterCoolerState = tmpTargetHeaterCoolerState;          
-            if(this.states.Active === 1 && this.states.CurrentHeaterCoolerState != (tmpTargetHeaterCoolerState + 1)) {
+        if (this.states.TargetHeaterCoolerState != tmpTargetHeaterCoolerState) {
+            this.states.TargetHeaterCoolerState = tmpTargetHeaterCoolerState;
+            if (this.states.Active === 1 && this.states.CurrentHeaterCoolerState != (tmpTargetHeaterCoolerState + 1)) {
                 this.states.CurrentHeaterCoolerState = tmpTargetHeaterCoolerState + 1;
                 this.platform.log.info(`${this.deviceType}:${this.id}: Update Characteristic CurrentHeaterCoolerState: -> ${this.states.CurrentHeaterCoolerState}`);
                 this.service.updateCharacteristic(this.platform.Characteristic.CurrentHeaterCoolerState, this.states.CurrentHeaterCoolerState);
@@ -244,19 +238,19 @@ export class HeaterCooler {
             this.platform.log.info(`${this.deviceType}:${this.id}: Set Characteristic TargetHeaterCoolerState By Homekit -> ${value}`);
         }
     }
-    
+
     async handleRotationSpeedSet(value: CharacteristicValue) {
         const tmpRotationSpeed = value as number;
-        if(this.states.RotationSpeed != tmpRotationSpeed) {
+        if (this.states.RotationSpeed != tmpRotationSpeed) {
             this.states.RotationSpeed = tmpRotationSpeed;
             this.platform.sendData(`${this.deviceType}:${this.id}:${this.setRotationSpeedMsg}:${this.states.RotationSpeed}:*`);
             this.platform.log.info(`${this.deviceType}:${this.id}: Set Characteristic RotationSpeed By Homekit -> ${value}`);
         }
     }
-    
+
     async handleCoolingThresholdTemperatureSet(value: CharacteristicValue) {
         const tmpCoolingThresholdTemperature = value as number;
-        if(this.states.CoolingThresholdTemperature != tmpCoolingThresholdTemperature) {
+        if (this.states.CoolingThresholdTemperature != tmpCoolingThresholdTemperature) {
             this.states.TargetTemperature = tmpCoolingThresholdTemperature;
             this.states.CoolingThresholdTemperature = tmpCoolingThresholdTemperature;
             this.platform.sendData(`${this.deviceType}:${this.id}:${this.setTargetTempMsg}:${tmpCoolingThresholdTemperature * 10}:*`);
@@ -264,10 +258,10 @@ export class HeaterCooler {
             this.service.updateCharacteristic(this.platform.Characteristic.HeatingThresholdTemperature, tmpCoolingThresholdTemperature);
         }
     }
-    
+
     async handleHeatingThresholdTemperatureSet(value: CharacteristicValue) {
         const tmpHeatingThresholdTemperature = value as number;
-        if(this.states.HeatingThresholdTemperature != tmpHeatingThresholdTemperature) {
+        if (this.states.HeatingThresholdTemperature != tmpHeatingThresholdTemperature) {
             this.states.TargetTemperature = tmpHeatingThresholdTemperature;
             this.states.HeatingThresholdTemperature = tmpHeatingThresholdTemperature;
             this.platform.sendData(`${this.deviceType}:${this.id}:${this.setTargetTempMsg}:${tmpHeatingThresholdTemperature * 10}:*`);
@@ -275,10 +269,10 @@ export class HeaterCooler {
             this.service.updateCharacteristic(this.platform.Characteristic.CoolingThresholdTemperature, tmpHeatingThresholdTemperature);
         }
     }
-    
+
     async handleTemperatureDisplayUnitsSet(value: CharacteristicValue) {
         const tmpTemperatureDisplayUnits = value as number;
-        if(this.states.TemperatureDisplayUnits != tmpTemperatureDisplayUnits) {
+        if (this.states.TemperatureDisplayUnits != tmpTemperatureDisplayUnits) {
             this.states.TemperatureDisplayUnits = tmpTemperatureDisplayUnits;
             this.platform.sendData(`${this.deviceType}:${this.id}:${this.setTemperatureDisplayUnitsMsg}:${this.states.TemperatureDisplayUnits}:*`);
             this.platform.log.info(`${this.deviceType}:${this.id}: Set Characteristic TemperatureDisplayUnits By Homekit -> ${value}`);
@@ -289,31 +283,31 @@ export class HeaterCooler {
         const tmpActiveValue = value;
         if (this.states.Active != tmpActiveValue) {
             this.states.Active = tmpActiveValue;
-            if(tmpActiveValue === 0 && this.states.CurrentHeaterCoolerState != 0) {
+            if (tmpActiveValue === 0 && this.states.CurrentHeaterCoolerState != 0) {
                 this.states.CurrentHeaterCoolerState = 0;
                 this.platform.log.info(`${this.deviceType}:${this.id}: Update Characteristic TargetHeaterCoolerState: -> ${this.states.CurrentHeaterCoolerState}`);
                 this.service.updateCharacteristic(this.platform.Characteristic.CurrentHeaterCoolerState, this.states.CurrentHeaterCoolerState);
             }
-            else if(tmpActiveValue === 1 && this.states.CurrentHeaterCoolerState != (this.states.TargetHeaterCoolerState + 1)) {
+            else if (tmpActiveValue === 1 && this.states.CurrentHeaterCoolerState != (this.states.TargetHeaterCoolerState + 1)) {
                 this.states.CurrentHeaterCoolerState = this.states.TargetHeaterCoolerState + 1;
                 this.platform.log.info(`${this.deviceType}:${this.id}: Update Characteristic TargetHeaterCoolerState: -> ${this.states.CurrentHeaterCoolerState}`);
                 this.service.updateCharacteristic(this.platform.Characteristic.CurrentHeaterCoolerState, this.states.CurrentHeaterCoolerState);
             }
             this.platform.log.info(`${this.deviceType}:${this.id}: Retrieve Characteristic Active From Crestron Processor -> ${this.states.Active}`);
             this.service.updateCharacteristic(this.platform.Characteristic.Active, this.states.Active);
-        }      
+        }
     }
 
     setPowerStateEvent(value: number) {
         const tmpActiveValue = value;
         if (this.states.Active != tmpActiveValue) {
             this.states.Active = tmpActiveValue;
-            if(tmpActiveValue === 0 && this.states.CurrentHeaterCoolerState != 0) {
+            if (tmpActiveValue === 0 && this.states.CurrentHeaterCoolerState != 0) {
                 this.states.CurrentHeaterCoolerState = 0;
                 this.platform.log.info(`${this.deviceType}:${this.id}: Update Characteristic TargetHeaterCoolerState: -> ${this.states.CurrentHeaterCoolerState}`);
                 this.service.updateCharacteristic(this.platform.Characteristic.CurrentHeaterCoolerState, this.states.CurrentHeaterCoolerState);
             }
-            else if(tmpActiveValue === 1 && this.states.CurrentHeaterCoolerState != (this.states.TargetHeaterCoolerState + 1)) {
+            else if (tmpActiveValue === 1 && this.states.CurrentHeaterCoolerState != (this.states.TargetHeaterCoolerState + 1)) {
                 this.states.CurrentHeaterCoolerState = this.states.TargetHeaterCoolerState + 1;
                 this.platform.log.info(`${this.deviceType}:${this.id}: Update Characteristic TargetHeaterCoolerState: -> ${this.states.CurrentHeaterCoolerState}`);
                 this.service.updateCharacteristic(this.platform.Characteristic.CurrentHeaterCoolerState, this.states.CurrentHeaterCoolerState);
@@ -322,12 +316,12 @@ export class HeaterCooler {
             this.service.updateCharacteristic(this.platform.Characteristic.Active, this.states.Active);
         }
     }
-    
+
     getCurrentHeaterCoolerStateEvent(value: number) {
         const tmpCurrentHeaterCoolerState = value;
-        if(this.states.CurrentHeaterCoolerState != tmpCurrentHeaterCoolerState) {
+        if (this.states.CurrentHeaterCoolerState != tmpCurrentHeaterCoolerState) {
             this.states.CurrentHeaterCoolerState = tmpCurrentHeaterCoolerState;
-            if(tmpCurrentHeaterCoolerState != 0 && this.states.TargetHeaterCoolerState != (tmpCurrentHeaterCoolerState - 1)) {
+            if (tmpCurrentHeaterCoolerState != 0 && this.states.TargetHeaterCoolerState != (tmpCurrentHeaterCoolerState - 1)) {
                 this.states.TargetHeaterCoolerState = tmpCurrentHeaterCoolerState - 1;
                 this.platform.log.info(`${this.deviceType}:${this.id}: Update Characteristic TargetHeaterCoolerState: -> ${this.states.TargetHeaterCoolerState}`);
                 this.service.updateCharacteristic(this.platform.Characteristic.TargetHeaterCoolerState, this.states.TargetHeaterCoolerState);
@@ -336,56 +330,56 @@ export class HeaterCooler {
             this.service.updateCharacteristic(this.platform.Characteristic.CurrentHeaterCoolerState, this.states.CurrentHeaterCoolerState);
         }
     }
-    
+
     getTargetHeaterCoolerStateEvent(value: number) {
         const tmpTargetHeaterCoolerState = value;
-        if(this.states.TargetHeaterCoolerState != tmpTargetHeaterCoolerState) {
-           this.states.TargetHeaterCoolerState = tmpTargetHeaterCoolerState;
-           if(this.states.Active === 1 && this.states.CurrentHeaterCoolerState != (this.states.TargetHeaterCoolerState + 1)) {
+        if (this.states.TargetHeaterCoolerState != tmpTargetHeaterCoolerState) {
+            this.states.TargetHeaterCoolerState = tmpTargetHeaterCoolerState;
+            if (this.states.Active === 1 && this.states.CurrentHeaterCoolerState != (this.states.TargetHeaterCoolerState + 1)) {
                 this.states.CurrentHeaterCoolerState = this.states.TargetHeaterCoolerState + 1;
                 this.platform.log.info(`${this.deviceType}:${this.id}: Update Characteristic CurrentHeaterCoolerState: -> ${this.states.CurrentHeaterCoolerState}`);
                 this.service.updateCharacteristic(this.platform.Characteristic.CurrentHeaterCoolerState, this.states.CurrentHeaterCoolerState);
             }
-           this.platform.log.info(`${this.deviceType}:${this.id}: Retrieve Characteristic TargetHeaterCoolerState From Crestron Processor -> $(this.states.TargetHeaterCoolerState}`);
-           this.service.updateCharacteristic(this.platform.Characteristic.TargetHeaterCoolerState, this.states.TargetHeaterCoolerState);
+            this.platform.log.info(`${this.deviceType}:${this.id}: Retrieve Characteristic TargetHeaterCoolerState From Crestron Processor -> $(this.states.TargetHeaterCoolerState}`);
+            this.service.updateCharacteristic(this.platform.Characteristic.TargetHeaterCoolerState, this.states.TargetHeaterCoolerState);
         }
     }
-    
+
     setTargetHeaterCoolerStateEvent(value: number) {
         const tmpTargetHeaterCoolerState = value;
-        if(this.states.TargetHeaterCoolerState != tmpTargetHeaterCoolerState) {
-           this.states.TargetHeaterCoolerState = tmpTargetHeaterCoolerState;
-           if(this.states.Active === 1 && this.states.CurrentHeaterCoolerState != (this.states.TargetHeaterCoolerState + 1)) {
+        if (this.states.TargetHeaterCoolerState != tmpTargetHeaterCoolerState) {
+            this.states.TargetHeaterCoolerState = tmpTargetHeaterCoolerState;
+            if (this.states.Active === 1 && this.states.CurrentHeaterCoolerState != (this.states.TargetHeaterCoolerState + 1)) {
                 this.states.CurrentHeaterCoolerState = this.states.TargetHeaterCoolerState + 1;
                 this.platform.log.info(`${this.deviceType}:${this.id}: Update Characteristic CurrentHeaterCoolerState: -> ${this.states.CurrentHeaterCoolerState}`);
                 this.service.updateCharacteristic(this.platform.Characteristic.CurrentHeaterCoolerState, this.states.CurrentHeaterCoolerState);
-            } 
-           this.platform.log.info(`${this.deviceType}:${this.id}: Set Characteristic TargetHeaterCoolerState By Crestron Processor -> $(this.states.TargetHeaterCoolerState}`);
-           this.service.updateCharacteristic(this.platform.Characteristic.TargetHeaterCoolerState, this.states.TargetHeaterCoolerState);
+            }
+            this.platform.log.info(`${this.deviceType}:${this.id}: Set Characteristic TargetHeaterCoolerState By Crestron Processor -> $(this.states.TargetHeaterCoolerState}`);
+            this.service.updateCharacteristic(this.platform.Characteristic.TargetHeaterCoolerState, this.states.TargetHeaterCoolerState);
         }
     }
-    
+
     getCurrentTemperatureEvent(value: number) {
         const tmpCurrentTemperature = value / 10;
-        if(this.states.CurrentTemperature != tmpCurrentTemperature) {
+        if (this.states.CurrentTemperature != tmpCurrentTemperature) {
             this.states.CurrentTemperature = tmpCurrentTemperature;
             this.platform.log.info(`${this.deviceType}:${this.id}: Retrieve Characteristic CurrentTemperature From Crestron Processor -> ${this.states.CurrentTemperature}`);
             this.service.updateCharacteristic(this.platform.Characteristic.CurrentTemperature, this.states.CurrentTemperature);
         }
     }
-    
+
     setCurrentTemperatureEvent(value: number) {
         const tmpCurrentTemperature = value / 10;
-        if(this.states.CurrentTemperature != tmpCurrentTemperature) {
+        if (this.states.CurrentTemperature != tmpCurrentTemperature) {
             this.states.CurrentTemperature = tmpCurrentTemperature;
             this.platform.log.info(`${this.deviceType}:${this.id}: Set Characteristic CurrentTemperature By Crestron Processor -> ${this.states.CurrentTemperature}`);
             this.service.updateCharacteristic(this.platform.Characteristic.CurrentTemperature, this.states.CurrentTemperature);
         }
     }
-    
+
     getTargetTemperatureEvent(value: number) {
         const tmpTargetTemperature = value / 10;
-        if(this.states.TargetTemperature != tmpTargetTemperature) {
+        if (this.states.TargetTemperature != tmpTargetTemperature) {
             this.states.TargetTemperature = tmpTargetTemperature;
             this.states.CoolingThresholdTemperature = tmpTargetTemperature;
             this.states.HeatingThresholdTemperature = tmpTargetTemperature;
@@ -394,10 +388,10 @@ export class HeaterCooler {
             this.service.updateCharacteristic(this.platform.Characteristic.HeatingThresholdTemperature, this.states.HeatingThresholdTemperature);
         }
     }
-    
+
     setTargetTemperatureEvent(value: number) {
         const tmpTargetTemperature = value / 10;
-        if(this.states.TargetTemperature != tmpTargetTemperature) {
+        if (this.states.TargetTemperature != tmpTargetTemperature) {
             this.states.TargetTemperature = tmpTargetTemperature;
             this.states.CoolingThresholdTemperature = tmpTargetTemperature;
             this.states.HeatingThresholdTemperature = tmpTargetTemperature;
@@ -406,21 +400,19 @@ export class HeaterCooler {
             this.service.updateCharacteristic(this.platform.Characteristic.HeatingThresholdTemperature, this.states.HeatingThresholdTemperature);
         }
     }
-    
+
     getRotationSpeedEvent(value: number) {
         const tmpRotationSpeed = value;
-        if(this.states.RotationSpeed != tmpRotationSpeed)
-        {
+        if (this.states.RotationSpeed != tmpRotationSpeed) {
             this.states.RotationSpeed = tmpRotationSpeed;
             this.platform.log.info(`${this.deviceType}:${this.id}: Retrieve Characteristic RotationSpeed From Crestron Processor -> ${this.states.RotationSpeed}`);
             this.service.updateCharacteristic(this.platform.Characteristic.RotationSpeed, this.states.RotationSpeed);
         }
     }
-    
+
     setRotationSpeedEvent(value: number) {
         const tmpRotationSpeed = value;
-        if(this.states.RotationSpeed != tmpRotationSpeed)
-        {
+        if (this.states.RotationSpeed != tmpRotationSpeed) {
             this.states.RotationSpeed = tmpRotationSpeed;
             this.platform.log.info(`${this.deviceType}:${this.id}: Set Characteristic RotationSpeed By Crestron Processor -> ${this.states.RotationSpeed}`);
             this.service.updateCharacteristic(this.platform.Characteristic.RotationSpeed, this.states.RotationSpeed);
