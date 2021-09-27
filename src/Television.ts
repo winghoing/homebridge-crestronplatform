@@ -6,6 +6,7 @@ import { EventEmitter } from "events";
 
 export class Television {
     private service: Service;
+    private speakerService: Service;
     private id: number;
     private eventEmitter: EventEmitter;
     private deviceType = "Television";
@@ -46,10 +47,8 @@ export class Television {
 
         // get the Television service if it exists, otherwise create a new Television service
         // you can create multiple services for each accessory
-        this.service = this.accessory.getService(this.platform.Service.Television) || this.accessory.addService(this.platform.Service.Television);
-
-        this.service = this.accessory.getService(this.platform.Service.TelevisionSpeaker) || this.accessory.addService(this.platform.Service.TelevisionSpeaker);
-
+        this.service = this.accessory.getService(this.platform.Service.Television) || this.accessory.addService(this.platform.Service.Television);            
+        this.speakerService = this.accessory.getService(this.platform.Service.TelevisionSpeaker) || this.accessory.addService(this.platform.Service.TelevisionSpeaker);
         const hdmi1InputService = this.accessory.addService(this.platform.Service.InputSource, 'hdmi1', 'HDMI 1');
         hdmi1InputService
             .setCharacteristic(this.platform.Characteristic.Identifier, 1)
@@ -81,20 +80,24 @@ export class Television {
 
         this.service.getCharacteristic(this.platform.Characteristic.RemoteKey)
             .onSet(this.handleRemoteKeySet.bind(this));
-
-        this.service.getCharacteristic(this.platform.Characteristic.Mute)
+        
+         this.speakerService.getCharacteristic(this.platform.Characteristic.Active)
+            .onSet(this.handleActiveSet.bind(this))
+            .onGet(this.handleActiveGet.bind(this));
+            
+        this.speakerService.getCharacteristic(this.platform.Characteristic.Mute)
             .onSet(this.handleMuteSet.bind(this))
             .onGet(this.handleMuteGet.bind(this));
 
-        this.service.getCharacteristic(this.platform.Characteristic.VolumeControlType)
+        this.speakerService.getCharacteristic(this.platform.Characteristic.VolumeControlType)
             .onSet(this.handleVolumeControlTypeSet.bind(this))
             .onGet(this.handleVolumeControlTypeGet.bind(this));
 
-        this.service.getCharacteristic(this.platform.Characteristic.VolumeSelector)
+        this.speakerService.getCharacteristic(this.platform.Characteristic.VolumeSelector)
             .onSet(this.handleVolumeSelectorSet.bind(this))
             .onGet(this.handleVolumeSelectorGet.bind(this));
 
-        this.service.getCharacteristic(this.platform.Characteristic.Volume)
+        this.speakerService.getCharacteristic(this.platform.Characteristic.Volume)
             .onSet(this.handleVolumeSet.bind(this))
             .onGet(this.handleVolumeGet.bind(this));
     }
