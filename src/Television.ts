@@ -56,6 +56,14 @@ export class Television {
             .setCharacteristic(this.platform.Characteristic.IsConfigured, this.platform.Characteristic.IsConfigured.CONFIGURED)
             .setCharacteristic(this.platform.Characteristic.InputSourceType, this.platform.Characteristic.InputSourceType.HDMI);
         this.service.addLinkedService(hdmi1InputService); // link to tv service
+            
+        const hdmi2InputService = this.accessory.addService(this.platform.Service.InputSource, 'hdmi2', 'HDMI 2');
+        hdmi2InputService
+            .setCharacteristic(this.platform.Characteristic.Identifier, 2)
+            .setCharacteristic(this.platform.Characteristic.ConfiguredName, 'HDMI 2')
+            .setCharacteristic(this.platform.Characteristic.IsConfigured, this.platform.Characteristic.IsConfigured.CONFIGURED)
+            .setCharacteristic(this.platform.Characteristic.InputSourceType, this.platform.Characteristic.InputSourceType.HDMI);
+        this.service.addLinkedService(hdmi2InputService); // link to tv service
 
         // set the service name, this is what is displayed as the default name on the Home app
         // in this example we are using the name we stored in the `accessory.context` in the `discoverDevices` method.
