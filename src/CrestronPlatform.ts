@@ -182,7 +182,7 @@ export class CrestronPlatform implements DynamicPlatformPlugin {
                             }
                         case "Television":
                             {
-                                this.log.info(`create not existing television accessory: ${existingAccessory.displayName}`);
+                                this.log.info(`create not existing television accessory: ${accessory.displayName}`);
                                 new Television(this, accessory, this.eventEmitter);
                                 break;
                             }
