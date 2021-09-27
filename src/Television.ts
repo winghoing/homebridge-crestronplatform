@@ -49,7 +49,7 @@ export class Television {
         // you can create multiple services for each accessory
         this.service = this.accessory.getService(this.platform.Service.Television) || this.accessory.addService(this.platform.Service.Television);            
         this.speakerService = this.accessory.getService(this.platform.Service.TelevisionSpeaker) || this.accessory.addService(this.platform.Service.TelevisionSpeaker);
-        const hdmi1InputService = this.accessory.getService(this.platform.Service.InputSource, 'hdmi1', 'HDMI 1') || this.accessory.addService(this.platform.Service.InputSource, 'hdmi1', 'HDMI 1');
+        const hdmi1InputService = this.accessory.getService(this.platform.Service.InputSource) || this.accessory.addService(this.platform.Service.InputSource, 'hdmi1', 'HDMI 1');
         hdmi1InputService
             .setCharacteristic(this.platform.Characteristic.Identifier, 1)
             .setCharacteristic(this.platform.Characteristic.ConfiguredName, 'HDMI 1')
@@ -57,7 +57,7 @@ export class Television {
             .setCharacteristic(this.platform.Characteristic.InputSourceType, this.platform.Characteristic.InputSourceType.HDMI);
         this.service.addLinkedService(hdmi1InputService); // link to tv service
             
-        const hdmi2InputService = this.accessory.getService(this.platform.Service.InputSource, 'hdmi2', 'HDMI 2') || this.accessory.addService(this.platform.Service.InputSource, 'hdmi2', 'HDMI 2');
+        const hdmi2InputService = this.accessory.getService(this.platform.Service.InputSource) || this.accessory.addService(this.platform.Service.InputSource, 'hdmi2', 'HDMI 2');
         hdmi2InputService
             .setCharacteristic(this.platform.Characteristic.Identifier, 2)
             .setCharacteristic(this.platform.Characteristic.ConfiguredName, 'HDMI 2')
