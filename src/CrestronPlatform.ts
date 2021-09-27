@@ -83,10 +83,12 @@ export class CrestronPlatform implements DynamicPlatformPlugin {
         let configNonDimLightbulbs = this.config["non-dimmable-lightbulbs"];
         let configDimLightbulbs = this.config["dimmable-lightbulbs"];
         let configHeaterCoolers = this.config["heatercoolers"];
+        let configTelevisions = this.config["televisions"];
         //this.log.info(`printing accessories: ${configDevices}`);
         this.registerDevices(configNonDimLightbulbs, "NonDimLightbulb");
         this.registerDevices(configDimLightbulbs, "DimLightbulb");
         this.registerDevices(configHeaterCoolers, "HeaterCooler");
+        this.registerDevices(configTelevisions, "Television");
     }
 
     registerDevices(configDevices, deviceType) {
