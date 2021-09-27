@@ -127,7 +127,7 @@
                     }
                 }
             },
-            "television": {
+            "televisions": {
                 "title": "Television",
                 "type": "array",
                 "items": {
