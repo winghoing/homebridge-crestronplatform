@@ -6,6 +6,7 @@ import { EventEmitter } from "events";
 
 export class Television {
     private service: Service;
+    private hapService: Service
     private speakerService: Service;
     private id: number;
     private eventEmitter: EventEmitter;
@@ -36,6 +37,7 @@ export class Television {
         this.id = accessory.context.device.id;
         this.accessory = accessory;
         this.eventEmitter = eventEmitter;
+        this.hapService = this.api.hap.Service;
             
         //this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.getPowerStateMsg}`, this.getPowerStateEvent.bind(this));
         //this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.eventPowerStateMsg}`, this.setPowerStateEvent.bind(this));
@@ -48,6 +50,7 @@ export class Television {
         // get the Television service if it exists, otherwise create a new Television service
         // you can create multiple services for each accessory
         this.service = this.accessory.getService(this.platform.Service.Television) || this.accessory.addService(this.platform.Service.Television);            
+        /*
         this.speakerService = this.accessory.getServiceById(this.platform.Service.TelevisionSpeaker, this.accessory.displayName + "SpeakerService") || this.accessory.addService(this.platform.Service.TelevisionSpeaker, this.accessory.displayName + "SpeakerService");
         this.service.addLinkedService(this.speakerService);
         const hdmi1InputService = this.accessory.getServiceById(this.platform.Service.InputSource, this.accessory.displayName + "Input1Service") || this.accessory.addService(this.platform.Service.InputSource, this.accessory.displayName + "Input1Service");
@@ -65,7 +68,7 @@ export class Television {
             .setCharacteristic(this.platform.Characteristic.IsConfigured, this.platform.Characteristic.IsConfigured.CONFIGURED)
             .setCharacteristic(this.platform.Characteristic.InputSourceType, this.platform.Characteristic.InputSourceType.HDMI);
         this.service.addLinkedService(hdmi2InputService); // link to tv service
-
+        */
         // set the service name, this is what is displayed as the default name on the Home app
         // in this example we are using the name we stored in the `accessory.context` in the `discoverDevices` method.
         this.service.setCharacteristic(this.platform.Characteristic.Name, accessory.context.device.name);
@@ -89,8 +92,8 @@ export class Television {
 
         this.service.getCharacteristic(this.platform.Characteristic.RemoteKey)
             .onSet(this.handleRemoteKeySet.bind(this));
-        
-         this.speakerService.getCharacteristic(this.platform.Characteristic.Active)
+        /*          
+        this.speakerService.getCharacteristic(this.platform.Characteristic.Active)
             .onSet(this.handleActiveSet.bind(this))
             .onGet(this.handleActiveGet.bind(this));
             
@@ -109,6 +112,7 @@ export class Television {
         this.speakerService.getCharacteristic(this.platform.Characteristic.Volume)
             .onSet(this.handleVolumeSet.bind(this))
             .onGet(this.handleVolumeGet.bind(this));
+        */
     }
 
     async handleActiveGet(): Promise<CharacteristicValue> {
