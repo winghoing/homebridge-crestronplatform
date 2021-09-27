@@ -126,6 +126,29 @@
                         }
                     }
                 }
+            },
+            "television": {
+                "title": "Television",
+                "type": "array",
+                "items": {
+                    "title": "Television Configuration",
+                    "type": "object",
+                    "properties": {
+                        "id": {
+                            "title": "ID",
+                            "type": "number",
+                            "default": 1,
+                            "minimum": 1,
+                            "required": true
+                        },
+                        "name": {
+                            "title": "Name",
+                            "type": "string",
+                            "default": "TV",
+                            "required": true
+                        }
+                    }
+                }
             }
         }
     }
