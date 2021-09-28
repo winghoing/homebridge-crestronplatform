@@ -84,6 +84,7 @@ export class Television {
         input1Service.getCharacteristic(this.platform.Characteristic.IsConfigured)
             .onSet(this.handleIsInput1ConfiguredSet.bind(this))
             .onGet(this.handleIsInput1ConfiguredGet.bind(this));
+        this.service.addLinkedService(input1Service);
     }
 
     async handleActiveGet(): Promise<CharacteristicValue> {
