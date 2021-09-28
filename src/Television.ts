@@ -54,36 +54,44 @@ export class Television {
         // in this example we are using the name we stored in the `accessory.context` in the `discoverDevices` method.
         //this.service.setCharacteristic(this.platform.Characteristic.Name, accessory.context.device.name);
 
-        this.service.setCharacteristic(this.platform.Characteristic.ConfiguredName, accessory.context.device.name);
+        this.service.setCharacteristic(this.platform.Characteristic.ConfiguredName, this.accessory.context.device.name);
 
         // each service must implement at-minimum the "required characteristics" for the given service type
         // see https://developers.homebridge.io/#/service/Television
 
         this.service.getCharacteristic(this.platform.Characteristic.Active)
-            .onSet(this.handleActiveSet.bind(this))
-            .onGet(this.handleActiveGet.bind(this));
+            .onGet(this.handleActiveGet.bind(this))
+            .onSet(this.handleActiveSet.bind(this));
 
         this.service.getCharacteristic(this.platform.Characteristic.ActiveIdentifier)
-            .onSet(this.handleActiveIdentifierSet.bind(this))
-            .onGet(this.handleActiveIdentifierGet.bind(this));
+            .onGet(this.handleActiveIdentifierGet.bind(this))
+            .onSet(this.handleActiveIdentifierSet.bind(this));
 
         this.service.getCharacteristic(this.platform.Characteristic.SleepDiscoveryMode)
-            .onSet(this.handleSleepDiscoveryModeSet.bind(this))
-            .onGet(this.handleSleepDiscoveryModeGet.bind(this));
+            .onGet(this.handleSleepDiscoveryModeGet.bind(this))
+            .onSet(this.handleSleepDiscoveryModeSet.bind(this));
 
         this.service.getCharacteristic(this.platform.Characteristic.RemoteKey)
             .onSet(this.handleRemoteKeySet.bind(this));
             
-        const input1Service = this.accessory.getService("TestInput1") || this.accessory.addService(this.platform.Service.InputSource, "TestInput1", "HDMI1");
-        input1Service
-            .setCharacteristic(this.platform.Characteristic.Identifier, 1)
-            .setCharacteristic(this.platform.Characteristic.ConfiguredName, 'HDMI 1')
-            .setCharacteristic(this.platform.Characteristic.InputSourceType, this.platform.Characteristic.InputSourceType.HDMI)
-            .setCharacteristic(this.platform.Characteristic.CurrentVisibilityState, 0);
-        
+        let input1Service = this.accessory.getService("TestInput1") || this.accessory.addService(this.platform.Service.InputSource, "TestInput1", "HDMI1");
+        input1Service.getCharacteristic(this.platform.Characteristic.ConfiguredName)
+            .onGet(this.handleConfiguredNameGet.bind(this))
+            .onSet(this.handleConfiguredNameSet.bind(this));
+
+        input1Service.getCharacteristic(this.platform.Characteristic.InputSourceType)
+            .onGet(this.handleInputSourceTypeGet.bind(this));
+
         input1Service.getCharacteristic(this.platform.Characteristic.IsConfigured)
-            .onSet(this.handleIsInput1ConfiguredSet.bind(this))
-            .onGet(this.handleIsInput1ConfiguredGet.bind(this));
+            .onGet(this.handleIsConfiguredGet.bind(this))
+            .onSet(this.handleIsConfiguredSet.bind(this));
+
+        input1Service.getCharacteristic(this.platform.Characteristic.Name)
+            .onGet(this.handleNameGet.bind(this));
+
+        input1Service.getCharacteristic(this.platform.Characteristic.CurrentVisibilityState)
+            .onGet(this.handleCurrentVisibilityStateGet.bind(this));
+
         this.service.addLinkedService(input1Service);
     }
 
@@ -108,11 +116,35 @@ export class Television {
         return sleepDiscoveryMode;
     }
     
-    async handleIsInput1ConfiguredGet(): Promise<CharacteristicValue> {
+    async handleConfiguredNameGet(): Promise<CharacteristicValue> {
+        const configuredName = "TestInput1";
+        this.platform.log.info(`${this.deviceType}:${this.id}: Get Characteristic IsInput1Configured From Homekit -> ${configuredName}`);
+        return configuredName;
+    }
+    
+    async handleInputSourceTypeGet(): Promise<CharacteristicValue>{
+        const currentValue = this.platform.Characteristic.InputSourceType.OTHER;
+        this.platform.log.info(`${this.deviceType}:${this.id}: Get Characteristic InputSourceType From Homekit -> ${currentValue}`);
+        return currentValue;
+    }
+    
+    async handleIsConfiguredGet(): Promise<CharacteristicValue> {
         const isInput1Configured = this.states.IsInput1Configured;
-        this.platform.log.info(`${this.deviceType}:${this.id}: Get Characteristic IsInput1Configured From Homekit -> ${isInput1Configured}`);
+        this.platform.log.info(`${this.deviceType}:${this.id}: Get Characteristic IsConfigured From Homekit -> ${isInput1Configured}`);
         //this.platform.sendData(`${this.deviceType}:${this.id}:${this.getPowerStateMsg}:*`);
         return isInput1Configured;
+    }
+    
+    async handleNameGet(): Promise<CharacteristicValue> {
+        const name = "TestInput1";
+        this.platform.log.info(`${this.deviceType}:${this.id}: Get Characteristic Name From Homekit -> ${name}`);
+        return name;
+    }
+    
+    async handleCurrentVisibilityStateGet(): Promise<CharacteristicValue> {
+        const currentVisibilityState = this.platform.Characteristic.CurrentVisibilityState.SHOWN;
+        this.platform.log.info(`${this.deviceType}:${this.id}: Get Characteristic CurrentVisibilityState From Homekit -> ${currentVisibilityState}`);
+        return currentVisibilityState;
     }
 
     async handleMuteGet(): Promise<CharacteristicValue> {
@@ -171,7 +203,8 @@ export class Television {
     }
 
     async handleRemoteKeySet(value: CharacteristicValue) {
-        switch (value) {
+        const tmpRemoteKeyValue = value as number;
+        switch (tmpRemoteKeyValue) {
             case this.platform.Characteristic.RemoteKey.REWIND: {
                 this.platform.log.info('set Remote Key Pressed: REWIND');
                 break;
@@ -227,7 +260,12 @@ export class Television {
         }
     }
     
-    async handleIsInput1ConfiguredSet(value: CharacteristicValue){
+    async handleConfiguredNameSet(value: CharacteristicValue){
+        const tmpConfiguredNameValue = value;
+        this.platform.log.info(`${this.deviceType}:${this.id}: Set Characteristic ConfiguredName By Homekit -> ${tmpConfiguredNameValue}`);
+    }
+    
+    async handleIsConfiguredSet(value: CharacteristicValue){
         const tmpIsConfiguredValue = value as number;
         if(this.states.IsInput1Configured != tmpIsConfiguredValue){
             this.states.IsInput1Configured = tmpIsConfiguredValue;
