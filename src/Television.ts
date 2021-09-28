@@ -106,6 +106,13 @@ export class Television {
         //this.platform.sendData(`${this.deviceType}:${this.id}:${this.getPowerStateMsg}:*`);
         return sleepDiscoveryMode;
     }
+    
+    async handleIsInput1ConfiguredGet(): Promise<CharacteristicValue> {
+        const isInput1Configured = this.states.IsInput1Configured;
+        this.platform.log.info(`${this.deviceType}:${this.id}: Get Characteristic IsInput1Configured From Homekit -> ${isInput1Configured}`);
+        //this.platform.sendData(`${this.deviceType}:${this.id}:${this.getPowerStateMsg}:*`);
+        return isInput1Configured;
+    }
 
     async handleMuteGet(): Promise<CharacteristicValue> {
         const mute = this.states.Mute;
@@ -217,6 +224,15 @@ export class Television {
                 break;
             }
         }
+    }
+    
+    async handleIsInput1ConfiguredSet(value: CharacteristicValue){
+        const tmpIsConfiguredValue = value as number;
+        if(this.states.IsInput1Configured != tmpIsConfiguredValue){
+            this.states.IsInput1Configured = tmpIsConfiguredValue;
+            //this.platform.sendData(`${this.deviceType}:${this.id}:${this.setPowerStateMsg}:${this.states.Active}:*`);
+            this.platform.log.info(`${this.deviceType}:${this.id}: Set Characteristic IsInput1Configured By Homekit -> ${tmpIsConfiguredValue}`);
+        }   
     }
 
     async handleMuteSet(value: CharacteristicValue){
