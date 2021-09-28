@@ -54,13 +54,13 @@ export class DimLightbulb {
         // each service must implement at-minimum the "required characteristics" for the given service type
         // see https://developers.homebridge.io/#/service/Lightbulb
         this.service.getCharacteristic(this.platform.Characteristic.On)
-            .onSet(this.handleOnSet.bind(this))
-            .onGet(this.handleOnGet.bind(this));
+            .onGet(this.handleOnGet.bind(this))
+            .onSet(this.handleOnSet.bind(this));
 
         // register handlers for the Brightness Characteristic
         this.service.getCharacteristic(this.platform.Characteristic.Brightness)
-            .onSet(this.handleBrightnessSet.bind(this))
-            .onGet(this.handleBrightnessGet.bind(this));
+            .onGet(this.handleBrightnessGet.bind(this))
+            .onSet(this.handleBrightnessSet.bind(this));
     }
 
     /**
