@@ -48,21 +48,25 @@ export class Television {
         // get the Television service if it exists, otherwise create a new Television service
         // you can create multiple services for each accessory
         this.service = this.accessory.getService(this.platform.Service.Television) || this.accessory.addService(this.platform.Service.Television);            
-        this.speakerService = this.accessory.getService(this.accessory.displayName + "SpeakerService") || this.accessory.addService(this.platform.Service.TelevisionSpeaker, this.accessory.displayName + "SpeakerService", this.accessory.displayName + "SpeakerService");
-        const hdmi1InputService = this.accessory.getService(this.accessory.displayName + "Input1Service") || this.accessory.addService(this.platform.Service.InputSource, this.accessory.displayName + "Input1Service", this.accessory.displayName + "Input1Service");
+        this.speakerService = this.accessory.getService(this.accessory.displayName + "SpeakerService") || this.accessory.addService(this.platform.Service.TelevisionSpeaker, this.accessory.displayName + "SpeakerService", "Speaker");
+        
+        const hdmi1InputService = this.accessory.getService(this.accessory.displayName + "Input1Service") || this.accessory.addService(this.platform.Service.InputSource, this.accessory.displayName + "Input1Service", "HDMI1");
         hdmi1InputService
             .setCharacteristic(this.platform.Characteristic.Identifier, 1)
             .setCharacteristic(this.platform.Characteristic.ConfiguredName, 'HDMI 1')
             .setCharacteristic(this.platform.Characteristic.IsConfigured, this.platform.Characteristic.IsConfigured.CONFIGURED)
             .setCharacteristic(this.platform.Characteristic.InputSourceType, this.platform.Characteristic.InputSourceType.HDMI);
             
-        const hdmi2InputService = this.accessory.getService(this.accessory.displayName + "Input2Service") || this.accessory.addService(this.platform.Service.InputSource, this.accessory.displayName + "Input2Service", this.accessory.displayName + "Input2Service");
+        const hdmi2InputService = this.accessory.getService(this.accessory.displayName + "Input2Service") || this.accessory.addService(this.platform.Service.InputSource, this.accessory.displayName + "Input2Service", "HDMI2");
         hdmi2InputService
             .setCharacteristic(this.platform.Characteristic.Identifier, 2)
             .setCharacteristic(this.platform.Characteristic.ConfiguredName, 'HDMI 2')
             .setCharacteristic(this.platform.Characteristic.IsConfigured, this.platform.Characteristic.IsConfigured.CONFIGURED)
             .setCharacteristic(this.platform.Characteristic.InputSourceType, this.platform.Characteristic.InputSourceType.HDMI);
-            
+        this.service.addLinkedService(this.speakerService);
+        this.service.addLinkedService(hdmi1InputService);
+        this.service.addLinkedService(hdmi2InputService);
+           
         // set the service name, this is what is displayed as the default name on the Home app
         // in this example we are using the name we stored in the `accessory.context` in the `discoverDevices` method.
         this.service.setCharacteristic(this.platform.Characteristic.Name, accessory.context.device.name);
