@@ -53,8 +53,8 @@ export class Lightbulb {
         // each service must implement at-minimum the "required characteristics" for the given service type
         // see https://developers.homebridge.io/#/service/Lightbulb
         this.service.getCharacteristic(this.platform.Characteristic.On)
-            .onSet(this.handleOnSet.bind(this))
-            .onGet(this.handleOnGet.bind(this));
+            .onGet(this.handleOnGet.bind(this))
+            .onSet(this.handleOnSet.bind(this));
     }
 
     /**
