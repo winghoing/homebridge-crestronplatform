@@ -50,25 +50,21 @@ export class Television {
         // get the Television service if it exists, otherwise create a new Television service
         // you can create multiple services for each accessory
         this.service = this.accessory.getService(this.platform.Service.Television) || this.accessory.addService(this.platform.Service.Television);            
-        /*
-        this.speakerService = this.accessory.getServiceById(this.platform.Service.TelevisionSpeaker, this.accessory.displayName + "SpeakerService") || this.accessory.addService(this.platform.Service.TelevisionSpeaker, this.accessory.displayName + "SpeakerService");
-        this.service.addLinkedService(this.speakerService);
-        const hdmi1InputService = this.accessory.getServiceById(this.platform.Service.InputSource, this.accessory.displayName + "Input1Service") || this.accessory.addService(this.platform.Service.InputSource, this.accessory.displayName + "Input1Service");
+        this.speakerService = this.accessory.getService(this.accessory.displayName + "SpeakerService") || this.accessory.addService(this.platform.Service.TelevisionSpeaker, this.accessory.displayName + "SpeakerService", this.accessory.displayName + "SpeakerService");
+        const hdmi1InputService = this.accessory.getService(this.accessory.displayName + "Input1Service") || this.accessory.addService(this.platform.Service.InputSource, this.accessory.displayName + "Input1Service", this.accessory.displayName + "Input1Service");
         hdmi1InputService
             .setCharacteristic(this.platform.Characteristic.Identifier, 1)
             .setCharacteristic(this.platform.Characteristic.ConfiguredName, 'HDMI 1')
             .setCharacteristic(this.platform.Characteristic.IsConfigured, this.platform.Characteristic.IsConfigured.CONFIGURED)
             .setCharacteristic(this.platform.Characteristic.InputSourceType, this.platform.Characteristic.InputSourceType.HDMI);
-        this.service.addLinkedService(hdmi1InputService); // link to tv service
             
-        const hdmi2InputService = this.accessory.getServiceById(this.platform.Service.InputSource, this.accessory.displayName + "Input2Service") || this.accessory.addService(this.platform.Service.InputSource, this.accessory.displayName + "Input2Service");
+        const hdmi2InputService = this.accessory.getService(this.accessory.displayName + "Input2Service") || this.accessory.addService(this.platform.Service.InputSource, this.accessory.displayName + "Input2Service", this.accessory.displayName + "Input2Service");
         hdmi2InputService
             .setCharacteristic(this.platform.Characteristic.Identifier, 2)
             .setCharacteristic(this.platform.Characteristic.ConfiguredName, 'HDMI 2')
             .setCharacteristic(this.platform.Characteristic.IsConfigured, this.platform.Characteristic.IsConfigured.CONFIGURED)
             .setCharacteristic(this.platform.Characteristic.InputSourceType, this.platform.Characteristic.InputSourceType.HDMI);
-        this.service.addLinkedService(hdmi2InputService); // link to tv service
-        */
+            
         // set the service name, this is what is displayed as the default name on the Home app
         // in this example we are using the name we stored in the `accessory.context` in the `discoverDevices` method.
         this.service.setCharacteristic(this.platform.Characteristic.Name, accessory.context.device.name);
@@ -92,7 +88,7 @@ export class Television {
 
         this.service.getCharacteristic(this.platform.Characteristic.RemoteKey)
             .onSet(this.handleRemoteKeySet.bind(this));
-        /*          
+            
         this.speakerService.getCharacteristic(this.platform.Characteristic.Active)
             .onSet(this.handleActiveSet.bind(this))
             .onGet(this.handleActiveGet.bind(this));
@@ -112,7 +108,6 @@ export class Television {
         this.speakerService.getCharacteristic(this.platform.Characteristic.Volume)
             .onSet(this.handleVolumeSet.bind(this))
             .onGet(this.handleVolumeGet.bind(this));
-        */
     }
 
     async handleActiveGet(): Promise<CharacteristicValue> {
