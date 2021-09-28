@@ -76,10 +76,10 @@ export class Television {
             
         const input1Service = this.accessory.getService("TestInput1") || this.accessory.addService(this.platform.Service.InputSource, "TestInput1" "HDMI1");
         input1Service
-          .setCharacteristic(this.platform.Characteristic.Identifier, 1)
-          .setCharacteristic(this.platform.Characteristic.ConfiguredName, 'HDMI 1')
-          .setCharacteristic(this.platform.Characteristic.InputSourceType, this.platform.Characteristic.InputSourceType.HDMI)
-          .setCharacteristic(this.platform.Characteristic.CurrentVisibilityState, 0);
+            .setCharacteristic(this.platform.Characteristic.Identifier, 1)
+            .setCharacteristic(this.platform.Characteristic.ConfiguredName, 'HDMI 1')
+            .setCharacteristic(this.platform.Characteristic.InputSourceType, this.platform.Characteristic.InputSourceType.HDMI)
+            .setCharacteristic(this.platform.Characteristic.CurrentVisibilityState, 0);
         
         input1Service.getCharacteristic(this.platform.Characteristic.IsConfigured)
             .onSet(this.handleIsInput1ConfiguredSet.bind(this))
