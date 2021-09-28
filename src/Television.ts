@@ -20,7 +20,7 @@ export class Television {
      */
     private states = {
         Active: 0,
-        ActiveIdentifier: 0,
+        ActiveIdentifier: 1,
         SleepDiscoveryMode: 1,
         Mute: 0,
         VolumeControlType: 3,
