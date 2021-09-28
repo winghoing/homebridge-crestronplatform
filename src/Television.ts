@@ -6,7 +6,6 @@ import { EventEmitter } from "events";
 
 export class Television {
     private service: Service;
-    private hapService: Service
     private speakerService: Service;
     private id: number;
     private eventEmitter: EventEmitter;
@@ -37,7 +36,6 @@ export class Television {
         this.id = accessory.context.device.id;
         this.accessory = accessory;
         this.eventEmitter = eventEmitter;
-        this.hapService = this.api.hap.Service;
             
         //this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.getPowerStateMsg}`, this.getPowerStateEvent.bind(this));
         //this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.eventPowerStateMsg}`, this.setPowerStateEvent.bind(this));
