@@ -6,7 +6,7 @@ import { EventEmitter } from "events";
 
 export class Television {
     private service: Service;
-    private speakerService: Service;
+    //private speakerService: Service;
     private id: number;
     private eventEmitter: EventEmitter;
     private deviceType = "Television";
