@@ -85,8 +85,8 @@ export class HeaterCooler {
         // each service must implement at-minimum the "required characteristics" for the given service type
         // see https://developers.homebridge.io/#/service/HeaterCooler
         this.service.getCharacteristic(this.platform.Characteristic.Active)
-            .onSet(this.handleActiveSet.bind(this))
-            .onGet(this.handleActiveGet.bind(this));
+            .onGet(this.handleActiveGet.bind(this))
+            .onSet(this.handleActiveSet.bind(this));
 
         this.service.getCharacteristic(this.platform.Characteristic.CurrentHeaterCoolerState)
             .onGet(this.handleCurrentHeaterCoolerStateGet.bind(this));
@@ -96,12 +96,12 @@ export class HeaterCooler {
                 minValue: 0,
                 maxValue: 2
             })
-            .onSet(this.handleTargetHeaterCoolerStateSet.bind(this))
-            .onGet(this.handleTargetHeaterCoolerStateGet.bind(this));
+            .onGet(this.handleTargetHeaterCoolerStateGet.bind(this))
+            .onSet(this.handleTargetHeaterCoolerStateSet.bind(this));
 
         this.service.getCharacteristic(this.platform.Characteristic.RotationSpeed)
-            .onSet(this.handleRotationSpeedSet.bind(this))
-            .onGet(this.handleRotationSpeedGet.bind(this));
+            .onGet(this.handleRotationSpeedGet.bind(this))
+            .onSet(this.handleRotationSpeedSet.bind(this));
 
         this.service.getCharacteristic(this.platform.Characteristic.CurrentTemperature)
             .setProps({
@@ -117,8 +117,8 @@ export class HeaterCooler {
                 maxValue: accessory.context.device.maxTemperatureValue,
                 minStep: accessory.context.device.minTemperatureStep
             })
-            .onSet(this.handleCoolingThresholdTemperatureSet.bind(this))
-            .onGet(this.handleCoolingThresholdTemperatureGet.bind(this));
+            .onGet(this.handleCoolingThresholdTemperatureGet.bind(this))
+            .onSet(this.handleCoolingThresholdTemperatureSet.bind(this));
 
         this.service.getCharacteristic(this.platform.Characteristic.HeatingThresholdTemperature)
             .setProps({
@@ -126,12 +126,12 @@ export class HeaterCooler {
                 maxValue: accessory.context.device.maxTemperatureValue,
                 minStep: accessory.context.device.minTemperatureStep
             })
-            .onSet(this.handleHeatingThresholdTemperatureSet.bind(this))
-            .onGet(this.handleHeatingThresholdTemperatureGet.bind(this));
+            .onGet(this.handleHeatingThresholdTemperatureGet.bind(this))
+            .onSet(this.handleHeatingThresholdTemperatureSet.bind(this));
 
         this.service.getCharacteristic(this.platform.Characteristic.TemperatureDisplayUnits)
-            .onSet(this.handleTemperatureDisplayUnitsSet.bind(this))
-            .onGet(this.handleTemperatureDisplayUnitsGet.bind(this));
+            .onGet(this.handleTemperatureDisplayUnitsGet.bind(this))
+            .onSet(this.handleTemperatureDisplayUnitsSet.bind(this));
     }
 
     /**
