@@ -22,6 +22,7 @@ export class Television {
         Active: 0,
         ActiveIdentifier: 1,
         SleepDiscoveryMode: 1,
+        IsInput1Configured: 0,
         Mute: 0,
         VolumeControlType: 3,
         VolumeSelector: 0,
@@ -72,6 +73,17 @@ export class Television {
 
         this.service.getCharacteristic(this.platform.Characteristic.RemoteKey)
             .onSet(this.handleRemoteKeySet.bind(this));
+            
+        const input1Service = this.accessory.getService("TestInput1") || this.accessory.addService(this.platform.Service.InputSource, "TestInput1" "HDMI1");
+        input1Service
+          .setCharacteristic(this.platform.Characteristic.Identifier, 1)
+          .setCharacteristic(this.platform.Characteristic.ConfiguredName, 'HDMI 1')
+          .setCharacteristic(this.platform.Characteristic.InputSourceType, this.platform.Characteristic.InputSourceType.HDMI)
+          .setCharacteristic(this.platform.Characteristic.CurrentVisibilityState, 0);
+        
+        input1Service.getCharacteristic(this.platform.Characteristic.IsConfigured)
+            .onSet(this.handleIsInput1ConfiguredSet.bind(this))
+            .onGet(this.handleIsInput1ConfiguredGet.bind(this));
     }
 
     async handleActiveGet(): Promise<CharacteristicValue> {
