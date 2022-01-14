@@ -99,6 +99,19 @@ export class Television {
 			.setCharacteristic(this.platform.Characteristic.Name, "TVHDMI1");
 
         this.service.addLinkedService(input2Service);
+		
+	const speakerService = this.accessory.addService(this.platform.Service.TelevisionSpeaker);
+
+	speakerService
+		.setCharacteristic(this.platform.Characteristic.Active, this.platform.Characteristic.Active.ACTIVE)
+		.setCharacteristic(this.platform.Characteristic.VolumeControlType, this.platform.Characteristic.VolumeControlType.ABSOLUTE);
+
+	// handle volume control
+	speakerService.getCharacteristic(this.platform.Characteristic.VolumeSelector)
+		.onSet((newValue) => {
+			this.platform.log.info('set VolumeSelector => setNewValue: ' + newValue);
+	});
+	this.service.addLinkedService(speakerService);
     }
 
     async handleActiveGet(): Promise<CharacteristicValue> {
