@@ -39,7 +39,7 @@ export class Television {
         this.eventEmitter = eventEmitter;
 		
 		this.states.ActiveIdentifier = 1;
-        this.states.SleepDiscoveryMode = this.platform.CharacteristicSleep.DiscoveryMode.ALWAYS_DISCOVERABLE;
+        this.states.SleepDiscoveryMode = this.platform.Characteristic.SleepDiscoveryMode.ALWAYS_DISCOVERABLE;
 		
 		
         //this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.getPowerStateMsg}`, this.getPowerStateEvent.bind(this));
