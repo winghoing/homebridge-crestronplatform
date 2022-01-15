@@ -113,7 +113,7 @@ export class Television {
 	});
 	this.service.addLinkedService(speakerService);
 		
-	this.platform.api.publishExternalAccessories("homebridge-crestronplugin", [this.accessory]);
+	//this.platform.api.publishExternalAccessories("homebridge-crestronplugin", [this.accessory]);
     }
 
     async handleActiveGet(): Promise<CharacteristicValue> {
