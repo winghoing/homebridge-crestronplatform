@@ -163,6 +163,7 @@
                                     "type": {
                                         "title": "Type",
                                         "type": "integer",
+                                        "default": 3,
                                         "required": true,
                                         "oneOf": [
                                           { "title": "Other", "enum": [0] },
