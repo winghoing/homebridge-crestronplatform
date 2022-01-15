@@ -5,7 +5,7 @@ import { CrestronPlatform } from "./CrestronPlatform";
 import { EventEmitter } from "events";
 
 export class Television {
-    private tvService: Service;
+    //private tvService: Service;
     private tvSpeakerService: Service;
     private id: number;
     private eventEmitter: EventEmitter;
