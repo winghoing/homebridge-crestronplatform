@@ -5,7 +5,7 @@ import { CrestronPlatform } from "./CrestronPlatform";
 import { EventEmitter } from "events";
 
 export class Television {
-    //private tvService: Service;
+    private tvService: Service;
     private tvSpeakerService: Service;
     private id: number;
     private eventEmitter: EventEmitter;
@@ -46,7 +46,7 @@ export class Television {
 
         // get the Television service if it exists, otherwise create a new Television service
         // you can create multiple services for each accessory
-		/*
+
         this.tvService = this.accessory.getService(this.platform.Service.Television) || this.accessory.addService(this.platform.Service.Television);            
            
         // set the service name, this is what is displayed as the default name on the Home app
@@ -74,7 +74,7 @@ export class Television {
 		
 		this.tvService.getCharacteristic(this.platform.Characteristic.RemoteKey)
 			.onSet(this.handleRemoteKeySet.bind(this));
-		*/
+			
 		this.tvSpeakerService = this.accessory.getService(this.platform.Service.TelevisionSpeaker)||this.accessory.addService(this.platform.Service.TelevisionSpeaker);  
 
 		this.tvSpeakerService.setCharacteristic(this.platform.Characteristic.Active, this.platform.Characteristic.Active.ACTIVE);
@@ -91,8 +91,7 @@ export class Television {
 			.onGet(this.handleVolumeGet.bind(this))
 			.onSet(this.handleVolumeSet.bind(this));
 
-		//this.tvService.addLinkedService(this.tvSpeakerService);
-		/*	
+		this.tvService.addLinkedService(this.tvSpeakerService);
 		if(this.accessory.context.device.inputs.length > 0){
 			this.accessory.context.device.inputs.forEach(
 				(input:{name:string; type:number;}, i:number) => {
@@ -109,7 +108,6 @@ export class Television {
 				}
 			);
 		}
-		*/
     }
 
     async handleActiveGet(): Promise<CharacteristicValue> {
