@@ -23,7 +23,8 @@ export class Television {
         Active: 0,
         ActiveIdentifier: 1, //Input Selection
 		SleepDiscoveryMode: 1,
-        Mute: 0
+        Mute: 0,
+		Volume: 0
     }
 
     constructor(
@@ -79,6 +80,15 @@ export class Television {
 			.onGet(this.handleMuteGet.bind(this))
 			.onSet(this.handleMuteSet.bind(this));
 		
+		this.tvSpeakerService.getCharacteristic(this.platform.Characteristic.VolumeSelector)
+			.onSet(this.handleVolumeSelectorSet.bind(this));
+		
+		this.tvSpeakerService.getCharacteristic(this.platform.Characteristic.Volume)
+			.onGet(this.handleVolumeGet.bind(this))
+			.onSet(this.handleVolumeSet.bind(this));
+		
+		this.tvService.addLinkedService(this.tvSpeakerService);
+		
         if(this.accessory.context.device.inputs.length > 0)	{
 			this.accessory.context.device.inputs.forEach(
 				(input:{name:string; type:number;}, i:number) => {
@@ -130,6 +140,13 @@ export class Television {
         return mute;
     }
 	
+	async handleVolumeGet(): Promise<CharacteristicValue> {
+        const volume = this.states.Volume;
+        this.platform.log.info(`${this.deviceType}:${this.id}: Get Characteristic Volume From Homekit -> ${volume}`);
+        //this.platform.sendData(`${this.deviceType}:${this.id}:${this.getPowerStateMsg}:*`);
+        return volume;
+    }
+	
 	async handleActiveSet(value: CharacteristicValue) {
         const tmpActiveValue = value as number;
         if (this.states.Active != tmpActiveValue) {
@@ -171,6 +188,20 @@ export class Television {
             this.states.Mute = tmpMuteValue;
             //this.platform.sendData(`${this.deviceType}:${this.id}:${this.setPowerStateMsg}:${this.states.Active}:*`);
             this.platform.log.info(`${this.deviceType}:${this.id}: Set Characteristic Mute By Homekit -> ${tmpMuteValue}`);
+        }
+    }
+	
+	async handleVolumeSelectorSet(value: CharacteristicValue){
+        const tmpVolumeSelectorValue = value as number;
+        this.platform.log.info(`${this.deviceType}:${this.id}: Set Characteristic VolumeSelector By Homekit -> ${tmpVolumeSelectorValue}`);
+    }
+	
+	async handleVolumeSet(value: CharacteristicValue){
+        const tmpVolumeValue = value as number;
+        if (this.states.Volume != tmpVolumeValue) {
+            this.states.Volume = tmpVolumeValue;
+            //this.platform.sendData(`${this.deviceType}:${this.id}:${this.setPowerStateMsg}:${this.states.Active}:*`);
+            this.platform.log.info(`${this.deviceType}:${this.id}: Set Characteristic Volume By Homekit -> ${tmpVolumeValue}`);
         }
     }
 }
