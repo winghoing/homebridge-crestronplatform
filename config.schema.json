@@ -147,7 +147,7 @@
                             "default": "TV",
                             "required": true
                         },
-                        "input": {
+                        "inputs": {
                             "title": "Inputs",
                             "type": "array",
                             "items": {
