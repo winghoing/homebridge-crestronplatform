@@ -21,7 +21,7 @@ export class Television {
     private states = {
 		Name: "",
         Active: 0,
-        ActiveIdentifier: 1, //Input Selection
+        ActiveIdentifier: 0, //Input Selection
 		SleepDiscoveryMode: 1,
         Mute: 0,
 		Volume: 0
@@ -70,6 +70,9 @@ export class Television {
 			.onSet(this.handleConfiguredNameSet.bind(this));
 
         this.tvService.setCharacteristic(this.platform.Characteristic.SleepDiscoveryMode, this.platform.Characteristic.SleepDiscoveryMode.ALWAYS_DISCOVERABLE);
+		
+		this.tvService.getCharacteristic(this.platform.Characteristic.RemoteKey)
+			.onSet(this.handleRemoteKeySet.bind(this));
             
 		this.tvSpeakerService = this.accessory.getService(this.platform.Service.TelevisionSpeaker)||this.accessory.addService(this.platform.Service.TelevisionSpeaker);  
 	
@@ -180,6 +183,11 @@ export class Television {
             //this.platform.sendData(`${this.deviceType}:${this.id}:${this.setPowerStateMsg}:${this.states.Active}:*`);
             this.platform.log.info(`${this.deviceType}:${this.id}: Set Characteristic SleepDiscoveryMode By Homekit -> ${tmpSleepDiscoveryModeValue}`);
         }
+    }
+	
+	async handleRemoteKeySet(value: CharacteristicValue) {
+        const tmpRemoteKeyValue = value as number;
+        this.platform.log.info(`${this.deviceType}:${this.id}: Set Characteristic RemoteKey By Homekit -> ${tmpRemoteKeyValue}`);
     }
 	
 	async handleMuteSet(value: CharacteristicValue){
