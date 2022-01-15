@@ -157,7 +157,7 @@
                                     "name": {
                                         "title": "Name",
                                         "type": "string",
-                                        "default": "HDMI1"
+                                        "default": "HDMI1",
                                         "required": true
                                     }
                                 }
