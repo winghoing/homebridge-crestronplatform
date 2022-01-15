@@ -112,6 +112,8 @@ export class Television {
 			this.platform.log.info('set VolumeSelector => setNewValue: ' + newValue);
 	});
 	this.service.addLinkedService(speakerService);
+		
+	this.platform.api.publishExternalAccessories("homebridge-crestronplugin", [this.accessory]);
     }
 
     async handleActiveGet(): Promise<CharacteristicValue> {
