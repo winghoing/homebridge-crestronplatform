@@ -46,6 +46,7 @@ export class Television {
 
         // get the Television service if it exists, otherwise create a new Television service
         // you can create multiple services for each accessory
+		/*
         this.tvService = this.accessory.getService(this.platform.Service.Television) || this.accessory.addService(this.platform.Service.Television);            
            
         // set the service name, this is what is displayed as the default name on the Home app
@@ -73,30 +74,30 @@ export class Television {
 		
 		this.tvService.getCharacteristic(this.platform.Characteristic.RemoteKey)
 			.onSet(this.handleRemoteKeySet.bind(this));
-            
+		*/
 		this.tvSpeakerService = this.accessory.getService(this.platform.Service.TelevisionSpeaker)||this.accessory.addService(this.platform.Service.TelevisionSpeaker);  
-	
+
 		this.tvSpeakerService.setCharacteristic(this.platform.Characteristic.Active, this.platform.Characteristic.Active.ACTIVE);
 		this.tvSpeakerService.setCharacteristic(this.platform.Characteristic.VolumeControlType, this.platform.Characteristic.VolumeControlType.ABSOLUTE);
-        
+
 		this.tvSpeakerService.getCharacteristic(this.platform.Characteristic.Mute)
 			.onGet(this.handleMuteGet.bind(this))
 			.onSet(this.handleMuteSet.bind(this));
-		
+
 		this.tvSpeakerService.getCharacteristic(this.platform.Characteristic.VolumeSelector)
 			.onSet(this.handleVolumeSelectorSet.bind(this));
-		
+
 		this.tvSpeakerService.getCharacteristic(this.platform.Characteristic.Volume)
 			.onGet(this.handleVolumeGet.bind(this))
 			.onSet(this.handleVolumeSet.bind(this));
-		
-		this.tvService.addLinkedService(this.tvSpeakerService);
-		
-        if(this.accessory.context.device.inputs.length > 0)	{
+
+		//this.tvService.addLinkedService(this.tvSpeakerService);
+		/*	
+		if(this.accessory.context.device.inputs.length > 0){
 			this.accessory.context.device.inputs.forEach(
 				(input:{name:string; type:number;}, i:number) => {
 					const inputService = this.accessory.getService(i+this.accessory.context.device.name+input.name) || this.accessory.addService(this.platform.Service.InputSource, i+this.accessory.context.device.name+input.name, i+this.accessory.context.device.name+input.name);
-					
+
 					inputService
 						.setCharacteristic(this.platform.Characteristic.Identifier, i)
 						.setCharacteristic(this.platform.Characteristic.ConfiguredName, input.name)
@@ -105,8 +106,10 @@ export class Television {
 						.setCharacteristic(this.platform.Characteristic.CurrentVisibilityState, this.platform.Characteristic.CurrentVisibilityState.SHOWN)
 						.setCharacteristic(this.platform.Characteristic.Name, input.name);
 					this.tvService.addLinkedService(inputService);
-				});
+				}
+			);
 		}
+		*/
     }
 
     async handleActiveGet(): Promise<CharacteristicValue> {
