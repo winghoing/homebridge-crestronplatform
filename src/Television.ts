@@ -111,7 +111,7 @@ export class Television {
 		.onSet((newValue) => {
 			this.platform.log.info('set VolumeSelector => setNewValue: ' + newValue);
 	});
-	//this.service.addLinkedService(speakerService);
+	this.service.addLinkedService(speakerService);
     }
 
     async handleActiveGet(): Promise<CharacteristicValue> {
