@@ -155,17 +155,25 @@ export class Television {
 
         this.service.addLinkedService(input2Service);
 		
-	const speakerService = this.accessory.getService("TestSpeaker1") || this.accessory.addService(this.platform.Service.TelevisionSpeaker, "TestSpeaker1", "TestSpk1");
+	const speakerService = this.accessory.getService(this.platform.Service.TelevisionSpeaker) || this.accessory.addService(this.platform.Service.TelevisionSpeaker);
 
 	speakerService
 		.setCharacteristic(this.platform.Characteristic.Active, this.platform.Characteristic.Active.ACTIVE)
-		.setCharacteristic(this.platform.Characteristic.VolumeControlType, this.platform.Characteristic.VolumeControlType.ABSOLUTE);
+		.setCharacteristic(this.platform.Characteristic.VolumeControlType, this.platform.Characteristic.VolumeControlType.RELATIVE);
 
+	speakerService.getCharacteristic(this.platform.Characteristic.Mute)
+		.onSet((newValue) => {
+			this.platform.log.info("set tv mute=> setNewValue: " + newValue);
+	})
+		.onGet(this.handleMuteGet.bind(this));
+		
 	// handle volume control
 	speakerService.getCharacteristic(this.platform.Characteristic.VolumeSelector)
 		.onSet((newValue) => {
 			this.platform.log.info('set VolumeSelector => setNewValue: ' + newValue);
 	});
+		
+	this.service.addLinkedService(speakerService);
     }
 
     async handleActiveGet(): Promise<CharacteristicValue> {
