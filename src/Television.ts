@@ -100,7 +100,7 @@ export class Television {
 
         this.service.addLinkedService(input2Service);
 		
-	const speakerService = this.accessory.getService("TestSpeaker1") || this.accessory.addService(this.platform.Service.TelevisionSpeaker, "TestSpeaker2", "TestSpk2");
+	const speakerService = this.accessory.getService("TestSpeaker1") || this.accessory.addService(this.platform.Service.TelevisionSpeaker, "TestSpeaker1", "TestSpk1");
 
 	speakerService
 		.setCharacteristic(this.platform.Characteristic.Active, this.platform.Characteristic.Active.ACTIVE)
