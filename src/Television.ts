@@ -107,7 +107,7 @@ export class Television {
 					break;
 			}
 				case this.platform.Characteristic.RemoteKey.ARROW_RIGHT: {
-					this.log.info('set Remote Key Pressed: ARROW_RIGHT');
+					this.platform.log.info('set Remote Key Pressed: ARROW_RIGHT');
 					break;
 			}
 				case this.platform.Characteristic.RemoteKey.SELECT: {
