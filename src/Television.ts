@@ -89,7 +89,7 @@ export class Television {
 						.setCharacteristic(this.platform.Characteristic.ConfiguredName, input.name)
 						.setCharacteristic(this.platform.Characteristic.IsConfigured, this.platform.Characteristic.IsConfigured.CONFIGURED)
 						.setCharacteristic(this.platform.Characteristic.InputSourceType, input.type)
-						.setCharacteristic(this.platform.Characteristic.CurrentVisibilityState, this.platform.Characteristic.CurrentVisibilityState.HIDDEN)
+						.setCharacteristic(this.platform.Characteristic.CurrentVisibilityState, this.platform.Characteristic.CurrentVisibilityState.SHOWN)
 						.setCharacteristic(this.platform.Characteristic.Name, input.name);
 					this.tvService.addLinkedService(inputService);
 				});
