@@ -146,6 +146,22 @@
                             "type": "string",
                             "default": "TV",
                             "required": true
+                        },
+                        "input": {
+                            "title": "Inputs",
+                            "type": "array",
+                            "items": {
+                                "title": "Input Names",
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "title": "Name",
+                                        "type": "string",
+                                        "default": "HDMI1"
+                                        "required": true
+                                    }
+                                }
+                            }
                         }
                     }
                 }
