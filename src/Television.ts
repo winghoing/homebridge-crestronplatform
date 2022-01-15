@@ -75,8 +75,63 @@ export class Television {
             .onGet(this.handleSleepDiscoveryModeGet.bind(this))
             .onSet(this.handleSleepDiscoveryModeSet.bind(this));
 
-        this.service.getCharacteristic(this.platform.Characteristic.RemoteKey)
-            .onSet(this.handleRemoteKeySet.bind(this));
+	this.service.getCharacteristic(this.platform.Characteristic.RemoteKey)
+		.onSet((newValue) => {
+			switch(newValue) {
+				case this.platform.Characteristic.RemoteKey.REWIND: {
+					this.platform.log.info('set Remote Key Pressed: REWIND');
+					break;
+			}
+				case this.platform.Characteristic.RemoteKey.FAST_FORWARD: {
+					this.platform.log.info('set Remote Key Pressed: FAST_FORWARD');
+					break;
+			}
+				case this.platform.Characteristic.RemoteKey.NEXT_TRACK: {
+					this.platform.log.info('set Remote Key Pressed: NEXT_TRACK');
+					break;
+			}
+				case this.platform.Characteristic.RemoteKey.PREVIOUS_TRACK: {
+					this.platform.log.info('set Remote Key Pressed: PREVIOUS_TRACK');
+					break;
+			}
+				case this.platform.Characteristic.RemoteKey.ARROW_UP: {
+					this.platform.log.info('set Remote Key Pressed: ARROW_UP');	
+					break;
+			}
+				case this.platform.Characteristic.RemoteKey.ARROW_DOWN: {
+					this.platform.log.info('set Remote Key Pressed: ARROW_DOWN');
+					break;
+			}
+				case this.platform.Characteristic.RemoteKey.ARROW_LEFT: {
+					this.platform.log.info('set Remote Key Pressed: ARROW_LEFT');
+					break;
+			}
+				case this.platform.Characteristic.RemoteKey.ARROW_RIGHT: {
+					this.log.info('set Remote Key Pressed: ARROW_RIGHT');
+					break;
+			}
+				case this.platform.Characteristic.RemoteKey.SELECT: {
+					this.platform.log.info('set Remote Key Pressed: SELECT');
+					break;
+			}
+				case this.platform.Characteristic.RemoteKey.BACK: {
+					this.platform.log.info('set Remote Key Pressed: BACK');
+					break;
+			}
+				case this.platform.Characteristic.RemoteKey.EXIT: {
+					this.platform.log.info('set Remote Key Pressed: EXIT');
+					break;
+			}
+				case this.platform.Characteristic.RemoteKey.PLAY_PAUSE: {
+					this.platform.log.info('set Remote Key Pressed: PLAY_PAUSE');
+					break;
+			}
+				case this.platform.Characteristic.RemoteKey.INFORMATION: {
+					this.platform.log.info('set Remote Key Pressed: INFORMATION');
+					break;
+			}
+		}
+	});
             
         const input1Service = this.accessory.getService("TestInput1") || this.accessory.addService(this.platform.Service.InputSource, "TestInput1", "TestHDMI1");
 		input1Service
@@ -111,9 +166,6 @@ export class Television {
 		.onSet((newValue) => {
 			this.platform.log.info('set VolumeSelector => setNewValue: ' + newValue);
 	});
-	this.service.addLinkedService(speakerService);
-		
-	//this.platform.api.publishExternalAccessories("homebridge-crestronplugin", [this.accessory]);
     }
 
     async handleActiveGet(): Promise<CharacteristicValue> {
