@@ -82,7 +82,7 @@ export class Television {
         if(this.accessory.context.device.inputs.length > 0)	{
 			this.accessory.context.device.inputs.forEach(
 				(input:{name:string; type:number;}, i:number) => {
-					const inputService = this.accessory.addService(this.platform.Service.InputSource, input.name, input.name);
+					const inputService = this.accessory.getService(i+this.accessory.context.device.name+input.name) || addService(this.platform.Service.InputSource, i+this.accessory.context.device.name+input.name, i+this.accessory.context.device.name+input.name);
 					
 					inputService
 						.setCharacteristic(this.platform.Characteristic.Identifier, i)
