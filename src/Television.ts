@@ -90,8 +90,8 @@ export class Television {
 						.setCharacteristic(this.platform.Characteristic.IsConfigured, this.platform.Characteristic.IsConfigured.CONFIGURED)
 						.setCharacteristic(this.platform.Characteristic.InputSourceType, input.type)
 						.setCharacteristic(this.platform.Characteristic.CurrentVisibilityState, this.platform.Characteristic.CurrentVisibilityState.SHOWN)
-						.setCharacteristic(this.platform.Characteristic.Name, input.Name);
-					this.service.addLinkedService(inputService);
+						.setCharacteristic(this.platform.Characteristic.Name, input.name);
+					this.tvService.addLinkedService(inputService);
 				});
 		}
     }
@@ -123,13 +123,6 @@ export class Television {
         return sleepDiscoveryMode;
     }
     
-    async handleInputIsConfiguredGet(): Promise<CharacteristicValue> {
-        const isInput1Configured = this.states.IsInput1Configured;
-        this.platform.log.info(`${this.deviceType}:${this.id}: Get Characteristic IsConfigured From Homekit -> ${isInput1Configured}`);
-        //this.platform.sendData(`${this.deviceType}:${this.id}:${this.getPowerStateMsg}:*`);
-        return isInput1Configured;
-    }
-	
 	async handleMuteGet(): Promise<CharacteristicValue> {
         const mute = this.states.Mute;
         this.platform.log.info(`${this.deviceType}:${this.id}: Get Characteristic Mute From Homekit -> ${mute}`);
@@ -156,7 +149,7 @@ export class Television {
     }
 	
 	async handleConfiguredNameSet(value: CharacteristicValue){
-        const tmpConfiguredNameValue = value;
+        const tmpConfiguredNameValue = value as string;
 		if(this.states.Name != tmpConfiguredNameValue) {
 			this.states.Name = tmpConfiguredNameValue;
 			this.platform.log.info(`${this.deviceType}:${this.id}: Set Characteristic ConfiguredName By Homekit -> ${tmpConfiguredNameValue}`);
