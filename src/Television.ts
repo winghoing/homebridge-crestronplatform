@@ -13,16 +13,16 @@ export class Television {
     private eventPowerStateMsg = "eventPowerState";
     private setPowerStateMsg = "setPowerState";
     private getPowerStateMsg = "getPowerState";
-	private eventInputStateMsg = "eventInputState";
-	private setInputStateMsg = "setInputState";
-	private getInputStateMsg = "getInputState";
-	private setRemoteKeyStateMsg = "setRemoteKeyState";
-	private eventMuteStateMsg = "eventMuteState";
-	private setMuteStateMsg = "setMuteState";
-	private getMuteStateMsg = "getMuteState";
-	private eventVolumeStateMsg = "eventVolumeState";
-	private setVolumeStateMsg = "setVolumeState";
-	private getVolumeStateMsg = "getVolumeState";
+    private eventInputStateMsg = "eventInputState";
+    private setInputStateMsg = "setInputState";
+    private getInputStateMsg = "getInputState";
+    private setRemoteKeyStateMsg = "setRemoteKeyState";
+    private eventMuteStateMsg = "eventMuteState";
+    private setMuteStateMsg = "setMuteState";
+    private getMuteStateMsg = "getMuteState";
+    private eventVolumeStateMsg = "eventVolumeState";
+    private setVolumeStateMsg = "setVolumeState";
+    private getVolumeStateMsg = "getVolumeState";
 
     /**
      * These are just used to create a working example
@@ -32,9 +32,9 @@ export class Television {
         Name: "",
         Active: 0,
         ActiveIdentifier: 0, //Input Selection
-	    SleepDiscoveryMode: 1,
+        SleepDiscoveryMode: 1,
         Mute: 0,
-	    Volume: 0
+        Volume: 0
     }
 
     constructor(
