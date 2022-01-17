@@ -45,17 +45,17 @@ export class Television {
         this.id = accessory.context.device.id;
         this.accessory = accessory;
         this.eventEmitter = eventEmitter;
-	this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.getPowerStateMsg}`, this.getPowerStateMsgEvent.bind(this));
-	this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.eventPowerStateMsg}`, this.setPowerStateMsgEvent.bind(this));
-	this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.getInputStateMsg}`, this.getInputStateMsgEvent.bind(this));
-	this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.eventInputStateMsg}`, this.setInputStateMsgEvent.bind(this));
-	this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.getMuteStateMsg}`, this.getMuteStateMsgEvent.bind(this));
-	this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.eventMuteStateMsg}`, this.setMuteStateMsgEvent.bind(this));
-	this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.getVolumeStateMsg}`, this.getVolumeStateMsgEvent.bind(this));
-	this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.eventVolumeStateMsg}`, this.setVolumeStateMsgEvent.bind(this));
+		this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.getPowerStateMsg}`, this.getPowerStateMsgEvent.bind(this));
+		this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.eventPowerStateMsg}`, this.setPowerStateMsgEvent.bind(this));
+		this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.getInputStateMsg}`, this.getInputStateMsgEvent.bind(this));
+		this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.eventInputStateMsg}`, this.setInputStateMsgEvent.bind(this));
+		this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.getMuteStateMsg}`, this.getMuteStateMsgEvent.bind(this));
+		this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.eventMuteStateMsg}`, this.setMuteStateMsgEvent.bind(this));
+		this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.getVolumeStateMsg}`, this.getVolumeStateMsgEvent.bind(this));
+		this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.eventVolumeStateMsg}`, this.setVolumeStateMsgEvent.bind(this));
 		
-	this.states.Name = this.accessory.context.device.name;
-	// set accessory information
+		this.states.Name = this.accessory.context.device.name;
+		// set accessory information
         this.accessory.getService(this.platform.Service.AccessoryInformation)!
             .setCharacteristic(this.platform.Characteristic.Manufacturer, 'Default-Manufacturer')
             .setCharacteristic(this.platform.Characteristic.Model, 'Default-Model')
@@ -82,22 +82,22 @@ export class Television {
             .onGet(this.handleActiveIdentifierGet.bind(this))
             .onSet(this.handleActiveIdentifierSet.bind(this));
 		
-	this.tvService.getCharacteristic(this.platform.Characteristic.ConfiguredName)
-	    .onGet(this.handleConfiguredNameGet.bind(this))
-	    .onSet(this.handleConfiguredNameSet.bind(this));
+		this.tvService.getCharacteristic(this.platform.Characteristic.ConfiguredName)
+	    	.onGet(this.handleConfiguredNameGet.bind(this))
+	    	.onSet(this.handleConfiguredNameSet.bind(this));
 
         this.tvService.setCharacteristic(this.platform.Characteristic.SleepDiscoveryMode, this.platform.Characteristic.SleepDiscoveryMode.ALWAYS_DISCOVERABLE);
 		
-	this.tvService.getCharacteristic(this.platform.Characteristic.RemoteKey)
-	    .onSet(this.handleRemoteKeySet.bind(this));
+		this.tvService.getCharacteristic(this.platform.Characteristic.RemoteKey)
+	    	.onSet(this.handleRemoteKeySet.bind(this));
 			
-	this.tvSpeakerService = this.accessory.getService(this.platform.Service.Speaker)||this.accessory.addService(this.platform.Service.Speaker);  
+		this.tvSpeakerService = this.accessory.getService(this.platform.Service.Speaker)||this.accessory.addService(this.platform.Service.Speaker);  
 
-	this.tvSpeakerService.setCharacteristic(this.platform.Characteristic.Active, this.platform.Characteristic.Active.ACTIVE);
-	//this.tvSpeakerService.setCharacteristic(this.platform.Characteristic.VolumeControlType, this.platform.Characteristic.VolumeControlType.ABSOLUTE);
+		this.tvSpeakerService.setCharacteristic(this.platform.Characteristic.Active, this.platform.Characteristic.Active.ACTIVE);
+		//this.tvSpeakerService.setCharacteristic(this.platform.Characteristic.VolumeControlType, this.platform.Characteristic.VolumeControlType.ABSOLUTE);
 
-	this.tvSpeakerService.getCharacteristic(this.platform.Characteristic.Mute)
-	    .onGet(this.handleMuteGet.bind(this))
+		this.tvSpeakerService.getCharacteristic(this.platform.Characteristic.Mute)
+	    	.onGet(this.handleMuteGet.bind(this))
             .onSet(this.handleMuteSet.bind(this));
 
 		/*
@@ -312,7 +312,18 @@ export class Television {
 	setVolumeStateMsgEvent(value:number){
 		const tmpVolumeValue = value;
 		if(this.states.Volume != tmpVolumeValue){
-			this.states.Volume = tmpVolumeValue;
+			if(tmpVolumeValue < 0)
+			{
+				this.states.Volume = 0;
+			}
+			else if(tmpVolumeValue > 100)
+			{
+				this.states.Volume = 100;
+			}
+			else
+			{
+				this.states.Volume = tmpVolumeValue;
+			}
 			this.platform.log.info(`${this.deviceType}:${this.id}: Set Characteristic Volume By Crestron Processor -> ${this.states.Volume}`);
             this.tvService.updateCharacteristic(this.platform.Characteristic.Volume, this.states.Volume);
 		}
