@@ -19,6 +19,7 @@ export class WindowCovering {
     */
     private states = {
         Name: "",
+        PositionState: 2,
         TargetPosition: 0
     }
 
@@ -56,6 +57,9 @@ export class WindowCovering {
         this.service.getCharacteristic(this.platform.Characteristic.CurrentPosition)
             .onGet(this.handleCurrentPositionGet.bind(this))
 
+        this.service.getCharacteristic(this.platform.Characteristic.PositionState)
+            .onGet(this.handlePositionStateGet.bind(this));
+        
         this.service.getCharacteristic(this.platform.Characteristic.TargetPosition)
             .onGet(this.handleTargetPositionGet.bind(this))
             .onSet(this.handleTargetPositionSet.bind(this));
@@ -66,6 +70,12 @@ export class WindowCovering {
         this.platform.log.info(`${this.deviceType}:${this.id}: Get Characteristic CurrentPosition From Homekit -> ${currentPosition}`);
         this.platform.sendData(`${this.deviceType}:${this.id}:${this.getCurrentPositionMsg}:*`);
         return currentPosition;
+    }
+    
+    async handlePositionStateGet(): Promise<CharacteristicValue> {
+        const positionState = this.states.PositionState;
+        this.platform.log.info(`${this.deviceType}:${this.id}: Get Characteristic PositionState From Homekit -> ${positionState}`);
+        return positionState;
     }
 
     async handleTargetPositionGet(): Promise<CharacteristicValue> {
