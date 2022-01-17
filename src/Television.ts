@@ -52,7 +52,7 @@ export class Television {
 		this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.getMuteStateMsg}`, this.getMuteStateMsgEvent.bind(this));
 		this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.eventMuteStateMsg}`, this.setMuteStateMsgEvent.bind(this));
 		this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.getVolumeStateMsg}`, this.getVolumeStateMsgEvent.bind(this));
-		this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.eventVolumeStateMsg}`, this.eventVolumeStateMsgEvent.bind(this));
+		this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.eventVolumeStateMsg}`, this.setVolumeStateMsgEvent.bind(this));
 		
 		this.states.Name = this.accessory.context.device.name;
 		
@@ -237,7 +237,7 @@ export class Television {
 		if(this.states.Active != tmpActiveValue) {
 			this.states.Active = tmpActiveValue;
 			this.platform.log.info(`${this.deviceType}:${this.id}: Retrieve Characteristic Active From Crestron Processor -> ${this.states.Active}`);
-            this.service.updateCharacteristic(this.platform.Characteristic.Active, this.states.Active);
+            this.tvService.updateCharacteristic(this.platform.Characteristic.Active, this.states.Active);
 		}
 	}
 	
@@ -246,7 +246,7 @@ export class Television {
 		if(this.states.Active != tmpActiveValue) {
 			this.states.Active = tmpActiveValue;
 			this.platform.log.info(`${this.deviceType}:${this.id}: Set Characteristic Active By Crestron Processor -> ${this.states.Active}`);
-            this.service.updateCharacteristic(this.platform.Characteristic.Active, this.states.Active);
+            this.tvService.updateCharacteristic(this.platform.Characteristic.Active, this.states.Active);
 		}
 	}
 	
@@ -255,16 +255,16 @@ export class Television {
 		if(this.states.ActiveIdentifier != tmpActiveIdentifierValue){
 			this.states.ActiveIdentifier = tmpActiveIdentifierValue;
 			this.platform.log.info(`${this.deviceType}:${this.id}: Retrieve Characteristic ActiveIdentifier From Crestron Processor -> ${this.states.ActiveIdentifier}`);
-            this.service.updateCharacteristic(this.platform.Characteristic.ActiveIdentifier, this.states.ActiveIdentifier);
+            this.tvService.updateCharacteristic(this.platform.Characteristic.ActiveIdentifier, this.states.ActiveIdentifier);
 		}
 	}
 	
-	setInputStateMsg(value: number){
+	setInputStateMsgEvent(value: number){
 		const tmpActiveIdentifierValue = value;
 		if(this.states.ActiveIdentifier != tmpActiveIdentifierValue){
 			this.states.ActiveIdentifier = tmpActiveIdentifierValue;
 			this.platform.log.info(`${this.deviceType}:${this.id}: Set Characteristic ActiveIdentifier By Crestron Processor -> ${this.states.ActiveIdentifier}`);
-            this.service.updateCharacteristic(this.platform.Characteristic.ActiveIdentifier, this.states.ActiveIdentifier);
+            this.tvService.updateCharacteristic(this.platform.Characteristic.ActiveIdentifier, this.states.ActiveIdentifier);
 		}
 	}
 	
@@ -273,7 +273,7 @@ export class Television {
 		if(this.states.Mute != tmpMuteValue){
 			this.states.Mute = tmpMuteValue;
 			this.platform.log.info(`${this.deviceType}:${this.id}: Retrieve Characteristic Mute From Crestron Processor -> ${this.states.Mute}`);
-            this.service.updateCharacteristic(this.platform.Characteristic.Mute, this.states.Mute);
+            this.tvService.updateCharacteristic(this.platform.Characteristic.Mute, this.states.Mute);
 		}
 	}
 	
@@ -282,7 +282,7 @@ export class Television {
 		if(this.states.Mute != tmpMuteValue){
 			this.states.Mute = tmpMuteValue;
 			this.platform.log.info(`${this.deviceType}:${this.id}: Set Characteristic Mute By Crestron Processor -> ${this.states.Mute}`);
-			this.service.updateCharacteristic(this.platform.Characteristic.Mute, this.states.Mute);
+			this.tvService.updateCharacteristic(this.platform.Characteristic.Mute, this.states.Mute);
 		}
 	}
 	
@@ -291,7 +291,7 @@ export class Television {
 		if(this.states.Volume != tmpVolumeValue){
 			this.states.Volume = tmpVolumeValue;
 			this.platform.log.info(`${this.deviceType}:${this.id}: Retrieve Characteristic Volume From Crestron Processor -> ${this.states.Volume}`);
-            this.service.updateCharacteristic(this.platform.Characteristic.Volume, this.states.Volume);
+            this.tvService.updateCharacteristic(this.platform.Characteristic.Volume, this.states.Volume);
 		}
 	}
 	
@@ -300,7 +300,7 @@ export class Television {
 		if(this.states.Volume != tmpVolumeValue){
 			this.states.Volume = tmpVolumeValue;
 			this.platform.log.info(`${this.deviceType}:${this.id}: Set Characteristic Volume By Crestron Processor -> ${this.states.Volume}`);
-            this.service.updateCharacteristic(this.platform.Characteristic.Volume, this.states.Volume);
+            this.tvService.updateCharacteristic(this.platform.Characteristic.Volume, this.states.Volume);
 		}
 	}
 }
