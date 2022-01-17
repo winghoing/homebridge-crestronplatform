@@ -55,7 +55,7 @@ export class Television {
 		this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.eventVolumeStateMsg}`, this.setVolumeStateMsgEvent.bind(this));
 		
 		this.states.Name = this.accessory.context.device.name;
-		 // set accessory information
+		// set accessory information
         this.accessory.getService(this.platform.Service.AccessoryInformation)!
             .setCharacteristic(this.platform.Characteristic.Manufacturer, 'Default-Manufacturer')
             .setCharacteristic(this.platform.Characteristic.Model, 'Default-Model')
@@ -91,18 +91,20 @@ export class Television {
 		this.tvService.getCharacteristic(this.platform.Characteristic.RemoteKey)
 			.onSet(this.handleRemoteKeySet.bind(this));
 			
-		this.tvSpeakerService = this.accessory.getService(this.platform.Service.TelevisionSpeaker)||this.accessory.addService(this.platform.Service.TelevisionSpeaker);  
+		this.tvSpeakerService = this.accessory.getService(this.platform.Service.Speaker)||this.accessory.addService(this.platform.Service.Speaker);  
 
 		this.tvSpeakerService.setCharacteristic(this.platform.Characteristic.Active, this.platform.Characteristic.Active.ACTIVE);
-		this.tvSpeakerService.setCharacteristic(this.platform.Characteristic.VolumeControlType, this.platform.Characteristic.VolumeControlType.ABSOLUTE);
+		//this.tvSpeakerService.setCharacteristic(this.platform.Characteristic.VolumeControlType, this.platform.Characteristic.VolumeControlType.ABSOLUTE);
 
 		this.tvSpeakerService.getCharacteristic(this.platform.Characteristic.Mute)
 			.onGet(this.handleMuteGet.bind(this))
 			.onSet(this.handleMuteSet.bind(this));
 
+		/*
 		this.tvSpeakerService.getCharacteristic(this.platform.Characteristic.VolumeSelector)
 			.onSet(this.handleVolumeSelectorSet.bind(this));
-
+		*/
+			
 		this.tvSpeakerService.getCharacteristic(this.platform.Characteristic.Volume)
 			.onGet(this.handleVolumeGet.bind(this))
 			.onSet(this.handleVolumeSet.bind(this));
@@ -217,7 +219,20 @@ export class Television {
 	
 	async handleVolumeSelectorSet(value: CharacteristicValue){
         const tmpVolumeSelectorValue = value as number;
-		this.states.Volume++;
+		if(tmpVolumeSelectorValue === Characteristic.VolumeSelector.INCREMENT)
+		{
+			if(this.states.Volume + 1 <=100)
+			{	
+				this.states.Volume++;
+			}
+		}
+		ELSE
+		{
+			if(this.states.Volume - 1 >=0)
+			{	
+				this.states.Volume--;
+			}
+		}
 		this.platform.sendData(`${this.deviceType}:${this.id}:${this.setVolumeStateMsg}:${this.states.Volume}:*`);
         this.platform.log.info(`${this.deviceType}:${this.id}: Set Characteristic VolumeSelector By Homekit -> ${tmpVolumeSelectorValue}`);
     }
