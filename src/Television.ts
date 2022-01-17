@@ -19,7 +19,7 @@ export class Television {
      * You should implement your own code to track the state of your accessory
      */
     private states = {
-		Name: "",
+        Name: "",
         Active: 0,
         ActiveIdentifier: 0, //Input Selection
 		SleepDiscoveryMode: 1,
