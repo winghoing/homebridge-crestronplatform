@@ -57,17 +57,17 @@ export class HeaterCooler {
         this.accessory = accessory;
         this.eventEmitter = eventEmitter;
         this.states.TemperatureDisplayUnits = accessory.context.device.temperatureDisplayUnits;
-        this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.getPowerStateMsg}`, this.getPowerStateEvent.bind(this));
-        this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.eventPowerStateMsg}`, this.setPowerStateEvent.bind(this));
-        this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.getCurrentHeaterCoolerStateMsg}`, this.getCurrentHeaterCoolerStateEvent.bind(this));
-        this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.getTargetHeaterCoolerStateMsg}`, this.getTargetHeaterCoolerStateEvent.bind(this));
-        this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.eventTargetHeaterCoolerStateMsg}`, this.setTargetHeaterCoolerStateEvent.bind(this));
-        this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.getCurrentTempMsg}`, this.getCurrentTemperatureEvent.bind(this));
-        this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.eventCurrentTempMsg}`, this.setCurrentTemperatureEvent.bind(this));
-        this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.getTargetTempMsg}`, this.getTargetTemperatureEvent.bind(this));
-        this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.eventTargetTempMsg}`, this.setTargetTemperatureEvent.bind(this));
-        this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.getRotationSpeedMsg}`, this.getRotationSpeedEvent.bind(this));
-        this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.eventRotationSpeedMsg}`, this.setRotationSpeedEvent.bind(this));
+        this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.getPowerStateMsg}`, this.getPowerStateMsgEvent.bind(this));
+        this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.eventPowerStateMsg}`, this.setPowerStateMsgEvent.bind(this));
+        this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.getCurrentHeaterCoolerStateMsg}`, this.getCurrentHeaterCoolerStateMsgEvent.bind(this));
+        this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.getTargetHeaterCoolerStateMsg}`, this.getTargetHeaterCoolerStateMsgEvent.bind(this));
+        this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.eventTargetHeaterCoolerStateMsg}`, this.setTargetHeaterCoolerStateMsgEvent.bind(this));
+        this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.getCurrentTempMsg}`, this.getCurrentTemperatureMsgEvent.bind(this));
+        this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.eventCurrentTempMsg}`, this.setCurrentTemperatureMsgEvent.bind(this));
+        this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.getTargetTempMsg}`, this.getTargetTemperatureMsgEvent.bind(this));
+        this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.eventTargetTempMsg}`, this.setTargetTemperatureMsgEvent.bind(this));
+        this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.getRotationSpeedMsg}`, this.getRotationSpeedMsgEvent.bind(this));
+        this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.eventRotationSpeedMsg}`, this.setRotationSpeedMsgEvent.bind(this));
         // set accessory information
         this.accessory.getService(this.platform.Service.AccessoryInformation)!
             .setCharacteristic(this.platform.Characteristic.Manufacturer, 'Default-Manufacturer')
@@ -279,7 +279,7 @@ export class HeaterCooler {
         }
     }
 
-    getPowerStateEvent(value: number) {
+    getPowerStateMsgEvent(value: number) {
         const tmpActiveValue = value;
         if (this.states.Active != tmpActiveValue) {
             this.states.Active = tmpActiveValue;
@@ -298,7 +298,7 @@ export class HeaterCooler {
         }
     }
 
-    setPowerStateEvent(value: number) {
+    setPowerStateMsgEvent(value: number) {
         const tmpActiveValue = value;
         if (this.states.Active != tmpActiveValue) {
             this.states.Active = tmpActiveValue;
@@ -317,7 +317,7 @@ export class HeaterCooler {
         }
     }
 
-    getCurrentHeaterCoolerStateEvent(value: number) {
+    getCurrentHeaterCoolerStateMsgEvent(value: number) {
         const tmpCurrentHeaterCoolerState = value;
         if (this.states.CurrentHeaterCoolerState != tmpCurrentHeaterCoolerState) {
             this.states.CurrentHeaterCoolerState = tmpCurrentHeaterCoolerState;
@@ -331,7 +331,7 @@ export class HeaterCooler {
         }
     }
 
-    getTargetHeaterCoolerStateEvent(value: number) {
+    getTargetHeaterCoolerStateMsgEvent(value: number) {
         const tmpTargetHeaterCoolerState = value;
         if (this.states.TargetHeaterCoolerState != tmpTargetHeaterCoolerState) {
             this.states.TargetHeaterCoolerState = tmpTargetHeaterCoolerState;
@@ -345,7 +345,7 @@ export class HeaterCooler {
         }
     }
 
-    setTargetHeaterCoolerStateEvent(value: number) {
+    setTargetHeaterCoolerStateMsgEvent(value: number) {
         const tmpTargetHeaterCoolerState = value;
         if (this.states.TargetHeaterCoolerState != tmpTargetHeaterCoolerState) {
             this.states.TargetHeaterCoolerState = tmpTargetHeaterCoolerState;
@@ -359,7 +359,7 @@ export class HeaterCooler {
         }
     }
 
-    getCurrentTemperatureEvent(value: number) {
+    getCurrentTemperatureMsgEvent(value: number) {
         const tmpCurrentTemperature = value / 10;
         if (this.states.CurrentTemperature != tmpCurrentTemperature) {
             this.states.CurrentTemperature = tmpCurrentTemperature;
@@ -368,7 +368,7 @@ export class HeaterCooler {
         }
     }
 
-    setCurrentTemperatureEvent(value: number) {
+    setCurrentTemperatureMsgEvent(value: number) {
         const tmpCurrentTemperature = value / 10;
         if (this.states.CurrentTemperature != tmpCurrentTemperature) {
             this.states.CurrentTemperature = tmpCurrentTemperature;
@@ -377,7 +377,7 @@ export class HeaterCooler {
         }
     }
 
-    getTargetTemperatureEvent(value: number) {
+    getTargetTemperatureMsgEvent(value: number) {
         const tmpTargetTemperature = value / 10;
         if (this.states.TargetTemperature != tmpTargetTemperature) {
             this.states.TargetTemperature = tmpTargetTemperature;
@@ -389,7 +389,7 @@ export class HeaterCooler {
         }
     }
 
-    setTargetTemperatureEvent(value: number) {
+    setTargetTemperatureMsgEvent(value: number) {
         const tmpTargetTemperature = value / 10;
         if (this.states.TargetTemperature != tmpTargetTemperature) {
             this.states.TargetTemperature = tmpTargetTemperature;
@@ -401,7 +401,7 @@ export class HeaterCooler {
         }
     }
 
-    getRotationSpeedEvent(value: number) {
+    getRotationSpeedMsgEvent(value: number) {
         const tmpRotationSpeed = value;
         if (this.states.RotationSpeed != tmpRotationSpeed) {
             this.states.RotationSpeed = tmpRotationSpeed;
@@ -410,7 +410,7 @@ export class HeaterCooler {
         }
     }
 
-    setRotationSpeedEvent(value: number) {
+    setRotationSpeedMsgEvent(value: number) {
         const tmpRotationSpeed = value;
         if (this.states.RotationSpeed != tmpRotationSpeed) {
             this.states.RotationSpeed = tmpRotationSpeed;
