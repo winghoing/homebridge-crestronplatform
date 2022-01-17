@@ -85,7 +85,7 @@ export class WindowCovering {
     
     getCurrentPositionMsgEvent(value: number) {
         const tmpCurrentPosition = value;
-        if (this.states.CurrentPosition != tmpCurrentPosition) {
+        if (this.states.TargetPosition != tmpCurrentPosition) {
             this.states.TargetPosition = tmpCurrentPosition;
             this.platform.log.info(`${this.deviceType}:${this.id}: Retrieve Characteristic CurrentPosition By Crestron Processor -> ${tmpCurrentPosition}`);
             this.service.updateCharacteristic(this.platform.Characteristic.TargetPosition, this.states.TargetPosition);
