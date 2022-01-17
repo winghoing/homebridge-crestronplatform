@@ -100,16 +100,14 @@ export class Television {
 	    	.onGet(this.handleMuteGet.bind(this))
             .onSet(this.handleMuteSet.bind(this));
 
-		/*
 		this.tvSpeakerService.getCharacteristic(this.platform.Characteristic.VolumeSelector)
 			.onSet(this.handleVolumeSelectorSet.bind(this));
-		*/
 			
 		this.tvSpeakerService.getCharacteristic(this.platform.Characteristic.Volume)
 			.onGet(this.handleVolumeGet.bind(this))
 			.onSet(this.handleVolumeSet.bind(this));
 
-		this.tvService.addLinkedService(this.tvSpeakerService);
+		//this.tvService.addLinkedService(this.tvSpeakerService);
 		if(this.accessory.context.device.inputs.length > 0){
 			this.accessory.context.device.inputs.forEach(
 				(input:{name:string; type:number;}, i:number) => {
