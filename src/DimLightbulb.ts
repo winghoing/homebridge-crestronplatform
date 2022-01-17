@@ -35,8 +35,8 @@ export class DimLightbulb {
         this.id = accessory.context.device.id;
         this.accessory = accessory;
         this.eventEmitter = eventEmitter;
-        this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.getLightBrightnessMsg}`, this.getBrightnessEvent.bind(this));
-        this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.eventLightBrightnessMsg}`, this.setBrightnessEvent.bind(this));
+        this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.getLightBrightnessMsg}`, this.getBrightnessMsgEvent.bind(this));
+        this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.eventLightBrightnessMsg}`, this.setBrightnessMsgEvent.bind(this));
         // set accessory information
         this.accessory.getService(this.platform.Service.AccessoryInformation)!
             .setCharacteristic(this.platform.Characteristic.Manufacturer, 'Default-Manufacturer')
@@ -123,7 +123,7 @@ export class DimLightbulb {
         }
     }
 
-    getBrightnessEvent(value: number) {
+    getBrightnessMsgEvent(value: number) {
         let tmpBrightnessValue = value;
         let tmpOnValue = (tmpBrightnessValue > 0) ? true : false;
         if (this.states.On != tmpOnValue) {
@@ -139,7 +139,7 @@ export class DimLightbulb {
         }
     }
 
-    setBrightnessEvent(value: number) {
+    setBrightnessMsgEvent(value: number) {
         let tmpBrightnessValue = value;
 
         if (this.states.Brightness != tmpBrightnessValue) {
