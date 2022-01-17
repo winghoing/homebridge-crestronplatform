@@ -55,7 +55,6 @@ export class Television {
 		this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.eventVolumeStateMsg}`, this.setVolumeStateMsgEvent.bind(this));
 		
 		this.states.Name = this.accessory.context.device.name;
-		
 		 // set accessory information
         this.accessory.getService(this.platform.Service.AccessoryInformation)!
             .setCharacteristic(this.platform.Characteristic.Manufacturer, 'Default-Manufacturer')
