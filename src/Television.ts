@@ -219,21 +219,21 @@ export class Television {
 	
 	async handleVolumeSelectorSet(value: CharacteristicValue){
         const tmpVolumeSelectorValue = value as number;
-		if(tmpVolumeSelectorValue === Characteristic.VolumeSelector.INCREMENT)
-		{
-			if(this.states.Volume + 1 <=100)
-			{	
-				this.states.Volume++;
-			}
+	if(tmpVolumeSelectorValue === this.platform.Characteristic.VolumeSelector.INCREMENT)
+	{
+		if(this.states.Volume + 1 <=100)
+		{	
+			this.states.Volume++;
 		}
-		ELSE
-		{
-			if(this.states.Volume - 1 >=0)
-			{	
-				this.states.Volume--;
-			}
+	}
+	else
+	{
+		if(this.states.Volume - 1 >=0)
+		{	
+			this.states.Volume--;
 		}
-		this.platform.sendData(`${this.deviceType}:${this.id}:${this.setVolumeStateMsg}:${this.states.Volume}:*`);
+	}
+	this.platform.sendData(`${this.deviceType}:${this.id}:${this.setVolumeStateMsg}:${this.states.Volume}:*`);
         this.platform.log.info(`${this.deviceType}:${this.id}: Set Characteristic VolumeSelector By Homekit -> ${tmpVolumeSelectorValue}`);
     }
 	
