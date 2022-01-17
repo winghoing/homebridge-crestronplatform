@@ -142,7 +142,7 @@ export class Television {
 
     async handleConfiguredNameGet(): Promise<CharacteristicValue> {
         const configuredName = this.states.Name;
-        this.platform.log.info(`${this.deviceType}:${this.id}: Get Characteristic IsInput1Configured From Homekit -> ${configuredName}`);
+        this.platform.log.info(`${this.deviceType}:${this.id}: Get Characteristic ConfiguredName From Homekit -> ${configuredName}`);
         return configuredName;
     }
 
