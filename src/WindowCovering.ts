@@ -78,7 +78,7 @@ export class WindowCovering {
     async handlePositionStateGet(): Promise<CharacteristicValue> {
         const positionState = this.states.PositionState;
         this.platform.log.info(`${this.deviceType}:${this.id}: Get Characteristic PositionState From Homekit -> ${positionState}`);
-        this.platform.sendData(`${this.deviceType}:${this.id}:${this.getPositionState}:*`);
+        //this.platform.sendData(`${this.deviceType}:${this.id}:${this.getPositionStateMsg}:*`);
         return positionState;
     }
 
