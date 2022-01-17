@@ -20,8 +20,7 @@ export class WindowCovering {
     private states = {
         Name: "",
         CurrentPosition: 0,
-        TargetPosition: 0,
-        PositionState: 2
+        TargetPosition: 0
     }
 
     constructor(
@@ -32,8 +31,8 @@ export class WindowCovering {
         this.id = accessory.context.device.id;
         this.accessory = accessory;
         this.eventEmitter = eventEmitter;
-        //this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.getCurrentPositionMsg}`, this.getCurrentPositionMsgEvent.bind(this));
-        //this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.eventCurrentPositionMsg}`, this.setCurrentPositionMsgEvent.bind(this));
+        this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.getCurrentPositionMsg}`, this.getCurrentPositionMsgEvent.bind(this));
+        this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.eventCurrentPositionMsg}`, this.setCurrentPositionMsgEvent.bind(this));
         
         this.states.Name = this.accessory.context.device.name;
         // set accessory information
@@ -57,11 +56,6 @@ export class WindowCovering {
 
         this.service.getCharacteristic(this.platform.Characteristic.CurrentPosition)
             .onGet(this.handleCurrentPositionGet.bind(this))
-            .onSet(this.handleCurrentPositionSet.bind(this));
-
-        this.service.getCharacteristic(this.platform.Characteristic.PositionState)
-            .onGet(this.handlePositionStateGet.bind(this))
-            .onSet(this.handlePositionStateSet.bind(this));
 
         this.service.getCharacteristic(this.platform.Characteristic.TargetPosition)
             .onGet(this.handleTargetPositionGet.bind(this))
@@ -75,42 +69,36 @@ export class WindowCovering {
         return currentPosition;
     }
 
-    async handlePositionStateGet(): Promise<CharacteristicValue> {
-        const positionState = this.states.PositionState;
-        this.platform.log.info(`${this.deviceType}:${this.id}: Get Characteristic PositionState From Homekit -> ${positionState}`);
-        //this.platform.sendData(`${this.deviceType}:${this.id}:${this.getPositionStateMsg}:*`);
-        return positionState;
-    }
-
     async handleTargetPositionGet(): Promise<CharacteristicValue> {
         const targetPosition = this.states.TargetPosition;
         this.platform.log.info(`${this.deviceType}:${this.id}: Get Characteristic TargetPosition From Homekit -> ${targetPosition}`);
+        this.platform.sendData(`${this.deviceType}:${this.id}:${this.getCurrentPositionMsg}:*`);
         return targetPosition;
-    }
-
-    async handleCurrentPositionSet(value: CharacteristicValue) {
-        const tmpCurrentPosition = value as number;
-        if (this.states.CurrentPosition != tmpCurrentPosition) {
-            this.states.CurrentPosition = tmpCurrentPosition;
-            //this.platform.sendData(`${this.deviceType}:${this.id}:${this.set}:${this.states.CurrentPosition}:*`);
-            this.platform.log.info(`${this.deviceType}:${this.id}: Set Characteristic CurrentPosition By Homekit -> ${tmpCurrentPosition}`);
-        }
-    }
-
-    async handlePositionStateSet(value: CharacteristicValue) {
-        const tmpPositionState = value as number;
-        if (this.states.PositionState != tmpPositionState) {
-            this.states.PositionState = tmpPositionState;
-            //this.platform.sendData(`${this.deviceType}:${this.id}:${this.setInputStateMsg}:${this.states.PositionState}:*`);
-            this.platform.log.info(`${this.deviceType}:${this.id}: Set Characteristic PositionState By Homekit -> ${tmpPositionState}`);
-        }
     }
 
     async handleTargetPositionSet(value: CharacteristicValue){
         const tmpTargetPosition = value as number;
         if(this.states.TargetPosition != tmpTargetPosition) {
-            this.states.TargetPosition = tmpTargetPosition;
+            this.states.CurrentPosition = this.states.TargetPosition = tmpTargetPosition;
             this.platform.log.info(`${this.deviceType}:${this.id}: Set Characteristic TargetPosition By Homekit -> ${tmpTargetPosition}`);
+        }
+    }
+    
+    getCurrentPositionMsgEvent(value: number) {
+        const tmpCurrentPosition = value;
+        if (this.states.CurrentPosition != tmpCurrentPosition) {
+            this.states.TargetPosition = this.states.CurrentPosition = tmpCurrentPosition;
+            this.platform.log.info(`${this.deviceType}:${this.id}: Retrieve Characteristic CurrentPosition By Crestron Processor -> ${tmpCurrentPosition}`);
+            this.service.updateCharacteristic(this.platform.Characteristic.CurrentPosition, this.states.CurrentPosition);
+        }
+    }
+    
+    setCurrentPositionMsgEvent(value: number) {
+        const tmpCurrentPosition = value;
+        if (this.states.CurrentPosition != tmpCurrentPosition) {
+            this.states.TargetPosition = this.states.CurrentPosition = tmpCurrentPosition;
+            this.platform.log.info(`${this.deviceType}:${this.id}: Set Characteristic CurrentPosition By Crestron Processor -> ${tmpCurrentPosition}`);
+            this.service.updateCharacteristic(this.platform.Characteristic.CurrentPosition, this.states.CurrentPosition);
         }
     }
 }
