@@ -7,6 +7,7 @@ import { Lightbulb } from "./Lightbulb";
 import { DimLightbulb } from "./DimLightbulb";
 import { HeaterCooler } from "./HeaterCooler";
 import { Television } from "./Television";
+import { WindowCovering } from "./WindowCovering";
 
 /**
  * HomebridgePlatform
@@ -144,6 +145,12 @@ export class CrestronPlatform implements DynamicPlatformPlugin {
                                 new Television(this, existingAccessory, this.eventEmitter);
                                 break;
                             }
+                        case "WindowCovering":
+                            {
+                                this.log.info(`create existing window covering accessory: ${existingAccessory.displayName}`);
+                                new WindowCovering(this, existingAccessory, this.eventEmitter);
+                                break;
+                            }
                     }
 
                     // it is possible to remove platform accessories at any time using `api.unregisterPlatformAccessories`, eg.:
@@ -186,6 +193,12 @@ export class CrestronPlatform implements DynamicPlatformPlugin {
                             {
                                 this.log.info(`create not existing television accessory: ${accessory.displayName}`);
                                 new Television(this, accessory, this.eventEmitter);
+                                break;
+                            }
+                        case "WindowCovering":
+                            {
+                                this.log.info(`create not existing window covering accessory: ${accessory.displayName}`);
+                                new WindowCovering(this, accessory, this.eventEmitter);
                                 break;
                             }
                     }
