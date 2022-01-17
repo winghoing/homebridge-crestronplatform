@@ -90,6 +90,7 @@ export class WindowCovering {
         if(this.states.TargetPosition != tmpTargetPosition) {
             this.states.TargetPosition = tmpTargetPosition;
             this.platform.log.info(`${this.deviceType}:${this.id}: Set Characteristic TargetPosition By Homekit -> ${tmpTargetPosition}`);
+            this.service.updateCharacteristic(this.platform.Characteristic.CurrentPosition, this.states.TargetPosition);
         }
     }
     
