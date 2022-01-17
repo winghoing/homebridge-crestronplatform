@@ -6,7 +6,6 @@ import { EventEmitter } from "events";
 
 export class Television {
     private tvService: Service;
-    private tvSpeakerService: Service;
     private id: number;
     private eventEmitter: EventEmitter;
     private deviceType = "Television";
@@ -90,7 +89,7 @@ export class Television {
 		
 		this.tvService.getCharacteristic(this.platform.Characteristic.RemoteKey)
 	    	.onSet(this.handleRemoteKeySet.bind(this));
-			
+		/*	
 		this.tvSpeakerService = this.accessory.getService(this.platform.Service.Speaker)||this.accessory.addService(this.platform.Service.Speaker);  
 
 		this.tvSpeakerService.setCharacteristic(this.platform.Characteristic.Active, this.platform.Characteristic.Active.ACTIVE);
@@ -107,7 +106,8 @@ export class Television {
 			.onGet(this.handleVolumeGet.bind(this))
 			.onSet(this.handleVolumeSet.bind(this));
 
-		//this.tvService.addLinkedService(this.tvSpeakerService);
+		this.tvService.addLinkedService(this.tvSpeakerService);
+		*/
 		if(this.accessory.context.device.inputs.length > 0){
 			this.accessory.context.device.inputs.forEach(
 				(input:{name:string; type:number;}, i:number) => {
