@@ -16,7 +16,7 @@ export class Television {
     private eventInputStateMsg = "eventInputState";
     private setInputStateMsg = "setInputState";
     private getInputStateMsg = "getInputState";
-    private setRemoteKeyStateMsg = "setRemoteKeyState";
+    private setRemoteKeyMsg = "setRemoteKey";
     private eventMuteStateMsg = "eventMuteState";
     private setMuteStateMsg = "setMuteState";
     private getMuteStateMsg = "getMuteState";
@@ -202,7 +202,7 @@ export class Television {
 	
 	async handleRemoteKeySet(value: CharacteristicValue) {
         const tmpRemoteKeyValue = value as number;
-		this.platform.sendData(`${this.deviceType}:${this.id}:${this.setRemoteKeyStateMsg}:${tmpRemoteKeyValue}:*`);
+		this.platform.sendData(`${this.deviceType}:${this.id}:${this.setRemoteKeyMsg}:${tmpRemoteKeyValue}:*`);
         this.platform.log.info(`${this.deviceType}:${this.id}: Set Characteristic RemoteKey By Homekit -> ${tmpRemoteKeyValue}`);
     }
 	
