@@ -74,6 +74,29 @@
                     }
                 }
             },
+            "window-covering":{
+                "title": "Window Covering",
+                "type": "array",
+                "items": {
+                    "title": "Window Covering Configuration",
+                    "type": "object",
+                    "properties": {
+                        "id": {
+                            "title": "ID",
+                            "type": "number",
+                            "default": 1,
+                            "minimum": 1,
+                            "required": true     
+                        },
+                        "name": {
+                            "title": "Name",
+                            "type": "string",
+                            "default": "Shade1",
+                            "required": true
+                        }
+                    }
+                }
+            },
             "heatercoolers": {
                 "title": "HeaterCooler",
                 "type": "array",
@@ -144,7 +167,7 @@
                         "name": {
                             "title": "Name",
                             "type": "string",
-                            "default": "TV",
+                            "default": "TV1",
                             "required": true
                         },
                         "inputs": {
