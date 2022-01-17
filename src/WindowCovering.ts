@@ -19,7 +19,6 @@ export class WindowCovering {
     */
     private states = {
         Name: "",
-        CurrentPosition: 0,
         TargetPosition: 0
     }
 
@@ -63,7 +62,7 @@ export class WindowCovering {
     }
 
     async handleCurrentPositionGet(): Promise<CharacteristicValue> {
-        const currentPosition = this.states.CurrentPosition;
+        const currentPosition = this.states.TargetPosition;
         this.platform.log.info(`${this.deviceType}:${this.id}: Get Characteristic CurrentPosition From Homekit -> ${currentPosition}`);
         this.platform.sendData(`${this.deviceType}:${this.id}:${this.getCurrentPositionMsg}:*`);
         return currentPosition;
@@ -79,7 +78,7 @@ export class WindowCovering {
     async handleTargetPositionSet(value: CharacteristicValue){
         const tmpTargetPosition = value as number;
         if(this.states.TargetPosition != tmpTargetPosition) {
-            this.states.CurrentPosition = this.states.TargetPosition = tmpTargetPosition;
+            this.states.TargetPosition = tmpTargetPosition;
             this.platform.log.info(`${this.deviceType}:${this.id}: Set Characteristic TargetPosition By Homekit -> ${tmpTargetPosition}`);
         }
     }
@@ -87,18 +86,18 @@ export class WindowCovering {
     getCurrentPositionMsgEvent(value: number) {
         const tmpCurrentPosition = value;
         if (this.states.CurrentPosition != tmpCurrentPosition) {
-            this.states.TargetPosition = this.states.CurrentPosition = tmpCurrentPosition;
+            this.states.TargetPosition = tmpCurrentPosition;
             this.platform.log.info(`${this.deviceType}:${this.id}: Retrieve Characteristic CurrentPosition By Crestron Processor -> ${tmpCurrentPosition}`);
-            this.service.updateCharacteristic(this.platform.Characteristic.CurrentPosition, this.states.CurrentPosition);
+            this.service.updateCharacteristic(this.platform.Characteristic.TargetPosition, this.states.TargetPosition);
         }
     }
     
     setCurrentPositionMsgEvent(value: number) {
         const tmpCurrentPosition = value;
-        if (this.states.CurrentPosition != tmpCurrentPosition) {
-            this.states.TargetPosition = this.states.CurrentPosition = tmpCurrentPosition;
+        if (this.states.TargetPosition != tmpCurrentPosition) {
+            this.states.TargetPosition = tmpCurrentPosition;
             this.platform.log.info(`${this.deviceType}:${this.id}: Set Characteristic CurrentPosition By Crestron Processor -> ${tmpCurrentPosition}`);
-            this.service.updateCharacteristic(this.platform.Characteristic.CurrentPosition, this.states.CurrentPosition);
+            this.service.updateCharacteristic(this.platform.Characteristic.TargetPosition, this.states.TargetPosition);
         }
     }
 }
