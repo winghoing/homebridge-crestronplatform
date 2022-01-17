@@ -34,8 +34,8 @@ export class Lightbulb {
         this.id = accessory.context.device.id;
         this.accessory = accessory;
         this.eventEmitter = eventEmitter;
-        this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.getPowerStateMsg}`, this.getLightStateEvent.bind(this));
-        this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.eventPowerStateMsg}`, this.setLightStateEvent.bind(this));
+        this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.getPowerStateMsg}`, this.getLightStateMsgEvent.bind(this));
+        this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.eventPowerStateMsg}`, this.setLightStateMsgEvent.bind(this));
         // set accessory information
         this.accessory.getService(this.platform.Service.AccessoryInformation)!
             .setCharacteristic(this.platform.Characteristic.Manufacturer, 'Default-Manufacturer')
@@ -91,7 +91,7 @@ export class Lightbulb {
         }
     }
 
-    getLightStateEvent(value: number) {
+    getLightStateMsgEvent(value: number) {
         let tmpValue = (value == 1) ? true : false;
 
         if (this.states.On != tmpValue) {
@@ -102,7 +102,7 @@ export class Lightbulb {
         }
     }
 
-    setLightStateEvent(value: number) {
+    setLightStateMsgEvent(value: number) {
         let tmpValue = (value == 1) ? true : false;
 
         if (this.states.On != tmpValue) {
