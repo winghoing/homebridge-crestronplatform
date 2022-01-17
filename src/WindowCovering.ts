@@ -99,6 +99,7 @@ export class WindowCovering {
         if (this.states.TargetPosition != tmpCurrentPosition) {
             this.states.TargetPosition = tmpCurrentPosition;
             this.platform.log.info(`${this.deviceType}:${this.id}: Retrieve Characteristic CurrentPosition By Crestron Processor -> ${tmpCurrentPosition}`);
+            this.service.updateCharacteristic(this.platform.Characteristic.TargetPosition, this.states.TargetPosition);
             this.service.updateCharacteristic(this.platform.Characteristic.CurrentPosition, this.states.TargetPosition);
         }
     }
@@ -108,6 +109,7 @@ export class WindowCovering {
         if (this.states.TargetPosition != tmpCurrentPosition) {
             this.states.TargetPosition = tmpCurrentPosition;
             this.platform.log.info(`${this.deviceType}:${this.id}: Set Characteristic CurrentPosition By Crestron Processor -> ${tmpCurrentPosition}`);
+            this.service.updateCharacteristic(this.platform.Characteristic.TargetPosition, this.states.TargetPosition);
             this.service.updateCharacteristic(this.platform.Characteristic.CurrentPosition, this.states.TargetPosition);
         }
     }
