@@ -12,7 +12,6 @@ import { EventEmitter } from "events";
 export class DimLightbulb {
     private service: Service;
     private id: number;
-    private accessory: PlatformAccessory;
     private eventEmitter: EventEmitter;
     private deviceType = "DimLightbulb";
     private eventLightBrightnessMsg = "eventLightBrightness";
@@ -34,7 +33,7 @@ export class DimLightbulb {
         eventEmitter: EventEmitter
     ) {
         this.id = accessory.context.device.id;
-        this.accessory = accessory;
+        //this.accessory = accessory;
         this.eventEmitter = eventEmitter;
         this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.getLightBrightnessMsg}`, this.getBrightnessMsgEvent.bind(this));
         this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.eventLightBrightnessMsg}`, this.setBrightnessMsgEvent.bind(this));
