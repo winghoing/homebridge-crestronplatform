@@ -7,8 +7,6 @@ import { EventEmitter } from "events";
 export class Speaker {
     private service: Service;
     private id: number;
-    private accessory: PlatformAccessory;
-    private eventEmitter: EventEmitter;
     private deviceType = "Speaker";
     private eventMuteStateMsg = "eventMuteState";
     private setMuteStateMsg = "setMuteState";
@@ -28,13 +26,11 @@ export class Speaker {
     }
 
     constructor(
-        platform: CrestronPlatform,
-        accessory: PlatformAccessory,
-        eventEmitter: EventEmitter
+        private platform: CrestronPlatform,
+        private accessory: PlatformAccessory,
+        private eventEmitter: EventEmitter
     ) {
         this.id = accessory.context.device.id;
-        this.accessory = accessory;
-        this.eventEmitter = eventEmitter;
         this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.getMuteStateMsg}`, this.getMuteStateMsgEvent.bind(this));
         this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.eventMuteStateMsg}`, this.setMuteStateMsgEvent.bind(this));
         this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.getVolumeStateMsg}`, this.getVolumeStateMsgEvent.bind(this));
