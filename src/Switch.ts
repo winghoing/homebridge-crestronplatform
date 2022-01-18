@@ -77,13 +77,15 @@ export class Switch {
      * These are sent when the user changes the state of an accessory, for example, changing the Brightness
      */
     async handleOnSet(value: CharacteristicValue) {
+        let setValue = 0;
         this.states.On = value as boolean;
-        this.platform.sendData(`${this.deviceType}:${this.id}:${this.setPowerStateMsg}:${this.states.On}:*`);
+        setValue = this.states.On ? 1 : 0;
+        this.platform.sendData(`${this.deviceType}:${this.id}:${this.setPowerStateMsg}:${setValue}:*`);
         this.platform.log.info(`${this.deviceType}:${this.id}: Set Characteristic On By Homekit -> ${value}`);
     }
     
     getPowerStateMsgEvent(value: boolean){
-        let tmpOnValue = value;
+        let tmpValue = (value == 1) ? true : false;
         if (this.states.On != tmpOnValue) {
             this.states.On = tmpOnValue;
             this.platform.log.info(`${this.deviceType}:${this.id}: Retrieve Characteristic On From Crestron Processor -> ${this.states.On}`);
@@ -92,7 +94,7 @@ export class Switch {
     }
         
     setPowerStateMsgEvent(value: boolean){
-        let tmpOnValue = value;
+        let tmpValue = (value == 1) ? true : false;
         if (this.states.On != tmpOnValue) {
             this.states.On = tmpOnValue;
             this.platform.log.info(`${this.deviceType}:${this.id}: Set Characteristic On From Crestron Processor -> ${this.states.On}`);
