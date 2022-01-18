@@ -67,13 +67,6 @@ export class Speaker {
             .onGet(this.handleVolumeGet.bind(this))
             .onSet(this.handleVolumeSet.bind(this));
     }
-
-    async handleActiveGet(): Promise<CharacteristicValue> {
-        const isActive = this.states.Active;
-        this.platform.log.info(`${this.deviceType}:${this.id}: Get Characteristic Active From Homekit -> ${isActive}`);
-        this.platform.sendData(`${this.deviceType}:${this.id}:${this.getPowerStateMsg}:*`);
-        return isActive;
-    }
         
     async handleMuteGet(): Promise<CharacteristicValue> {
         const mute = this.states.Mute;
