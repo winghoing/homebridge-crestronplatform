@@ -12,8 +12,6 @@ import { EventEmitter } from "events";
 export class DimLightbulb {
     private service: Service;
     private id: number;
-    private accessory: PlatformAccessory;
-    private eventEmitter: EventEmitter;
     private deviceType = "DimLightbulb";
     private eventLightBrightnessMsg = "eventLightBrightness";
     private setLightBrightnessMsg = "setLightBrightness";
@@ -29,13 +27,11 @@ export class DimLightbulb {
     };
 
     constructor(
-        platform: CrestronPlatform,
-        accessory: PlatformAccessory,
-        eventEmitter: EventEmitter
+        private platform: CrestronPlatform,
+        private accessory: PlatformAccessory,
+        private eventEmitter: EventEmitter
     ) {
         this.id = accessory.context.device.id;
-        this.accessory = accessory;
-        this.eventEmitter = eventEmitter;
         this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.getLightBrightnessMsg}`, this.getBrightnessMsgEvent.bind(this));
         this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.eventLightBrightnessMsg}`, this.setBrightnessMsgEvent.bind(this));
         // set accessory information
