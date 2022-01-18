@@ -12,6 +12,7 @@ import { EventEmitter } from "events";
 export class DimLightbulb {
     private service: Service;
     private id: number;
+    private accessory: PlatformAccessory;
     private eventEmitter: EventEmitter;
     private deviceType = "DimLightbulb";
     private eventLightBrightnessMsg = "eventLightBrightness";
