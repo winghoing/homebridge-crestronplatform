@@ -8,7 +8,7 @@ import { DimLightbulb } from "./DimLightbulb";
 import { HeaterCooler } from "./HeaterCooler";
 import { Television } from "./Television";
 import { WindowCovering } from "./WindowCovering";
-import { Speaker } from "./Speaker";
+import { Switch } from "./Switch";
 
 /**
  * HomebridgePlatform
@@ -87,14 +87,14 @@ export class CrestronPlatform implements DynamicPlatformPlugin {
         let heaterCoolersConfig = this.config["heatercoolers"];
         let televisionsConfig = this.config["televisions"];
         let windowCoveringsConfig = this.config["window-coverings"];
-        let speakersConfig = this.config["speakers"];
+        let switchesConfig = this.config["switches"];
         //this.log.info(`printing accessories: ${configDevices}`);
         this.registerDevices(nonDimLightbulbsConfig, "NonDimLightbulb");
         this.registerDevices(dimLightbulbsConfig, "DimLightbulb");
         this.registerDevices(heaterCoolersConfig, "HeaterCooler");
         this.registerDevices(televisionsConfig, "Television");
         this.registerDevices(windowCoveringsConfig, "WindowCovering");
-        this.registerDevices(speakersConfig, "Speaker");
+        this.registerDevices(switchesConfig, "Switch");
     }
 
     registerDevices(configDevices, deviceType) {
@@ -120,7 +120,6 @@ export class CrestronPlatform implements DynamicPlatformPlugin {
                     // if you need to update the accessory.context then you should run `api.updatePlatformAccessories`. eg.:
                     existingAccessory.context.device = device;
                     existingAccessory.displayName = device.name;
-                    this.api.updatePlatformAccessories([existingAccessory]);
 
                     // create the accessory handler for the restored accessory
                     // this is imported from `platformAccessory.ts`
@@ -156,12 +155,13 @@ export class CrestronPlatform implements DynamicPlatformPlugin {
                                 new WindowCovering(this, existingAccessory, this.eventEmitter);
                                 break;
                             }
-                        case "Speaker":
+                        case "Switch":
                             {
-                                this.log.info(`create existing speaker accessory: ${existingAccessory.displayName}`);
-                                new Speaker(this, existingAccessory, this.eventEmitter);
+                                this.log.info(`create existing switch accessory: ${existingAccessory.displayName}`);
+                                new Switch(this, existingAccessory, this.eventEmitter);
                                 break;
                             }
+                        this.api.updatePlatformAccessories([existingAccessory]);
                     }
 
                     // it is possible to remove platform accessories at any time using `api.unregisterPlatformAccessories`, eg.:
@@ -222,10 +222,10 @@ export class CrestronPlatform implements DynamicPlatformPlugin {
                                 this.api.registerPlatformAccessories(PLUGIN_NAME, PLATFORM_NAME, [accessory]);
                                 break;
                             }
-                        case "Speaker":
+                        case "Switch":
                             {
-                                this.log.info(`create not existing speaker accessory: ${accessory.displayName}`);
-                                new Speaker(this, accessory, this.eventEmitter);
+                                this.log.info(`create not existing switch accessory: ${accessory.displayName}`);
+                                new Switch(this, accessory, this.eventEmitter);
                                 break;
                             }
                     }
