@@ -186,30 +186,40 @@ export class CrestronPlatform implements DynamicPlatformPlugin {
                             {
                                 this.log.info(`create not existing lightbulb accessory: ${accessory.displayName}`);
                                 new Lightbulb(this, accessory, this.eventEmitter);
+                                // link the accessory to your platform
+                                this.api.registerPlatformAccessories(PLUGIN_NAME, PLATFORM_NAME, [accessory]);
                                 break;
                             }
                         case "DimLightbulb":
                             {
                                 this.log.info(`create nof existing dimlightbulb accessory: ${accessory.displayName}`);
                                 new DimLightbulb(this, accessory, this.eventEmitter);
+                                // link the accessory to your platform
+                                this.api.registerPlatformAccessories(PLUGIN_NAME, PLATFORM_NAME, [accessory]);
                                 break;
                             }
                         case "HeaterCooler":
                             {
                                 this.log.info(`create not existing heatercooler accessory: ${accessory.displayName}`);
                                 new HeaterCooler(this, accessory, this.eventEmitter);
+                                // link the accessory to your platform
+                                this.api.registerPlatformAccessories(PLUGIN_NAME, PLATFORM_NAME, [accessory]);
                                 break;
                             }
                         case "Television":
                             {
                                 this.log.info(`create not existing television accessory: ${accessory.displayName}`);
                                 new Television(this, accessory, this.eventEmitter);
+                                // link the accessory to your platform
+                                this.api.registerPlatformAccessories(PLUGIN_NAME, PLATFORM_NAME, [accessory]);
                                 break;
                             }
                         case "WindowCovering":
                             {
                                 this.log.info(`create not existing window covering accessory: ${accessory.displayName}`);
                                 new WindowCovering(this, accessory, this.eventEmitter);
+                                // link the accessory to your platform
+                                this.api.registerPlatformAccessories(PLUGIN_NAME, PLATFORM_NAME, [accessory]);
                                 break;
                             }
                         case "Speaker":
@@ -219,9 +229,6 @@ export class CrestronPlatform implements DynamicPlatformPlugin {
                                 break;
                             }
                     }
-
-                    // link the accessory to your platform
-                    this.api.registerPlatformAccessories(PLUGIN_NAME, PLATFORM_NAME, [accessory]);
                 }
             }
         }
