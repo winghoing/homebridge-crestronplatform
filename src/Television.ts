@@ -7,6 +7,7 @@ import { EventEmitter } from "events";
 export class Television {
     private tvService: Service;
     private id: number;
+    private accessory: PlatformAccessory;
     private eventEmitter: EventEmitter;
     private deviceType = "Television";
     private eventPowerStateMsg = "eventPowerState";
