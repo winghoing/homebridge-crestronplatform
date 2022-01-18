@@ -208,7 +208,7 @@
                     }
                 }
             },
-			"speaker":{
+	        "speakers":{
                 "title": "Speaker",
                 "type": "array",
                 "items": {
