@@ -208,11 +208,11 @@
                     }
                 }
             },
-	        "speakers":{
-                "title": "Speaker",
+            "switches":{
+                "title": "Switch",
                 "type": "array",
                 "items": {
-                    "title": "Speaker Configuration",
+                    "title": "Switch Configuration",
                     "type": "object",
                     "properties": {
                         "id": {
@@ -225,7 +225,7 @@
                         "name": {
                             "title": "Name",
                             "type": "string",
-                            "default": "Speaker1",
+                            "default": "Switch1",
                             "required": true
                         }
                     }
