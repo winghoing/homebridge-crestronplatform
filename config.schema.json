@@ -207,6 +207,29 @@
                         }
                     }
                 }
+            },
+			"speaker":{
+                "title": "Speaker",
+                "type": "array",
+                "items": {
+                    "title": "Speaker Configuration",
+                    "type": "object",
+                    "properties": {
+                        "id": {
+                            "title": "ID",
+                            "type": "number",
+                            "default": 1,
+                            "minimum": 1,
+                            "required": true     
+                        },
+                        "name": {
+                            "title": "Name",
+                            "type": "string",
+                            "default": "Speaker1",
+                            "required": true
+                        }
+                    }
+                }
             }
         }
     }
