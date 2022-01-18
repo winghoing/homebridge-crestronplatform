@@ -43,15 +43,13 @@ export class Speaker {
             .setCharacteristic(this.platform.Characteristic.Model, 'Default-Model')
             .setCharacteristic(this.platform.Characteristic.SerialNumber, 'Default-Serial');
 
-        // get the Television service if it exists, otherwise create a new Television service
+        // get the Speaker service if it exists, otherwise create a new Speaker service
         // you can create multiple services for each accessory
         this.accessory.category = 26;
         this.service = this.accessory.getService(this.platform.Service.Speaker) || this.accessory.addService(this.platform.Service.Speaker);            
 
         // set the service name, this is what is displayed as the default name on the Home app
         // in this example we are using the name we stored in the `accessory.context` in the `discoverDevices` method.
-
-        this.service.setCharacteristic(this.platform.Characteristic.Name, this.accessory.context.device.name);
 
         // each service must implement at-minimum the "required characteristics" for the given service type
         // see https://developers.homebridge.io/#/service/Television
