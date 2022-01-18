@@ -12,6 +12,7 @@ import { EventEmitter } from "events";
 export class Lightbulb {
     private service: Service;
     private id: number;
+    private accessory: PlatformAccessory;
     private eventEmitter: EventEmitter;
     private deviceType = "Lightbulb";
     private eventPowerStateMsg = "eventPowerState";
