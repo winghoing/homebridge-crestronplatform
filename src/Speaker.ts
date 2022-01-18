@@ -28,8 +28,8 @@ export class Speaker {
     }
 
     constructor(
-        private platform: CrestronPlatform,
-        private accessory: PlatformAccessory,
+        platform: CrestronPlatform,
+        accessory: PlatformAccessory,
         eventEmitter: EventEmitter
     ) {
         this.id = accessory.context.device.id;
