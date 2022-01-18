@@ -161,9 +161,8 @@ export class CrestronPlatform implements DynamicPlatformPlugin {
                                 new Switch(this, existingAccessory, this.eventEmitter);
                                 break;
                             }
-                        this.api.updatePlatformAccessories([existingAccessory]);
                     }
-
+                    this.api.updatePlatformAccessories([existingAccessory]);
                     // it is possible to remove platform accessories at any time using `api.unregisterPlatformAccessories`, eg.:
                     // remove platform accessories when no longer present
                     // this.api.unregisterPlatformAccessories(PLUGIN_NAME, PLATFORM_NAME, [existingAccessory]);
