@@ -7,6 +7,7 @@ import { EventEmitter } from "events";
 export class WindowCovering {
     private service: Service;
     private id: number;
+    private accessory: PlatformAccessory;
     private eventEmitter: EventEmitter;
     private deviceType = "WindowCovering";
     private eventCurrentPositionMsg = "eventCurrentPosition";
