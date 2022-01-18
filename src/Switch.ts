@@ -82,7 +82,7 @@ export class Switch {
         this.platform.log.info(`${this.deviceType}:${this.id}: Set Characteristic On By Homekit -> ${value}`);
     }
     
-    getPowerStateMsgEvent(value: number){
+    getPowerStateMsgEvent(value: boolean){
         let tmpOnValue = value;
         if (this.states.On != tmpOnValue) {
             this.states.On = tmpOnValue;
@@ -91,7 +91,7 @@ export class Switch {
         }
     }
         
-    setPowerStateMsgEvent(value: number){
+    setPowerStateMsgEvent(value: boolean){
         let tmpOnValue = value;
         if (this.states.On != tmpOnValue) {
             this.states.On = tmpOnValue;
