@@ -38,7 +38,7 @@ export class WindowCovering {
             .setCharacteristic(this.platform.Characteristic.Model, 'Default-Model')
             .setCharacteristic(this.platform.Characteristic.SerialNumber, 'Default-Serial');
 
-        // get the Television service if it exists, otherwise create a new Television service
+        // get the WindowCovering service if it exists, otherwise create a new WindowCovering service
         // you can create multiple services for each accessory
 
         this.service = this.accessory.getService(this.platform.Service.WindowCovering) || this.accessory.addService(this.platform.Service.WindowCovering);            
