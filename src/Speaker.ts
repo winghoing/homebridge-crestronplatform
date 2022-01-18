@@ -112,7 +112,7 @@ export class Speaker {
         if(this.states.Mute != tmpMuteValue){
             this.states.Mute = tmpMuteValue;
             this.platform.log.info(`${this.deviceType}:${this.id}: Retrieve Characteristic Mute From Crestron Processor -> ${this.states.Mute}`);
-            this.tvService.updateCharacteristic(this.platform.Characteristic.Mute, this.states.Mute);
+            this.service.updateCharacteristic(this.platform.Characteristic.Mute, this.states.Mute);
         }
     }
 
@@ -121,7 +121,7 @@ export class Speaker {
         if(this.states.Mute != tmpMuteValue){
             this.states.Mute = tmpMuteValue;
             this.platform.log.info(`${this.deviceType}:${this.id}: Set Characteristic Mute By Crestron Processor -> ${this.states.Mute}`);
-            this.tvService.updateCharacteristic(this.platform.Characteristic.Mute, this.states.Mute);
+            this.service.updateCharacteristic(this.platform.Characteristic.Mute, this.states.Mute);
         }
     }
 
@@ -130,7 +130,7 @@ export class Speaker {
         if(this.states.Volume != tmpVolumeValue){
             this.states.Volume = tmpVolumeValue;
             this.platform.log.info(`${this.deviceType}:${this.id}: Retrieve Characteristic Volume From Crestron Processor -> ${this.states.Volume}`);
-            this.tvService.updateCharacteristic(this.platform.Characteristic.Volume, this.states.Volume);
+            this.service.updateCharacteristic(this.platform.Characteristic.Volume, this.states.Volume);
         }
     }
 
@@ -150,7 +150,7 @@ export class Speaker {
                 this.states.Volume = tmpVolumeValue;
             }
             this.platform.log.info(`${this.deviceType}:${this.id}: Set Characteristic Volume By Crestron Processor -> ${this.states.Volume}`);
-            this.tvService.updateCharacteristic(this.platform.Characteristic.Volume, this.states.Volume);
+            this.service.updateCharacteristic(this.platform.Characteristic.Volume, this.states.Volume);
         }
     }
 }
