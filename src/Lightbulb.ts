@@ -12,8 +12,6 @@ import { EventEmitter } from "events";
 export class Lightbulb {
     private service: Service;
     private id: number;
-    private accessory: PlatformAccessory;
-    private eventEmitter: EventEmitter;
     private deviceType = "Lightbulb";
     private eventPowerStateMsg = "eventPowerState";
     private setPowerStateMsg = "setPowerState";
@@ -28,13 +26,11 @@ export class Lightbulb {
     };
 
     constructor(
-        platform: CrestronPlatform,
-        accessory: PlatformAccessory,
-        eventEmitter: EventEmitter
+        private platform: CrestronPlatform,
+        private accessory: PlatformAccessory,
+        private eventEmitter: EventEmitter
     ) {
         this.id = accessory.context.device.id;
-        this.accessory = accessory;
-        this.eventEmitter = eventEmitter;
         this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.getPowerStateMsg}`, this.getLightStateMsgEvent.bind(this));
         this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.eventPowerStateMsg}`, this.setLightStateMsgEvent.bind(this));
         // set accessory information
