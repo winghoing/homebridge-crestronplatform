@@ -12,6 +12,7 @@ import { EventEmitter } from "events";
 export class HeaterCooler {
     private service: Service;
     private id: number;
+    private accessory: PlatformAccessory;
     private eventEmitter: EventEmitter;
     private deviceType = "HeaterCooler";
     private eventPowerStateMsg = "eventPowerState";
@@ -49,8 +50,8 @@ export class HeaterCooler {
     };
 
     constructor(
-        private platform: CrestronPlatform,
-        private accessory: PlatformAccessory,
+        platform: CrestronPlatform,
+        accessory: PlatformAccessory,
         eventEmitter: EventEmitter
     ) {
         this.id = accessory.context.device.id;
