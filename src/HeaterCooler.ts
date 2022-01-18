@@ -12,7 +12,6 @@ import { EventEmitter } from "events";
 export class HeaterCooler {
     private service: Service;
     private id: number;
-    private accessory: PlatformAccessory;
     private eventEmitter: EventEmitter;
     private deviceType = "HeaterCooler";
     private eventPowerStateMsg = "eventPowerState";
