@@ -7,6 +7,7 @@ import { EventEmitter } from "events";
 export class Speaker {
     private service: Service;
     private id: number;
+    private accessory: PlatformAccessory;
     private eventEmitter: EventEmitter;
     private deviceType = "Speaker";
     private eventMuteStateMsg = "eventMuteState";
@@ -48,7 +49,7 @@ export class Speaker {
 
         // get the Television service if it exists, otherwise create a new Television service
         // you can create multiple services for each accessory
-
+        this.accessory.category = 26;
         this.service = this.accessory.getService(this.platform.Service.Speaker) || this.accessory.addService(this.platform.Service.Speaker);            
 
         // set the service name, this is what is displayed as the default name on the Home app
@@ -66,6 +67,8 @@ export class Speaker {
         this.service.getCharacteristic(this.platform.Characteristic.Volume)
             .onGet(this.handleVolumeGet.bind(this))
             .onSet(this.handleVolumeSet.bind(this));
+            
+        this.platform.api.publishExternalAccessories('homebridge-crestronplugin', [this.accessory]);
     }
         
     async handleMuteGet(): Promise<CharacteristicValue> {
