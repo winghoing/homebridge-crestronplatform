@@ -8,6 +8,7 @@ import { DimLightbulb } from "./DimLightbulb";
 import { HeaterCooler } from "./HeaterCooler";
 import { Television } from "./Television";
 import { WindowCovering } from "./WindowCovering";
+import { Speaker } from "./Speaker";
 
 /**
  * HomebridgePlatform
@@ -81,17 +82,19 @@ export class CrestronPlatform implements DynamicPlatformPlugin {
         // EXAMPLE ONLY
         // A real plugin you would discover accessories from the local network, cloud services
         // or a user-defined array in the platform config.
-        let configNonDimLightbulbs = this.config["non-dimmable-lightbulbs"];
-        let configDimLightbulbs = this.config["dimmable-lightbulbs"];
-        let configHeaterCoolers = this.config["heatercoolers"];
-        let configTelevisions = this.config["televisions"];
-        let configWindowCoverings = this.config["window-covering"];
+        let nonDimLightbulbsConfig = this.config["non-dimmable-lightbulbs"];
+        let dimLightbulbsConfig = this.config["dimmable-lightbulbs"];
+        let heaterCoolersConfig = this.config["heatercoolers"];
+        let televisionsConfig = this.config["televisions"];
+        let windowCoveringsConfig = this.config["window-coverings"];
+        let speakersConfig = this.config["speakers"];
         //this.log.info(`printing accessories: ${configDevices}`);
-        this.registerDevices(configNonDimLightbulbs, "NonDimLightbulb");
-        this.registerDevices(configDimLightbulbs, "DimLightbulb");
-        this.registerDevices(configHeaterCoolers, "HeaterCooler");
-        this.registerDevices(configTelevisions, "Television");
-        this.registerDevices(configWindowCoverings, "WindowCovering");
+        this.registerDevices(nonDimLightbulbsConfig, "NonDimLightbulb");
+        this.registerDevices(dimLightbulbsConfig, "DimLightbulb");
+        this.registerDevices(heaterCoolersConfig, "HeaterCooler");
+        this.registerDevices(televisionsConfig, "Television");
+        this.registerDevices(windowCoveringsConfig, "WindowCovering");
+        this.registerDevices(speakersConfig, "Speaker");
     }
 
     registerDevices(configDevices, deviceType) {
@@ -153,6 +156,12 @@ export class CrestronPlatform implements DynamicPlatformPlugin {
                                 new WindowCovering(this, existingAccessory, this.eventEmitter);
                                 break;
                             }
+                        case "Speaker":
+                            {
+                                this.log.info(`create existing speaker accessory: ${existingAccessory.displayName}`);
+                                new Speaker(this, existingAccessory, this.eventEmitter);
+                                break;
+                            }
                     }
 
                     // it is possible to remove platform accessories at any time using `api.unregisterPlatformAccessories`, eg.:
@@ -201,6 +210,12 @@ export class CrestronPlatform implements DynamicPlatformPlugin {
                             {
                                 this.log.info(`create not existing window covering accessory: ${accessory.displayName}`);
                                 new WindowCovering(this, accessory, this.eventEmitter);
+                                break;
+                            }
+                        case "Speaker":
+                            {
+                                this.log.info(`create not existing speaker accessory: ${accessory.displayName}`);
+                                new Speaker(this, accessory, this.eventEmitter);
                                 break;
                             }
                     }
