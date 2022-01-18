@@ -169,7 +169,7 @@ export class HeaterCooler {
 
     async handleRotationSpeedGet(): Promise<CharacteristicValue> {
         const rotationSpeed = this.states.RotationSpeed;
-        this.platform.log.info(`${this.deviceType}:${this.id}: Get Characteristic RotationSpeed  From Homekit -> ${rotationSpeed}`);
+        this.platform.log.info(`${this.deviceType}:${this.id}: Get Characteristic RotationSpeed From Homekit -> ${rotationSpeed}`);
         this.platform.sendData(`${this.deviceType}:${this.id}:${this.getRotationSpeedMsg}:*`);
         return rotationSpeed;
     }
