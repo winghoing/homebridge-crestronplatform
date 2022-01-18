@@ -226,6 +226,8 @@ export class CrestronPlatform implements DynamicPlatformPlugin {
                             {
                                 this.log.info(`create not existing switch accessory: ${accessory.displayName}`);
                                 new Switch(this, accessory, this.eventEmitter);
+                                // link the accessory to your platform
+                                this.api.registerPlatformAccessories(PLUGIN_NAME, PLATFORM_NAME, [accessory]);
                                 break;
                             }
                     }
