@@ -144,13 +144,12 @@
                             "default": 2,
                             "required": true,
                             "oneOf": [
-                                { "title": "Auto Mode Only", "enum": [0] },
-                                { "title": "Heat Mode Only", "enum": [1] },
-                                { "title": "Cool Mode Only", "enum": [2] },
-                                { "title": "Auto Mode + Cool Mode", "enum": [3] },
-                                { "title": "Auto Mode + Heat Mode", "enum": [4] },
-                                { "title": "Cool Mode + Heat Mode", "enum": [5] },
-                                { "title": "Auto Mode + Heat Mode + Cool Mode", "enum": [6] },
+                                { "title": "Auto Mode Only", "enum": [1] },
+                                { "title": "Heat Mode Only", "enum": [2] },
+                                { "title": "Cool Mode Only", "enum": [3] },
+                                { "title": "Auto Mode + Heat Mode", "enum": [13] },
+                                { "title": "Heat Mode + Cool Mode", "enum": [15] },
+                                { "title": "Auto Mode + Heat Mode + Cool Mode", "enum": [16] },
                             ],
                             "description": "HeaterCooler Mode Selection"
                         }
