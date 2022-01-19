@@ -59,7 +59,7 @@ export class HeaterCooler {
         this.minHeaterCoolerState = 2;
         this.maxHeaterCoolerState = 2;	
         let tmpValue = accessory.context.device.modeSelection;
-        if(tmpValue > 10)
+        if(tmpValue < 10)
         {
             this.minHeaterCoolerState = tmpValue - 1;
             this.maxHeaterCoolerState = tmpValue - 1;
