@@ -118,33 +118,51 @@
                             "required": true
                         },
                         "minTemperatureValue": {
-                            "title": "minTemperatureValue",
+                            "title": "Minimum Temperature Value",
                             "type": "number",
                             "default": 16,
-                            "required": false,
+                            "required": true,
                             "description": "HeaterCooler SetTemperature MinValue,Default:16"
                         },
                         "maxTemperatureValue": {
-                            "title": "maxTemperatureValue",
+                            "title": "Maximum Temperature Value",
                             "type": "number",
                             "default": 32,
-                            "required": false,
+                            "required": true,
                             "description": "HeaterCooler SetTemperature MaxValue,Default:32"
                         },
                         "minTemperatureStep": {
-                            "title": "minTemperatureStep",
+                            "title": "Minimum Temperature Step",
                             "type": "number",
                             "default": 1,
-                            "required": false,
+                            "required": true,
                             "description": "HeaterCooler Temperature minStep"
                         },
-                        "temperatureDisplayUnits": {
-                            "title": "temperatureDisplayUnits",
-                            "type": "integer",
+                        "modeSelection" : {
+                            "title": "Mode Selection",
+                            "type": "number",
+                            "default": 2,
+                            "required": true,
+                            "oneOf": [
+                                { "title": "Auto Mode Only", "enum": [0] },
+                                { "title": "Heat Mode Only", "enum": [1] },
+                                { "title": "Cool Mode Only", "enum": [2] },
+                                { "title": "Auto Mode + Cool Mode", "enum": [3] },
+                                { "title": "Auto Mode + Heat Mode", "enum": [4] },
+                                { "title": "Cool Mode + Heat Mode", "enum": [5] },
+                                { "title": "Auto Mode + Heat Mode + Cool Mode", "enum": [6] },
+                            ],
+                            "description": "HeaterCooler Mode Selection"
+                        }
+                        "temperatureDisplayUnit": {
+                            "title": "Temperature Display Unit",
+                            "type": "number",
                             "default": 0,
-                            "required": false,
-                            "minimum": 0,
-                            "maximum": 1,
+                            "required": true,
+                            "oneOf": [
+                                { "title": "Celsius", "enum": [0] },
+                                { "title": "Fahrenheit", "enum": [1] }
+                            ],
                             "description": "HeaterCooler Temperature Display 1:Fahrenheit, 0:Celsius,Default:0"
                         }
                     }
@@ -185,7 +203,7 @@
                                     },
                                     "type": {
                                         "title": "Type",
-                                        "type": "integer",
+                                        "type": "number",
                                         "default": 3,
                                         "required": true,
                                         "oneOf": [
