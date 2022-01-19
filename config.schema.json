@@ -149,7 +149,7 @@
                                 { "title": "Cool Mode Only", "enum": [3] },
                                 { "title": "Auto Mode + Heat Mode", "enum": [13] },
                                 { "title": "Heat Mode + Cool Mode", "enum": [15] },
-                                { "title": "Auto Mode + Heat Mode + Cool Mode", "enum": [16] },
+                                { "title": "Auto Mode + Heat Mode + Cool Mode", "enum": [16] }
                             ],
                             "description": "HeaterCooler Mode Selection"
                         },
