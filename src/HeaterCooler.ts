@@ -114,16 +114,12 @@ export class HeaterCooler {
             .onSet(this.handleActiveSet.bind(this));
 
         this.service.getCharacteristic(this.platform.Characteristic.CurrentHeaterCoolerState)
-			.setProps({
-                minValue: minHeaterCoolerState,
-                maxValue: maxHeaterCoolerState
-            })
             .onGet(this.handleCurrentHeaterCoolerStateGet.bind(this));
 
         this.service.getCharacteristic(this.platform.Characteristic.TargetHeaterCoolerState)
             .setProps({
-                minValue: minHeaterCoolerState,
-                maxValue: maxHeaterCoolerState
+                minValue: this.minHeaterCoolerState,
+                maxValue: this.maxHeaterCoolerState
             })
             .onGet(this.handleTargetHeaterCoolerStateGet.bind(this))
             .onSet(this.handleTargetHeaterCoolerStateSet.bind(this));
