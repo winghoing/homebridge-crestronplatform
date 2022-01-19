@@ -141,7 +141,7 @@
                         "modeSelection" : {
                             "title": "Mode Selection",
                             "type": "number",
-                            "default": 2,
+                            "default": 16,
                             "required": true,
                             "oneOf": [
                                 { "title": "Auto Mode Only", "enum": [1] },
