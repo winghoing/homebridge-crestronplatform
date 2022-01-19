@@ -13,9 +13,9 @@ export class HeaterCooler {
     private service: Service;
     private id: number;
     private deviceType = "HeaterCooler";
-	private minHeaterCoolerState: number;
-	private maxHeaterCoolerState: number;
-	private eventPowerStateMsg = "eventPowerState";
+    private minHeaterCoolerState: number;
+    private maxHeaterCoolerState: number;
+    private eventPowerStateMsg = "eventPowerState";
     private setPowerStateMsg = "setPowerState";
     private getPowerStateMsg = "getPowerState";
     private getCurrentHeaterCoolerStateMsg = "getCurrentHeaterCoolerState";
@@ -56,31 +56,31 @@ export class HeaterCooler {
     ) {
         this.id = accessory.context.device.id;
         this.states.TemperatureDisplayUnit = accessory.context.device.TemperatureDisplayUnit;
-		let tmpValue = accessory.context.device.modeSelection;
-		if(tmpValue > 10)
-		{
-			this.minHeaterCoolerState = tmpValue - 1;
-			this.maxHeaterCoolerState = tmpValue - 1;
-		}
-		else
-		{
-			tmpValue = accessory.context.device.modeSelection%10;
-			if(tmpValue === 3)
-			{
-				this.minHeaterCoolerState = 0;
-				this.maxHeaterCoolerState = 1;
-			}
-			else if(tmpValue === 5)
-			{
-				this.minHeaterCoolerState = 1;
-				this.maxHeaterCoolerState = 2;
-			}
-			else if(tmpValue === 6)
-			{
-				this.minHeaterCoolerState = 0;
-				this.maxHeaterCoolerState = 2;
-			}
-		}
+        let tmpValue = accessory.context.device.modeSelection;
+        if(tmpValue > 10)
+        {
+            this.minHeaterCoolerState = tmpValue - 1;
+            this.maxHeaterCoolerState = tmpValue - 1;
+        }
+        else
+        {
+            tmpValue = accessory.context.device.modeSelection%10;
+            if(tmpValue === 3)
+            {
+                this.minHeaterCoolerState = 0;
+                this.maxHeaterCoolerState = 1;
+            }
+            else if(tmpValue === 5)
+            {
+                this.minHeaterCoolerState = 1;
+                this.maxHeaterCoolerState = 2;
+            }
+            else if(tmpValue === 6)
+            {
+                this.minHeaterCoolerState = 0;
+                this.maxHeaterCoolerState = 2;
+            }
+        }
 		 
         this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.getPowerStateMsg}`, this.getPowerStateMsgEvent.bind(this));
         this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.eventPowerStateMsg}`, this.setPowerStateMsgEvent.bind(this));
