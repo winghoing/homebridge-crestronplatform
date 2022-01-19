@@ -120,7 +120,7 @@ export class CrestronPlatform implements DynamicPlatformPlugin {
                     // if you need to update the accessory.context then you should run `api.updatePlatformAccessories`. eg.:
                     existingAccessory.context.device = device;
                     existingAccessory.displayName = device.name;
-                    this.api.updatePlatformAccessories([existingAccessory]);
+                    
                     // create the accessory handler for the restored accessory
                     // this is imported from `platformAccessory.ts`
                     this.log.info(`existing accessory type: ${deviceType}`);
@@ -162,7 +162,7 @@ export class CrestronPlatform implements DynamicPlatformPlugin {
                                 break;
                             }
                     }
-                    
+                    this.api.updatePlatformAccessories([existingAccessory]);
                     // it is possible to remove platform accessories at any time using `api.unregisterPlatformAccessories`, eg.:
                     // remove platform accessories when no longer present
                     // this.api.unregisterPlatformAccessories(PLUGIN_NAME, PLATFORM_NAME, [existingAccessory]);
