@@ -56,6 +56,8 @@ export class HeaterCooler {
     ) {
         this.id = accessory.context.device.id;
         this.states.TemperatureDisplayUnit = accessory.context.device.TemperatureDisplayUnit;
+        this.minHeaterCoolerState = 2;
+        this.maxHeaterCoolerState = 2;	
         let tmpValue = accessory.context.device.modeSelection;
         if(tmpValue > 10)
         {
@@ -154,7 +156,7 @@ export class HeaterCooler {
             .onGet(this.handleHeatingThresholdTemperatureGet.bind(this))
             .onSet(this.handleHeatingThresholdTemperatureSet.bind(this));
 
-        this.service.getCharacteristic(this.platform.Characteristic.TemperatureDisplayUnit)
+        this.service.getCharacteristic(this.platform.Characteristic.TemperatureDisplayUnits)
             .onGet(this.handleTemperatureDisplayUnitGet.bind(this))
             .onSet(this.handleTemperatureDisplayUnitSet.bind(this));
     }
