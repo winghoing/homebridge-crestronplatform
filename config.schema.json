@@ -74,7 +74,7 @@
                     }
                 }
             },
-            "window-covering":{
+            "window-coverings":{
                 "title": "Window Covering",
                 "type": "array",
                 "items": {
