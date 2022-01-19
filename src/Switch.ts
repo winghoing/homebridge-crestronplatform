@@ -84,8 +84,8 @@ export class Switch {
         this.platform.log.info(`${this.deviceType}:${this.id}: Set Characteristic On By Homekit -> ${value}`);
     }
     
-    getPowerStateMsgEvent(value: boolean){
-        let tmpValue = (value == 1) ? true : false;
+    getPowerStateMsgEvent(value: number){
+        let tmpOnValue = (value == 1) ? true : false;
         if (this.states.On != tmpOnValue) {
             this.states.On = tmpOnValue;
             this.platform.log.info(`${this.deviceType}:${this.id}: Retrieve Characteristic On From Crestron Processor -> ${this.states.On}`);
@@ -93,8 +93,8 @@ export class Switch {
         }
     }
         
-    setPowerStateMsgEvent(value: boolean){
-        let tmpValue = (value == 1) ? true : false;
+    setPowerStateMsgEvent(value: number){
+        let tmpOnValue = (value == 1) ? true : false;
         if (this.states.On != tmpOnValue) {
             this.states.On = tmpOnValue;
             this.platform.log.info(`${this.deviceType}:${this.id}: Set Characteristic On From Crestron Processor -> ${this.states.On}`);
