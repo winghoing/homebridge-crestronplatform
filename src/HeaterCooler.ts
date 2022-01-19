@@ -13,7 +13,9 @@ export class HeaterCooler {
     private service: Service;
     private id: number;
     private deviceType = "HeaterCooler";
-    private eventPowerStateMsg = "eventPowerState";
+	private minHeaterCoolerState: number;
+	private maxHeaterCoolerState: number;
+	private eventPowerStateMsg = "eventPowerState";
     private setPowerStateMsg = "setPowerState";
     private getPowerStateMsg = "getPowerState";
     private getCurrentHeaterCoolerStateMsg = "getCurrentHeaterCoolerState";
@@ -28,8 +30,8 @@ export class HeaterCooler {
     private eventRotationSpeedMsg = "eventRotationSpeed";
     private setRotationSpeedMsg = "setRotationSpeed";
     private getRotationSpeedMsg = "getRotationSpeed";
-    private setTemperatureDisplayUnitsMsg = "setTemperatureDisplayUnits";
-    private getTemperatureDisplayUnitsMsg = "getTemperatureDisplayUnits";
+    private setTemperatureDisplayUnitMsg = "setTemperatureDisplayUnit";
+    private getTemperatureDisplayUnitMsg = "getTemperatureDisplayUnit";
 
     /**
      * These are just used to create a working example
@@ -44,7 +46,7 @@ export class HeaterCooler {
         TargetTemperature: 24,
         CoolingThresholdTemperature: 24,
         HeatingThresholdTemperature: 24,
-        TemperatureDisplayUnits: 0
+        TemperatureDisplayUnit: 0
     };
 
     constructor(
@@ -53,7 +55,33 @@ export class HeaterCooler {
         private eventEmitter: EventEmitter
     ) {
         this.id = accessory.context.device.id;
-        this.states.TemperatureDisplayUnits = accessory.context.device.temperatureDisplayUnits;
+        this.states.TemperatureDisplayUnit = accessory.context.device.TemperatureDisplayUnit;
+		let tmpValue = accessory.context.device.modeSelection;
+		if(tmpValue > 10)
+		{
+			this.minHeaterCoolerState = tmpValue - 1;
+			this.maxHeaterCoolerState = tmpValue - 1;
+		}
+		else
+		{
+			tmpValue = accessory.context.device.modeSelection%10;
+			if(tmpValue === 3)
+			{
+				this.minHeaterCoolerState = 0;
+				this.maxHeaterCoolerState = 1;
+			}
+			else if(tmpValue === 5)
+			{
+				this.minHeaterCoolerState = 1;
+				this.maxHeaterCoolerState = 2;
+			}
+			else if(tmpValue === 6)
+			{
+				this.minHeaterCoolerState = 0;
+				this.maxHeaterCoolerState = 2;
+			}
+		}
+		 
         this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.getPowerStateMsg}`, this.getPowerStateMsgEvent.bind(this));
         this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.eventPowerStateMsg}`, this.setPowerStateMsgEvent.bind(this));
         this.eventEmitter.on(`${this.deviceType}:${this.id}:${this.getCurrentHeaterCoolerStateMsg}`, this.getCurrentHeaterCoolerStateMsgEvent.bind(this));
@@ -86,12 +114,16 @@ export class HeaterCooler {
             .onSet(this.handleActiveSet.bind(this));
 
         this.service.getCharacteristic(this.platform.Characteristic.CurrentHeaterCoolerState)
+			.setProps({
+                minValue: minHeaterCoolerState,
+                maxValue: maxHeaterCoolerState
+            })
             .onGet(this.handleCurrentHeaterCoolerStateGet.bind(this));
 
         this.service.getCharacteristic(this.platform.Characteristic.TargetHeaterCoolerState)
             .setProps({
-                minValue: 0,
-                maxValue: 2
+                minValue: minHeaterCoolerState,
+                maxValue: maxHeaterCoolerState
             })
             .onGet(this.handleTargetHeaterCoolerStateGet.bind(this))
             .onSet(this.handleTargetHeaterCoolerStateSet.bind(this));
@@ -126,9 +158,9 @@ export class HeaterCooler {
             .onGet(this.handleHeatingThresholdTemperatureGet.bind(this))
             .onSet(this.handleHeatingThresholdTemperatureSet.bind(this));
 
-        this.service.getCharacteristic(this.platform.Characteristic.TemperatureDisplayUnits)
-            .onGet(this.handleTemperatureDisplayUnitsGet.bind(this))
-            .onSet(this.handleTemperatureDisplayUnitsSet.bind(this));
+        this.service.getCharacteristic(this.platform.Characteristic.TemperatureDisplayUnit)
+            .onGet(this.handleTemperatureDisplayUnitGet.bind(this))
+            .onSet(this.handleTemperatureDisplayUnitSet.bind(this));
     }
 
     /**
@@ -192,11 +224,11 @@ export class HeaterCooler {
         return targetTemperature;
     }
 
-    async handleTemperatureDisplayUnitsGet(): Promise<CharacteristicValue> {
-        const temperatureDisplayUnits = this.states.TemperatureDisplayUnits;
-        this.platform.log.info(`${this.deviceType}:${this.id}: Get Characteristic TemperatureDisplayUnits From Homekit -> ${temperatureDisplayUnits}`);
-        this.platform.sendData(`${this.deviceType}:${this.id}:${this.getTemperatureDisplayUnitsMsg}:*`);
-        return temperatureDisplayUnits;
+    async handleTemperatureDisplayUnitGet(): Promise<CharacteristicValue> {
+        const TemperatureDisplayUnit = this.states.TemperatureDisplayUnit;
+        this.platform.log.info(`${this.deviceType}:${this.id}: Get Characteristic TemperatureDisplayUnit From Homekit -> ${TemperatureDisplayUnit}`);
+        this.platform.sendData(`${this.deviceType}:${this.id}:${this.getTemperatureDisplayUnitMsg}:*`);
+        return TemperatureDisplayUnit;
     }
 
     /**
@@ -267,12 +299,12 @@ export class HeaterCooler {
         }
     }
 
-    async handleTemperatureDisplayUnitsSet(value: CharacteristicValue) {
-        const tmpTemperatureDisplayUnits = value as number;
-        if (this.states.TemperatureDisplayUnits != tmpTemperatureDisplayUnits) {
-            this.states.TemperatureDisplayUnits = tmpTemperatureDisplayUnits;
-            this.platform.sendData(`${this.deviceType}:${this.id}:${this.setTemperatureDisplayUnitsMsg}:${this.states.TemperatureDisplayUnits}:*`);
-            this.platform.log.info(`${this.deviceType}:${this.id}: Set Characteristic TemperatureDisplayUnits By Homekit -> ${value}`);
+    async handleTemperatureDisplayUnitSet(value: CharacteristicValue) {
+        const tmpTemperatureDisplayUnit = value as number;
+        if (this.states.TemperatureDisplayUnit != tmpTemperatureDisplayUnit) {
+            this.states.TemperatureDisplayUnit = tmpTemperatureDisplayUnit;
+            this.platform.sendData(`${this.deviceType}:${this.id}:${this.setTemperatureDisplayUnitMsg}:${this.states.TemperatureDisplayUnit}:*`);
+            this.platform.log.info(`${this.deviceType}:${this.id}: Set Characteristic TemperatureDisplayUnit By Homekit -> ${value}`);
         }
     }
 
